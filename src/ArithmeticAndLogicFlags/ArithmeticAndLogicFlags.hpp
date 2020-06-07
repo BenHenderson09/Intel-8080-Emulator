@@ -37,10 +37,15 @@
     nobody really knows, I'm going to assume it's a 5-bit register. This will eliminate any unused bits.
 */
 
-struct  ArithmeticAndLogicFlags{
+#ifndef ARITHMETIC_AND_LOGIC_FLAGS_HPP
+#define ARITHMETIC_AND_LOGIC_FLAGS_HPP
+
+struct  ArithmeticAndLogicFlags {
     bool zero;
     bool carry;    
     bool sign;    
     bool parity;    
     bool auxiliaryCarry;
 };
+
+#endif

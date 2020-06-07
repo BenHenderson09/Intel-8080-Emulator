@@ -5,11 +5,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Setup header files
 set(HEADER_FILES 
-    src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp)
+    config/HardwareSpecifications.hpp
+    src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
+    src/Processor/Processor.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
-    src/main.cpp)
+    src/8080_emulator.cpp
+    src/Processor/Processor.cpp)
 
 # Create executable
 add_executable(8080_emulator ${SOURCE_FILES} ${HEADER_FILES})
