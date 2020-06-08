@@ -3,6 +3,7 @@
 #include <FileBuffer.hpp>
 #include "Processor.hpp"
 #include "../../config/HardwareSpecifications.hpp"
+#include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 
 Processor::Processor() :
     // Reserve a buffer on the heap for the memory
@@ -17,8 +18,32 @@ Processor::~Processor(){
     delete[] memory;
 }
 
-uint16_t Processor::getAddressOfNextInstruction() const {
-    return programCounter;
+void Processor::executeNextInstruction(){
+    uint8_t opcode{memory[programCounter]};
+    uint8_t firstByteFollowingOpcode{memory[programCounter + 1]};
+    uint8_t secondByteFollowingOpcode{memory[programCounter + 2]};
+
+    switch(findNumberOfBytesUsedByOpcode(opcode)){
+        case 1:
+            executeOneByteInstruction(opcode);
+            break;
+
+        case 2:
+            executeTwoByteInstruction(opcode, firstByteFollowingOpcode);
+            break;
+
+        case 3:
+            executeThreeByteInstruction(
+                opcode,
+                firstByteFollowingOpcode,
+                secondByteFollowingOpcode
+            );
+            break;
+    }
+}
+
+void Processor::loadProgramIntoMemory(const FileBuffer& program){
+    program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
 }
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
@@ -35,12 +60,4 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
     std::cout << (int) opcode << '\n';
     std::cout << firstByteFollowingOpcode << '\n';
     std::cout << secondByteFollowingOpcode << '\n';
-}
-
-void Processor::loadProgramIntoMemory(const FileBuffer& program){
-    program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
-}
-
-uint8_t Processor::readByteFromMemory(uint16_t memoryAddress) const {
-    return memory[memoryAddress];
 }

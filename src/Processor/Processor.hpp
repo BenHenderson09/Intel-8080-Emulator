@@ -9,20 +9,9 @@ class Processor {
     public:
         Processor();
         ~Processor();
-    
-        uint16_t getAddressOfNextInstruction() const;
 
-        // Instructions take a maximum of 3 bytes
-        void executeOneByteInstruction(uint8_t opcode);
-        void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
-        void executeThreeByteInstruction(
-            uint8_t opcode,
-            uint8_t firstByteFollowingOpcode,
-            uint8_t secondByteFollowingOpcode
-        );
-
+        void executeNextInstruction();
         void loadProgramIntoMemory(const FileBuffer& program);
-        uint8_t readByteFromMemory(uint16_t memoryAddress) const;
 
     private:
         // Main registers (8 bits). Register a is an accumulator, and the other six registers
@@ -51,6 +40,16 @@ class Processor {
         // and this pin turns off or turns on the interrupt system, so if it is disabled,
         // interrupts will do nothing.
         bool interruptEnable;
+
+
+        // Instructions take a maximum of 3 bytes
+        void executeOneByteInstruction(uint8_t opcode);
+        void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
+        void executeThreeByteInstruction(
+            uint8_t opcode,
+            uint8_t firstByteFollowingOpcode,
+            uint8_t secondByteFollowingOpcode
+        );
 };
 
 #endif

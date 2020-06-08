@@ -9,13 +9,15 @@ set(HEADER_FILES
     config/OpcodeDetails.hpp
     src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
     src/Processor/Processor.hpp
-    src/startEmulation/startEmulation.hpp)
+    src/startEmulation/startEmulation.hpp
+    src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
     src/8080_emulator.cpp
     src/Processor/Processor.cpp
-    src/startEmulation/startEmulation.cpp)
+    src/startEmulation/startEmulation.cpp
+    src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp)
 
 # Create executable
 add_executable(8080_emulator ${SOURCE_FILES} ${HEADER_FILES})
