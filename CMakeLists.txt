@@ -16,6 +16,9 @@ set(HEADER_FILES
 set(SOURCE_FILES 
     src/8080_emulator.cpp
     src/Processor/Processor.cpp
+    src/Processor/Processor.executeOneByteInstruction.cpp
+    src/Processor/Processor.executeTwoByteInstruction.cpp
+    src/Processor/Processor.executeThreeByteInstruction.cpp
     src/startEmulation/startEmulation.cpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp)
 

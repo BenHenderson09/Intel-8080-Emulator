@@ -45,19 +45,3 @@ void Processor::executeNextInstruction(){
 void Processor::loadProgramIntoMemory(const FileBuffer& program){
     program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
 }
-
-void Processor::executeOneByteInstruction(uint8_t opcode){
-    std::cout << (int) opcode << '\n';
-}
-
-void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
-    std::cout << firstByteFollowingOpcode << '\n';
-    std::cout << (int) opcode << '\n';
-}
-
-void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode,
-        uint8_t secondByteFollowingOpcode){
-    std::cout << (int) opcode << '\n';
-    std::cout << firstByteFollowingOpcode << '\n';
-    std::cout << secondByteFollowingOpcode << '\n';
-}

@@ -41,7 +41,6 @@ class Processor {
         // interrupts will do nothing.
         bool interruptEnable;
 
-
         // Instructions take a maximum of 3 bytes
         void executeOneByteInstruction(uint8_t opcode);
         void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
