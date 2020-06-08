@@ -6,13 +6,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 # Setup header files
 set(HEADER_FILES 
     config/HardwareSpecifications.hpp
+    config/OpcodeDetails.hpp
     src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
-    src/Processor/Processor.hpp)
+    src/Processor/Processor.hpp
+    src/startEmulation/startEmulation.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
     src/8080_emulator.cpp
-    src/Processor/Processor.cpp)
+    src/Processor/Processor.cpp
+    src/startEmulation/startEmulation.cpp)
 
 # Create executable
 add_executable(8080_emulator ${SOURCE_FILES} ${HEADER_FILES})
+
+# Setup libraries
+include_directories(deps/FileBuffer/include)
+find_library(FILE_BUFFER FileBuffer deps/FileBuffer/lib)
+
+target_link_libraries(8080_emulator LINK_PUBLIC ${FILE_BUFFER})

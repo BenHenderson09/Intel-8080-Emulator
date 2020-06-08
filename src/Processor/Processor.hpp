@@ -1,7 +1,8 @@
 #ifndef PROCESSOR_HPP
 #define PROCESSOR_HPP
 
-#include "cstdint"
+#include <cstdint>
+#include <FileBuffer.hpp>
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 
 class Processor {
@@ -9,6 +10,20 @@ class Processor {
         Processor();
         ~Processor();
     
+        uint16_t getAddressOfNextInstruction() const;
+
+        // Instructions take a maximum of 3 bytes
+        void executeOneByteInstruction(uint8_t opcode);
+        void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
+        void executeThreeByteInstruction(
+            uint8_t opcode,
+            uint8_t firstByteFollowingOpcode,
+            uint8_t secondByteFollowingOpcode
+        );
+
+        void loadProgramIntoMemory(const FileBuffer& program);
+        uint8_t readByteFromMemory(uint16_t memoryAddress) const;
+
     private:
         // Main registers (8 bits). Register a is an accumulator, and the other six registers
         // can be used as individual 8-bit general purpose registers or as three 16 bit register pairs
