@@ -7,11 +7,10 @@
 
 class Processor {
     public:
-        Processor();
+        Processor(const FileBuffer& program);
         ~Processor();
 
-        void executeNextInstruction();
-        void loadProgramIntoMemory(const FileBuffer& program);
+        void beginEmulation();
 
     private:
         // Main registers (8 bits). Register a is an accumulator, and the other six registers
@@ -31,8 +30,10 @@ class Processor {
         uint16_t stackPointer;    
         uint16_t programCounter;
 
-        // Dynamically allocated buffer to represent the memory
+        // Dynamically allocated buffer to represent the memory. Also store the size of the program
+        // so we know when to stop iterating over memory addresses.
         uint8_t* memory;
+        uint16_t sizeOfProgramInBytes;
 
         ArithmeticAndLogicFlags flags;
 
@@ -40,6 +41,10 @@ class Processor {
         // and this pin turns off or turns on the interrupt system, so if it is disabled,
         // interrupts will do nothing.
         bool interruptEnable;
+
+        void executeNextInstruction();
+        bool areThereInstructionsLeftToExecute();
+        void loadProgramIntoMemory(const FileBuffer& program);
 
         // Instructions take a maximum of 3 bytes
         void executeOneByteInstruction(uint8_t opcode);

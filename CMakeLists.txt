@@ -9,7 +9,6 @@ set(HEADER_FILES
     config/OpcodeDetails.hpp
     src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
     src/Processor/Processor.hpp
-    src/startEmulation/startEmulation.hpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.hpp)
 
@@ -20,7 +19,6 @@ set(SOURCE_FILES
     src/Processor/Processor.executeOneByteInstruction.cpp
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
-    src/startEmulation/startEmulation.cpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp)
 

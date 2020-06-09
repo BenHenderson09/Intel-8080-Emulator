@@ -5,17 +5,37 @@
 #include "../../config/HardwareSpecifications.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 
-Processor::Processor() :
-    // Reserve a buffer on the heap for the memory
-    memory{new uint8_t[HardwareSpecifications::sizeOfMemoryInBytes]},
-    
-    // Set the program counter to the first address in memory
-    programCounter{0}
-    {};
+Processor::Processor(const FileBuffer& program){
+    loadProgramIntoMemory(program);
+};
 
 Processor::~Processor(){
     // Free up memory
     delete[] memory;
+}
+
+void Processor::loadProgramIntoMemory(const FileBuffer& program){
+    // Reserve a buffer on the heap for the memory
+    memory = new uint8_t[HardwareSpecifications::sizeOfMemoryInBytes];
+        
+    // Set the program counter to the first address in memory
+    programCounter = 0;
+
+    // Store the size of the program
+    sizeOfProgramInBytes = program.getFileSizeInBytes();
+
+    // Copy over the program contents into memory
+    program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
+}
+
+void Processor::beginEmulation(){
+    while (areThereInstructionsLeftToExecute()){
+        executeNextInstruction();
+    }
+}
+
+bool Processor::areThereInstructionsLeftToExecute(){
+    return programCounter < sizeOfProgramInBytes;
 }
 
 void Processor::executeNextInstruction(){
@@ -40,8 +60,4 @@ void Processor::executeNextInstruction(){
             );
             break;
     }
-}
-
-void Processor::loadProgramIntoMemory(const FileBuffer& program){
-    program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
 }

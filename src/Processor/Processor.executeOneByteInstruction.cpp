@@ -6,7 +6,7 @@
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        case 0x00: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x00: break; // NOP
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
         case 0x03: throw UnsupportedOpcodeException(opcode); break;
         case 0x04: throw UnsupportedOpcodeException(opcode); break; 
