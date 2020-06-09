@@ -4,14 +4,12 @@
 #include <stdexcept>
 #include <cstdint>
 
-class UnsupportedOpcodeException : public std::exception {
+class UnsupportedOpcodeException : public std::runtime_error {
     public:
         UnsupportedOpcodeException(uint8_t opcode);
 
-        const char* what() const noexcept override;
-
     private:
-        std::string message;
+        std::string createErrorMessage(uint8_t opcode);
 };
 
 #endif
