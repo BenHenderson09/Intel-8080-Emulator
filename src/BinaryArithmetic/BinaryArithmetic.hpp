@@ -2,7 +2,8 @@
 #define BINARY_ARITHMETIC_HPP
 
 namespace BinaryArithmetic {
-    bool isThereAnEvenCountOfOnesInBinaryNumber(int binaryNumber);
+    bool isBitSet(int number, int bitIndex);
+    bool isThereAnEvenCountOfOnes(int number);
 };
 
 #endif

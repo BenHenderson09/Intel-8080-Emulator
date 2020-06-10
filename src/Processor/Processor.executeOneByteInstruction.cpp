@@ -7,18 +7,26 @@
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        case 0x00: break;   // NOP - Execution continues, no change to processor state.
+        // NOP - Execution continues, no change to processor state.
+        case 0x00: break;
+
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
         case 0x03: throw UnsupportedOpcodeException(opcode); break;
         case 0x04: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x05: {    // DCR B - Decrement register B
-                uint8_t result{--b};
-                flags.zero = result == 0;
-                flags.sign = result >= 128;
-                flags.parity = BinaryArithmetic::isThereAnEvenCountOfOnesInBinaryNumber(result);
-                b = result;
+
+        // DCR B - Decrement register B
+        case 0x05: {
+                uint8_t result{b == 0 ? b : --b}; // Prevent underflows
+
+                // The sign is specified in the seventh bit, which allows programmers to conventionally
+                // treat 8 bit numbers as having a range of -128 to +127. 
+                flags.sign = BinaryArithmetic::isBitSet(result, 7);
+
+                flags.zero = (result == 0);
+                flags.parity = BinaryArithmetic::isThereAnEvenCountOfOnes(result);
                 break;
             } 
+
         case 0x07: throw UnsupportedOpcodeException(opcode); break; 
         case 0x09: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0a: throw UnsupportedOpcodeException(opcode); break; 
