@@ -9,7 +9,10 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         uint8_t secondByteFollowingOpcode){
     switch (opcode)
     {
-        case 0x01: throw UnsupportedOpcodeException(opcode); break;
+        case 0x01:  // LXI B - Occupy register pair BC with the next two bytes (little endian)
+            c = firstByteFollowingOpcode;
+			b = secondByteFollowingOpcode;
+            break;
         case 0x11: throw UnsupportedOpcodeException(opcode); break;
         case 0x21: throw UnsupportedOpcodeException(opcode); break;
         case 0x22: throw UnsupportedOpcodeException(opcode); break;

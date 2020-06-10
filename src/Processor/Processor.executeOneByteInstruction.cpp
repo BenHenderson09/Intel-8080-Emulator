@@ -3,14 +3,22 @@
 #include <stdexcept>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
+#include "../BinaryArithmetic/BinaryArithmetic.hpp"
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        case 0x00: break; // NOP
+        case 0x00: break;   // NOP - Execution continues, no change to processor state.
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
         case 0x03: throw UnsupportedOpcodeException(opcode); break;
         case 0x04: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x05: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x05: {    // DCR B - Decrement register B
+                uint8_t result{--b};
+                flags.zero = result == 0;
+                flags.sign = result >= 128;
+                flags.parity = BinaryArithmetic::isThereAnEvenCountOfOnesInBinaryNumber(result);
+                b = result;
+                break;
+            } 
         case 0x07: throw UnsupportedOpcodeException(opcode); break; 
         case 0x09: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0a: throw UnsupportedOpcodeException(opcode); break; 

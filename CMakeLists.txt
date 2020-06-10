@@ -10,7 +10,8 @@ set(HEADER_FILES
     src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
     src/Processor/Processor.hpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp
-    src/UnsupportedOpcodeException/UnsupportedOpcodeException.hpp)
+    src/UnsupportedOpcodeException/UnsupportedOpcodeException.hpp
+    src/BinaryArithmetic/BinaryArithmetic.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
@@ -20,7 +21,8 @@ set(SOURCE_FILES
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp
-    src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp)
+    src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
+    src/BinaryArithmetic/BinaryArithmetic.cpp)
 
 # Create executable
 add_executable(8080_emulator ${SOURCE_FILES} ${HEADER_FILES})
