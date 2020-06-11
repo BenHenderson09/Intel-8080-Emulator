@@ -35,6 +35,7 @@ class Processor {
         uint8_t* memory;
         uint16_t sizeOfProgramInBytes;
 
+        // Stores information about the results of arithmetic and logic instructions.
         ArithmeticAndLogicFlags flags;
 
         // The processor has an "Interrupt Enable" on pin 16. Two instructions, EI and DI, set this pin,
@@ -54,6 +55,12 @@ class Processor {
             uint8_t firstByteFollowingOpcode,
             uint8_t secondByteFollowingOpcode
         );
+
+        // One byte instructions. Defined in "Processor.executeOneByteInstruction" as they only
+        // act as helpers to that function. The same goes for two and three byte instructions.
+        void NOP();
+        void DCR(uint8_t& registerToDecrement);
+        void DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
 };
 
 #endif

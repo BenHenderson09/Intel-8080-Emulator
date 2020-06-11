@@ -8,46 +8,28 @@
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        // NOP - Execution continues, no change to processor
-        case 0x00: break;
+        // NOP - Execution continues, no change to processor state
+        case 0x00: NOP(); break;
 
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
         case 0x03: throw UnsupportedOpcodeException(opcode); break;
         case 0x04: throw UnsupportedOpcodeException(opcode); break; 
 
         // DCR B - Decrement register B
-        case 0x05: {
-                uint8_t result{b == 0 ? b : --b}; // Prevent underflows
-
-                // The sign is specified in bit seven, which allows programmers to conventionally
-                // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
-                flags.sign = BinaryArithmetic::valueOfBitAtIndex(result, 7);
-
-                flags.zero = (result == 0);
-                flags.parity = BinaryArithmetic::isThereAnEvenCountOfOnes(result);
-                break;
-            } 
+        case 0x05: DCR(b); break;
 
         case 0x07: throw UnsupportedOpcodeException(opcode); break;
 
         // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
-        case 0x09: {
-                uint16_t hl{BinaryArithmetic::concatenateTwoNumbers<uint8_t, uint16_t>(h, l)};
-                uint16_t bc{BinaryArithmetic::concatenateTwoNumbers<uint8_t, uint16_t>(b, c)};
-
-                uint32_t result{(uint32_t) hl + bc}; // Use 32 bits to facilitate carry
-                h = BinaryArithmetic::extractByte<uint32_t>(result, 1); // Hold second byte of result
-                l = BinaryArithmetic::extractByte<uint32_t>(result, 0); // Hold first byte of result
-
-                flags.carry = BinaryArithmetic::valueOfBitAtIndex(result, 16);
-
-                break;
-			}
+        case 0x09: DAD(b, c); break;
 			
         case 0x0a: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x0d: throw UnsupportedOpcodeException(opcode); break; 
+
+        // DCR C - Decrement register C
+        case 0x0d: DCR(c); break;
+
         case 0x0f: throw UnsupportedOpcodeException(opcode); break; 
         case 0x12: throw UnsupportedOpcodeException(opcode); break; 
         case 0x13: throw UnsupportedOpcodeException(opcode); break; 
@@ -240,4 +222,31 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
     }
 
     programCounter++;
+}
+
+void Processor::NOP(){}
+
+void Processor::DCR(uint8_t& registerToDecrement){
+    // Prevent underflows
+    uint8_t result{registerToDecrement == 0 ? registerToDecrement : --registerToDecrement};
+
+    // The sign is specified in bit seven, which allows programmers to conventionally
+    // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
+    flags.sign = extractBit<uint8_t>(result, 7);
+
+    flags.zero = (result == 0);
+    flags.parity = isThereAnEvenCountOfOnes(result);
+}
+
+void Processor::DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
+    uint16_t hl{concatenateTwoNumbers<uint8_t, uint16_t>(h, l)};
+    uint16_t registerPair
+        {concatenateTwoNumbers<uint8_t, uint16_t>(firstRegisterOfPair, secondRegisterOfPair)};
+
+    uint32_t result{(uint32_t) hl + registerPair}; // Use 32 bits to facilitate carry
+    h = extractByte<uint32_t>(result, 1); // Hold second byte of result
+    l = extractByte<uint32_t>(result, 0); // Hold first byte of result
+
+    // Bit 16 is set if a carry has occurred
+    flags.carry = extractBit<uint32_t>(result, 16);
 }
