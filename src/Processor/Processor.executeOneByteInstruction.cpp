@@ -33,8 +33,11 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // RRC - Rotate accumulator right
         case 0x0f: RRC(); break;
 
-        case 0x12: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x13: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x12: throw UnsupportedOpcodeException(opcode); break;
+
+        // INX D - Increment register pair DE
+        case 0x13: INX(d, e); break; 
+
         case 0x14: throw UnsupportedOpcodeException(opcode); break; 
         case 0x15: throw UnsupportedOpcodeException(opcode); break; 
         case 0x17: throw UnsupportedOpcodeException(opcode); break; 
@@ -260,4 +263,14 @@ void Processor::RRC(){
     flags.carry = a & 1;
     a = a >> 1;
     a = a | (flags.carry << 7);
+}
+
+void Processor::INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair){
+    if (secondRegisterOfPair == 0xff){
+        secondRegisterOfPair = 0;
+        firstRegisterOfPair++;
+    }
+    else {
+        secondRegisterOfPair++;
+    }
 }
