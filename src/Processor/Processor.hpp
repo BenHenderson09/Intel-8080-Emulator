@@ -61,6 +61,7 @@ class Processor {
         void NOP();
         void DCR(uint8_t& registerToDecrement);
         void DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
+        void RRC();
 };
 
 #endif

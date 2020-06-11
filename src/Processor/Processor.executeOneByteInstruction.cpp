@@ -8,7 +8,7 @@
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        // NOP - Execution continues, no change to processor state
+        // NOP - Execution continues, no change to processor
         case 0x00: NOP(); break;
 
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
@@ -30,7 +30,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // DCR C - Decrement register C
         case 0x0d: DCR(c); break;
 
-        case 0x0f: throw UnsupportedOpcodeException(opcode); break; 
+        // RRC - Rotate accumulator right
+        case 0x0f: RRC(); break;
+
         case 0x12: throw UnsupportedOpcodeException(opcode); break; 
         case 0x13: throw UnsupportedOpcodeException(opcode); break; 
         case 0x14: throw UnsupportedOpcodeException(opcode); break; 
@@ -249,4 +251,13 @@ void Processor::DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
 
     // Bit 16 is set if a carry has occurred
     flags.carry = extractBit<uint32_t>(result, 16);
+}
+
+void Processor::RRC(){
+    // Set's the carry to bit 0 of register A (accumulator),
+    // shifts one position to the right and then sets
+    // bit 7 of register A to the value of the carry.
+    flags.carry = a & 1;
+    a = a >> 1;
+    a = a | (flags.carry << 7);
 }
