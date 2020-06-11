@@ -1,7 +1,7 @@
 #include "BinaryArithmetic.hpp"
 
 namespace BinaryArithmetic {
-    bool isBitSet(int number, int bitIndex){
+    bool valueOfBitAtIndex(int number, int bitIndex){
         return (number & (1 << bitIndex)) != 0;
     }
 
@@ -17,4 +17,6 @@ namespace BinaryArithmetic {
 
         return countOfOnesInBinaryNumber % 2 == 0;
     }
+
+    
 }

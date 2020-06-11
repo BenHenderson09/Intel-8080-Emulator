@@ -24,8 +24,12 @@ set(SOURCE_FILES
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp)
 
+# Setup inline files (for template implementations)
+set(INLINE_FILES
+    src/BinaryArithmetic/BinaryArithmetic.ipp)
+
 # Create executable
-add_executable(8080_emulator ${SOURCE_FILES} ${HEADER_FILES})
+add_executable(8080_emulator ${SOURCE_FILES} ${INLINE_FILES} ${HEADER_FILES})
 
 # Setup libraries
 include_directories(deps/FileBuffer/include)

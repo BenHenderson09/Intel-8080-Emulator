@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cstdint>
 #include <stdexcept>
 #include "Processor.hpp"
@@ -7,7 +8,7 @@
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){
-        // NOP - Execution continues, no change to processor state.
+        // NOP - Execution continues, no change to processor
         case 0x00: break;
 
         case 0x02: throw UnsupportedOpcodeException(opcode); break; 
@@ -18,17 +19,31 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x05: {
                 uint8_t result{b == 0 ? b : --b}; // Prevent underflows
 
-                // The sign is specified in the seventh bit, which allows programmers to conventionally
-                // treat 8 bit numbers as having a range of -128 to +127. 
-                flags.sign = BinaryArithmetic::isBitSet(result, 7);
+                // The sign is specified in bit seven, which allows programmers to conventionally
+                // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
+                flags.sign = BinaryArithmetic::valueOfBitAtIndex(result, 7);
 
                 flags.zero = (result == 0);
                 flags.parity = BinaryArithmetic::isThereAnEvenCountOfOnes(result);
                 break;
             } 
 
-        case 0x07: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x09: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x07: throw UnsupportedOpcodeException(opcode); break;
+
+        // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
+        case 0x09: {
+                uint16_t hl{BinaryArithmetic::concatenateTwoNumbers<uint8_t, uint16_t>(h, l)};
+                uint16_t bc{BinaryArithmetic::concatenateTwoNumbers<uint8_t, uint16_t>(b, c)};
+
+                uint32_t result{(uint32_t) hl + bc}; // Use 32 bits to facilitate carry
+                h = BinaryArithmetic::extractByte<uint32_t>(result, 1); // Hold second byte of result
+                l = BinaryArithmetic::extractByte<uint32_t>(result, 0); // Hold first byte of result
+
+                flags.carry = BinaryArithmetic::valueOfBitAtIndex(result, 16);
+
+                break;
+			}
+			
         case 0x0a: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x0c: throw UnsupportedOpcodeException(opcode); break; 
