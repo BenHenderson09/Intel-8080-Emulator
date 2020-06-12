@@ -53,11 +53,17 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x1c: throw UnsupportedOpcodeException(opcode); break; 
         case 0x1d: throw UnsupportedOpcodeException(opcode); break; 
         case 0x1f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x23: throw UnsupportedOpcodeException(opcode); break; 
+
+        // INX H - Increment register pair HL
+        case 0x23: INX(h, l); break; 
+
         case 0x24: throw UnsupportedOpcodeException(opcode); break; 
         case 0x25: throw UnsupportedOpcodeException(opcode); break; 
         case 0x27: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x29: throw UnsupportedOpcodeException(opcode); break; 
+
+        // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
+        case 0x29: DAD(h, l); break; 
+
         case 0x2b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x2c: throw UnsupportedOpcodeException(opcode); break; 
         case 0x2d: throw UnsupportedOpcodeException(opcode); break; 
@@ -72,7 +78,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x3d: throw UnsupportedOpcodeException(opcode); break; 
         case 0x3f: throw UnsupportedOpcodeException(opcode); break; 
         case 0x40: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x41: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x41: throw UnsupportedOpcodeException(opcode); break;
         case 0x42: throw UnsupportedOpcodeException(opcode); break; 
         case 0x43: throw UnsupportedOpcodeException(opcode); break; 
         case 0x44: throw UnsupportedOpcodeException(opcode); break; 
@@ -93,7 +99,11 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x53: throw UnsupportedOpcodeException(opcode); break; 
         case 0x54: throw UnsupportedOpcodeException(opcode); break; 
         case 0x55: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x56: throw UnsupportedOpcodeException(opcode); break; 
+
+        // MOV D,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the D register.
+        case 0x56: MOV(d, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
+
         case 0x57: throw UnsupportedOpcodeException(opcode); break; 
         case 0x58: throw UnsupportedOpcodeException(opcode); break; 
         case 0x59: throw UnsupportedOpcodeException(opcode); break; 
@@ -101,7 +111,11 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x5b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x5c: throw UnsupportedOpcodeException(opcode); break; 
         case 0x5d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x5e: throw UnsupportedOpcodeException(opcode); break; 
+
+        // MOV E,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the E register.
+        case 0x5e: MOV(e, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break; 
+
         case 0x5f: throw UnsupportedOpcodeException(opcode); break; 
         case 0x60: throw UnsupportedOpcodeException(opcode); break; 
         case 0x61: throw UnsupportedOpcodeException(opcode); break; 
@@ -109,7 +123,11 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x63: throw UnsupportedOpcodeException(opcode); break; 
         case 0x64: throw UnsupportedOpcodeException(opcode); break; 
         case 0x65: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x66: throw UnsupportedOpcodeException(opcode); break; 
+
+        // MOV H,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the H register.
+        case 0x66: MOV(h, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break; 
+
         case 0x67: throw UnsupportedOpcodeException(opcode); break; 
         case 0x68: throw UnsupportedOpcodeException(opcode); break; 
         case 0x69: throw UnsupportedOpcodeException(opcode); break; 
@@ -117,8 +135,11 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x6b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x6c: throw UnsupportedOpcodeException(opcode); break; 
         case 0x6d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6e: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6f: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x6e: throw UnsupportedOpcodeException(opcode); break;
+
+        // MOV L,A - Copy register A to register L
+        case 0x6f: MOV(l, a); break; 
+        
         case 0x70: throw UnsupportedOpcodeException(opcode); break; 
         case 0x71: throw UnsupportedOpcodeException(opcode); break; 
         case 0x72: throw UnsupportedOpcodeException(opcode); break; 
@@ -126,14 +147,29 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x74: throw UnsupportedOpcodeException(opcode); break; 
         case 0x75: throw UnsupportedOpcodeException(opcode); break; 
         case 0x76: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x77: throw UnsupportedOpcodeException(opcode); break; 
+        
+        // MOV M,A - Store the contents of register A at the memory address
+        // specified in register pair HL.
+        case 0x77: MOV(memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)], a); break; 
+        
         case 0x78: throw UnsupportedOpcodeException(opcode); break; 
         case 0x79: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x7a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x7b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x7c: throw UnsupportedOpcodeException(opcode); break; 
+        
+        // MOV A,D - Copy register D to register A
+        case 0x7a: MOV(a, d); break; 
+
+        // MOV A,E - Copy register E to register A
+        case 0x7b: MOV(a, e); break; 
+
+        // MOV A,H - Copy register H to register A
+        case 0x7c: MOV(a, h); break; 
+
         case 0x7d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x7e: throw UnsupportedOpcodeException(opcode); break; 
+
+        // MOV A,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the A register.
+        case 0x7e: MOV(a, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
+
         case 0x7f: throw UnsupportedOpcodeException(opcode); break; 
         case 0x80: throw UnsupportedOpcodeException(opcode); break; 
         case 0x81: throw UnsupportedOpcodeException(opcode); break; 
@@ -286,4 +322,8 @@ void Processor::LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
         {concatenateTwoNumbers<uint8_t, uint16_t>(firstRegisterOfPair, secondRegisterOfPair)};
 
     a = memory[registerPair];
+}
+
+void Processor::MOV(uint8_t& destination, uint16_t value){
+    destination = value;
 }

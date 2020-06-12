@@ -64,6 +64,7 @@ class Processor {
         void RRC();
         void INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
         void LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
+        void MOV(uint8_t& destination, uint16_t value);
 };
 
 #endif
