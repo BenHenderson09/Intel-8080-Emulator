@@ -63,6 +63,7 @@ class Processor {
         void DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
         void RRC();
         void INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
+        void LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
 };
 
 #endif

@@ -41,8 +41,14 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x14: throw UnsupportedOpcodeException(opcode); break; 
         case 0x15: throw UnsupportedOpcodeException(opcode); break; 
         case 0x17: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x19: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x1a: throw UnsupportedOpcodeException(opcode); break; 
+
+        // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
+        case 0x19: DAD(d, e); break;
+
+        // LDAX D - Set the contents of the accumulator to the value at a memory location.
+        // The address of this location is found in the specified register pair.
+        case 0x1a: LDAX(d, e); break; 
+
         case 0x1b: throw UnsupportedOpcodeException(opcode); break; 
         case 0x1c: throw UnsupportedOpcodeException(opcode); break; 
         case 0x1d: throw UnsupportedOpcodeException(opcode); break; 
@@ -273,4 +279,11 @@ void Processor::INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair)
     else {
         secondRegisterOfPair++;
     }
+}
+
+void Processor::LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
+    uint16_t registerPair
+        {concatenateTwoNumbers<uint8_t, uint16_t>(firstRegisterOfPair, secondRegisterOfPair)};
+
+    a = memory[registerPair];
 }
