@@ -46,6 +46,7 @@ class Processor {
         void executeNextInstruction();
         bool areThereInstructionsLeftToExecute();
         void loadProgramIntoMemory(const FileBuffer& program);
+        void alterFlagsAfterLogicalOperation();
 
         // Instructions take a maximum of 3 bytes
         void executeOneByteInstruction(uint8_t opcode);
@@ -65,6 +66,7 @@ class Processor {
         void INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
         void LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
         void MOV(uint8_t& destination, uint16_t value);
+        void ANA(uint8_t registerForBitwiseAnd);
 };
 
 #endif

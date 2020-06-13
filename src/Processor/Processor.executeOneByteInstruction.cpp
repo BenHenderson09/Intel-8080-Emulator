@@ -210,7 +210,12 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xa4: throw UnsupportedOpcodeException(opcode); break; 
         case 0xa5: throw UnsupportedOpcodeException(opcode); break; 
         case 0xa6: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa7: throw UnsupportedOpcodeException(opcode); break; 
+
+        // ANA A - Bitwise and (&) operates on the accumulator and register A
+        // (A is the same register as the accumulator), with the result stored in the accumulator.
+        // The state of the accumulator remains the same in this case, with only the flags changing.
+        case 0xa7: ANA(a); break; 
+
         case 0xa8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xa9: throw UnsupportedOpcodeException(opcode); break; 
         case 0xaa: throw UnsupportedOpcodeException(opcode); break; 
@@ -326,4 +331,9 @@ void Processor::LDAX(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
 
 void Processor::MOV(uint8_t& destination, uint16_t value){
     destination = value;
+}
+
+void Processor::ANA(uint8_t registerForBitwiseAnd){
+    a = a & registerForBitwiseAnd;
+    alterFlagsAfterLogicalOperation();
 }

@@ -45,7 +45,7 @@ struct  ArithmeticAndLogicFlags {
     bool carry;    
     bool sign;    
     bool parity;    
-    bool auxiliaryCarry;
+    bool auxiliaryCarry; // TODO look into this bit's behaviour
 };
 
 #endif

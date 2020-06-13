@@ -4,6 +4,7 @@
 #include "Processor.hpp"
 #include "../../config/HardwareSpecifications.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
+#include "../BinaryArithmetic/BinaryArithmetic.hpp"
 
 Processor::Processor(const FileBuffer& program){
     loadProgramIntoMemory(program);
@@ -60,4 +61,12 @@ void Processor::executeNextInstruction(){
             );
             break;
     }
+}
+
+void Processor::alterFlagsAfterLogicalOperation(){
+    flags.zero = (a == 0);
+    flags.sign = extractBit<uint8_t>(a, 7);
+    flags.parity = isThereAnEvenCountOfOnes(a);
+    flags.carry = 0;
+    flags.auxiliaryCarry = 0;
 }
