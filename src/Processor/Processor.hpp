@@ -70,6 +70,7 @@ class Processor {
         void XRA(uint8_t registerForBitwiseXor);
         void POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
         void PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
+        void RET();
 };
 
 #endif

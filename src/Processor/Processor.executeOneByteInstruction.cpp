@@ -256,7 +256,12 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         case 0xc7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xc9: throw UnsupportedOpcodeException(opcode); break; 
+
+        // RET - Return from subroutine. This works by popping the
+        // address at the top of the stack into the program counter,
+        // transferring program control.
+        case 0xc9: RET(); break; 
+
         case 0xcf: throw UnsupportedOpcodeException(opcode); break; 
         case 0xd0: throw UnsupportedOpcodeException(opcode); break;
 
@@ -386,4 +391,15 @@ void Processor::PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
     memory[stackPointer - 1] = firstRegisterOfPair;
     memory[stackPointer - 2] = secondRegisterOfPair;
     stackPointer -= 2;
+}
+
+void Processor::RET(){
+    // Treat these bytes as registers to allow us to use the POP function
+    // and then concatenate these bytes for the 16 bit program counter
+    uint8_t highOrderByte;
+    uint8_t lowOrderByte;
+
+    POP(highOrderByte, lowOrderByte);
+
+    programCounter = concatenateTwoNumbers<uint8_t, uint16_t>(highOrderByte, lowOrderByte);
 }
