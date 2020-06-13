@@ -251,7 +251,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // into the register pair BC
         case 0xc1: POP(b, c); break; 
 
-        case 0xc5: throw UnsupportedOpcodeException(opcode); break; 
+        // PUSH B - Write register pair BC to the top of the stack
+        case 0xc5: PUSH(b, c); break; 
+
         case 0xc7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc9: throw UnsupportedOpcodeException(opcode); break; 
@@ -262,7 +264,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // into the register pair DE
         case 0xd1: POP(d, e); break; 
 
-        case 0xd5: throw UnsupportedOpcodeException(opcode); break; 
+        // PUSH D - Write register pair DE to the top of the stack
+        case 0xd5: PUSH(d, e); break;
+
         case 0xd7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xd8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xdf: throw UnsupportedOpcodeException(opcode); break; 
@@ -273,7 +277,10 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xe1: POP(d, e); break; 
 
         case 0xe3: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xe5: throw UnsupportedOpcodeException(opcode); break; 
+
+        // PUSH H - Write register pair HL to the top of the stack
+        case 0xe5: PUSH(h, l); break;
+
         case 0xe7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe9: throw UnsupportedOpcodeException(opcode); break; 
@@ -368,7 +375,15 @@ void Processor::POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair)
     // Later on, PUSH operations will just overwrite the previous data, so we're essentially
     // removing it from the stack without deleting it.
 
-    firstRegisterOfPair = memory[stackPointer+1];
+    firstRegisterOfPair = memory[stackPointer + 1];
     secondRegisterOfPair = memory[stackPointer];
     stackPointer += 2;
+}
+
+void Processor::PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
+    // Keeping in mind how the stack descends through memory, the two addresses below
+    // the stack pointer will be set to the value of the register pair.
+    memory[stackPointer - 1] = firstRegisterOfPair;
+    memory[stackPointer - 2] = secondRegisterOfPair;
+    stackPointer -= 2;
 }

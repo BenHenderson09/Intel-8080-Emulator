@@ -69,6 +69,7 @@ class Processor {
         void ANA(uint8_t registerForBitwiseAnd);
         void XRA(uint8_t registerForBitwiseXor);
         void POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
+        void PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
 };
 
 #endif
