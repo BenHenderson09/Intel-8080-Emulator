@@ -68,6 +68,7 @@ class Processor {
         void MOV(uint8_t& destination, uint16_t value);
         void ANA(uint8_t registerForBitwiseAnd);
         void XRA(uint8_t registerForBitwiseXor);
+        void POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
 };
 
 #endif

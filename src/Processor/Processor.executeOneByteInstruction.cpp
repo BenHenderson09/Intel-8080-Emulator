@@ -213,7 +213,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // ANA A - Bitwise and (&) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
-        // The state of the accumulator remains the same in this case, with only the flags changing.
+        // The f the accumulator remains the same in this case, with only the flags changing.
         case 0xa7: ANA(a); break; 
 
         case 0xa8: throw UnsupportedOpcodeException(opcode); break; 
@@ -226,7 +226,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // XRA A - Bitwise exclusive or (^) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
-        // The state of the accumulator remains the same in this case, with only the flags changing.
+        // The f the accumulator remains the same in this case, with only the flags changing.
         case 0xaf: XRA(a); break; 
 
         case 0xb0: throw UnsupportedOpcodeException(opcode); break; 
@@ -246,20 +246,32 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xbe: throw UnsupportedOpcodeException(opcode); break; 
         case 0xbf: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xc1: throw UnsupportedOpcodeException(opcode); break; 
+
+        // POP B - Remove two bytes from the top of the stack and copy their values
+        // into the register pair BC
+        case 0xc1: POP(b, c); break; 
+
         case 0xc5: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xc9: throw UnsupportedOpcodeException(opcode); break; 
         case 0xcf: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xd0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xd1: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xd0: throw UnsupportedOpcodeException(opcode); break;
+
+        // POP D - Remove two bytes from the top of the stack and copy their values
+        // into the register pair DE
+        case 0xd1: POP(d, e); break; 
+
         case 0xd5: throw UnsupportedOpcodeException(opcode); break; 
         case 0xd7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xd8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xdf: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xe1: throw UnsupportedOpcodeException(opcode); break; 
+
+        // POP H - Remove two bytes from the top of the stack and copy their values
+        // into the register pair HL
+        case 0xe1: POP(d, e); break; 
+
         case 0xe3: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe5: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe7: throw UnsupportedOpcodeException(opcode); break; 
@@ -346,4 +358,17 @@ void Processor::ANA(uint8_t registerForBitwiseAnd){
 void Processor::XRA(uint8_t registerForBitwiseXor){
     a = a ^ registerForBitwiseXor;
     alterFlagsAfterLogicalOperation();
+}
+
+void Processor::POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair){
+    // The top of the stack descends through memory. I.e a POP operation will
+    // result with the stack pointer being at a higher address, and vice versa for PUSH.
+    // Note that we aren't actually erasing the previous stack data after we copy it to
+    // the register pair, we just move the stack pointer.
+    // Later on, PUSH operations will just overwrite the previous data, so we're essentially
+    // removing it from the stack without deleting it.
+
+    firstRegisterOfPair = memory[stackPointer+1];
+    secondRegisterOfPair = memory[stackPointer];
+    stackPointer += 2;
 }
