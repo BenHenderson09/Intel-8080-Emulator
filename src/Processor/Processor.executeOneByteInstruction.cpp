@@ -223,7 +223,12 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xac: throw UnsupportedOpcodeException(opcode); break; 
         case 0xad: throw UnsupportedOpcodeException(opcode); break; 
         case 0xae: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xaf: throw UnsupportedOpcodeException(opcode); break; 
+
+        // XRA A - Bitwise exclusive or (^) operates on the accumulator and register A
+        // (A is the same register as the accumulator), with the result stored in the accumulator.
+        // The state of the accumulator remains the same in this case, with only the flags changing.
+        case 0xaf: XRA(a); break; 
+
         case 0xb0: throw UnsupportedOpcodeException(opcode); break; 
         case 0xb1: throw UnsupportedOpcodeException(opcode); break; 
         case 0xb2: throw UnsupportedOpcodeException(opcode); break; 
@@ -335,5 +340,10 @@ void Processor::MOV(uint8_t& destination, uint16_t value){
 
 void Processor::ANA(uint8_t registerForBitwiseAnd){
     a = a & registerForBitwiseAnd;
+    alterFlagsAfterLogicalOperation();
+}
+
+void Processor::XRA(uint8_t registerForBitwiseXor){
+    a = a ^ registerForBitwiseXor;
     alterFlagsAfterLogicalOperation();
 }
