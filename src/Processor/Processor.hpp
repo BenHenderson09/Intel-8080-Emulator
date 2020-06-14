@@ -75,6 +75,9 @@ class Processor {
         void RET();
         void XCHG();
         void EI();
+
+        // Two byte instructions
+        void MVI(uint8_t& destination, uint8_t data);
 };
 
 #endif
