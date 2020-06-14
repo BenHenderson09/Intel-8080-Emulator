@@ -295,9 +295,20 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         
         case 0xef: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xf1: throw UnsupportedOpcodeException(opcode); break; 
+
+        // POP PSW - Take the top two bytes off the stack, loading the
+        // accumulator with the byte preceding the stack pointer and setting
+        // the flags based on the byte at the stack pointer. This "flag byte"
+        // at the stack pointer has its bits mapped to specific flags which are
+        // specified in the 8080 data book.
+        case 0xf1: POP_PSW(); break; 
+
         case 0xf3: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xf5: throw UnsupportedOpcodeException(opcode); break; 
+
+        // PUSH PSW - Pushes the accumulator followed by the "flag byte"
+        // mentioned previously onto the stack.
+        case 0xf5: PUSH_PSW(); break;
+
         case 0xf7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf9: throw UnsupportedOpcodeException(opcode); break; 
@@ -388,11 +399,39 @@ void Processor::POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair)
     stackPointer += 2;
 }
 
+void Processor::POP_PSW(){
+    a = memory[stackPointer + 1];
+    uint8_t flagByte{memory[stackPointer]};
+
+    flags.sign = extractBit<uint8_t>(flagByte, 7);
+    flags.zero = extractBit<uint8_t>(flagByte, 6);
+    flags.auxiliaryCarry = extractBit<uint8_t>(flagByte, 4);
+    flags.parity = extractBit<uint8_t>(flagByte, 2);
+    flags.carry = extractBit<uint8_t>(flagByte, 0);
+
+    stackPointer += 2;
+}
+
+
 void Processor::PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
     // Keeping in mind how the stack descends through memory, the two addresses below
     // the stack pointer will be set to the value of the register pair.
     memory[stackPointer - 1] = firstRegisterOfPair;
     memory[stackPointer - 2] = secondRegisterOfPair;
+    stackPointer -= 2;
+}
+
+void Processor::PUSH_PSW(){
+    uint8_t flagByte{0};
+    setBit<uint8_t>(flagByte, 7, flags.sign);
+    setBit<uint8_t>(flagByte, 6, flags.zero);
+    setBit<uint8_t>(flagByte, 4, flags.auxiliaryCarry);
+    setBit<uint8_t>(flagByte, 2, flags.parity);
+    setBit<uint8_t>(flagByte, 0, flags.carry);
+
+    memory[stackPointer - 1] = a;
+    memory[stackPointer - 2] = flagByte;
+
     stackPointer -= 2;
 }
 

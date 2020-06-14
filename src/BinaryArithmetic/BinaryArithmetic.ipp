@@ -47,3 +47,20 @@ uint8_t extractByte(T number, int byteIndex){
         throw std::invalid_argument("Byte at specified index doesn't exist.");
     }
 }
+
+template <typename T>
+void setBit(T& number, int bitIndex, bool value){
+    bool bitExists{bitIndex >= 0 && (sizeof(T) * 8) >= (bitIndex + 1)};
+
+    if (bitExists){
+        if (value){
+            number = number | (1 << bitIndex); // Set bit
+        }
+        else {
+            number = number & ~(1 << bitIndex); // Clear bit
+        }
+    }
+    else {
+        throw std::invalid_argument("Bit at specified index doesn't exist.");
+    }
+}

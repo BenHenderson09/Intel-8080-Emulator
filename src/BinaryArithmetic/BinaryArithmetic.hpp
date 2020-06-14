@@ -15,4 +15,7 @@ bool extractBit(T number, int bitIndex);
 template <typename T>
 uint8_t extractByte(T number, int byteIndex);
 
+template <typename T>
+void setBit(T& number, int bitIndex, bool value);
+
 #endif
