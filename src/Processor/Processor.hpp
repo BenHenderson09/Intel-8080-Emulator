@@ -71,6 +71,7 @@ class Processor {
         void POP(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair);
         void PUSH(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair);
         void RET();
+        void XCHG();
 };
 
 #endif

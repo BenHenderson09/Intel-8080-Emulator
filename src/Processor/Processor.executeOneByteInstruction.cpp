@@ -226,7 +226,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // XRA A - Bitwise exclusive or (^) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
-        // The f the accumulator remains the same in this case, with only the flags changing.
+        // The accumulator remains the same in this case, with only the flags changing.
         case 0xaf: XRA(a); break; 
 
         case 0xb0: throw UnsupportedOpcodeException(opcode); break; 
@@ -289,7 +289,10 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xe7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xe9: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xeb: throw UnsupportedOpcodeException(opcode); break; 
+
+        // XCHG - Swap the values of register pairs DE and HL
+        case 0xeb: XCHG(); break; 
+        
         case 0xef: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf0: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf1: throw UnsupportedOpcodeException(opcode); break; 
@@ -402,4 +405,9 @@ void Processor::RET(){
     POP(highOrderByte, lowOrderByte);
 
     programCounter = concatenateTwoNumbers<uint8_t, uint16_t>(highOrderByte, lowOrderByte);
+}
+
+void Processor::XCHG(){
+    std::swap(h, d); // Swap high order byte
+    std::swap(e, l); // Swap low order byte
 }
