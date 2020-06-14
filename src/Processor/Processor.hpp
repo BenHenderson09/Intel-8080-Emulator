@@ -81,6 +81,10 @@ class Processor {
         void ADI(uint8_t addend);
         void ANI(uint8_t valueForBitwiseAnd);
         void CPI(uint8_t dataToCompare);
+
+        // Three byte instructions
+        void LXI(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair, uint16_t operands);
+        void LXI_SP(uint16_t operands);
 };
 
 #endif
