@@ -78,6 +78,7 @@ class Processor {
 
         // Two byte instructions
         void MVI(uint8_t& destination, uint8_t data);
+        void ADI(uint8_t addend);
 };
 
 #endif

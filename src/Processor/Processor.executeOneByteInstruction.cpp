@@ -341,7 +341,7 @@ void Processor::DAD(uint8_t firstRegisterOfPair, uint8_t secondRegisterOfPair){
     uint16_t registerPair
         {concatenateTwoNumbers<uint8_t, uint16_t>(firstRegisterOfPair, secondRegisterOfPair)};
 
-    uint32_t result{(uint32_t) hl + registerPair}; // Use 32 bits to facilitate carry
+    uint32_t result{(uint32_t)(hl + registerPair)}; // Use 32 bits to facilitate carry
     h = extractByte<uint32_t>(result, 1); // Hold second byte of result
     l = extractByte<uint32_t>(result, 0); // Hold first byte of result
 

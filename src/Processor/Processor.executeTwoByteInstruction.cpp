@@ -32,7 +32,9 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         // MVI A - Move immediate data to register A
         case 0x3e: MVI(a, firstByteFollowingOpcode); break;
 
-        case 0xc6: throw UnsupportedOpcodeException(opcode); break;
+        // ADI - Add immediate data to the accumulator
+        case 0xc6: ADI(firstByteFollowingOpcode); break;
+        
         case 0xce: throw UnsupportedOpcodeException(opcode); break;
         case 0xd3: throw UnsupportedOpcodeException(opcode); break;
         case 0xd6: throw UnsupportedOpcodeException(opcode); break;
@@ -49,4 +51,16 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
 
 void Processor::MVI(uint8_t& destination, uint8_t data){
     destination = data;
+}
+
+void Processor::ADI(uint8_t addend){
+    uint16_t result{(uint16_t)(a + addend)}; // Use 16 bits to facilitate carry
+    uint8_t lowOrderByte{extractByte<uint16_t>(result, 0)};
+
+    flags.sign = extractBit<uint8_t>(lowOrderByte, 7);
+    flags.zero = (lowOrderByte == 0);
+    flags.parity = isThereAnEvenCountOfOnes(lowOrderByte);
+    flags.carry = extractBit<uint16_t>(result, 8);
+
+    a = lowOrderByte;
 }
