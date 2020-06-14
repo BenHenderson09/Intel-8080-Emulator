@@ -80,6 +80,7 @@ class Processor {
         void MVI(uint8_t& destination, uint8_t data);
         void ADI(uint8_t addend);
         void ANI(uint8_t valueForBitwiseAnd);
+        void CPI(uint8_t dataToCompare);
 };
 
 #endif

@@ -47,7 +47,13 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         
         case 0xee: throw UnsupportedOpcodeException(opcode); break;
         case 0xf6: throw UnsupportedOpcodeException(opcode); break;
-        case 0xfe: throw UnsupportedOpcodeException(opcode); break;
+
+        // CPI - Compare the immediate data with the contents of the accumulator.
+        // This is done internally by subtracting the data from the accumulator contents and
+        // setting the flags as appropriate without actually changing the value held in the accumulator
+        // after the operation has finished. I.e Only the flags change. For example, you could use the zero
+        // flag to test for equality.
+        case 0xfe: CPI(firstByteFollowingOpcode); break;
     }
 
     programCounter += 2;
@@ -72,4 +78,13 @@ void Processor::ADI(uint8_t addend){
 void Processor::ANI(uint8_t valueForBitwiseAnd){
     a = a & valueForBitwiseAnd;
     alterFlagsAfterLogicalOperation();
+}
+
+void Processor::CPI(uint8_t dataToCompare){
+    uint8_t result = a - dataToCompare;
+
+    flags.carry = (a < dataToCompare);
+    flags.sign = extractBit<uint8_t>(result, 7);
+    flags.zero = (result == 0);
+    flags.parity = isThereAnEvenCountOfOnes(result);
 }
