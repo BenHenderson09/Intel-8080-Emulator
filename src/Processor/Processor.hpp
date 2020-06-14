@@ -74,6 +74,7 @@ class Processor {
         void PUSH_PSW();
         void RET();
         void XCHG();
+        void EI();
 };
 
 #endif

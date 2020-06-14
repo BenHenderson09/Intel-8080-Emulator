@@ -312,7 +312,10 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0xf7: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf8: throw UnsupportedOpcodeException(opcode); break; 
         case 0xf9: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xfb: throw UnsupportedOpcodeException(opcode); break; 
+
+        // EI - Enable interrupts
+        case 0xfb: EI(); break; 
+
         case 0xff: throw UnsupportedOpcodeException(opcode); break; 
     }
 
@@ -449,4 +452,8 @@ void Processor::RET(){
 void Processor::XCHG(){
     std::swap(h, d); // Swap high order byte
     std::swap(e, l); // Swap low order byte
+}
+
+void Processor::EI(){
+    interruptEnable = true;
 }
