@@ -84,7 +84,8 @@ class Processor {
 
         // Three byte instructions
         void LXI(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair, uint16_t operands);
-        void LXI_SP(uint16_t operands);
+        void LXI_SP(uint16_t address);
+        void STA(uint16_t address);
 };
 
 #endif

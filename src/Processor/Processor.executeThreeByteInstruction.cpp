@@ -8,10 +8,13 @@
 void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode,
         uint8_t secondByteFollowingOpcode){
 
+    // The 8080 orders the operands with the least significant byte coming first when
+    // reading from left to right (little endian). Here we convert those bytes to
+    // a 16 bit value to make it easier to work with.
     uint16_t operands {
         concatenateTwoNumbers<uint8_t, uint16_t>(
-            firstByteFollowingOpcode,
-            secondByteFollowingOpcode
+            secondByteFollowingOpcode, // High order byte (most significant)
+            firstByteFollowingOpcode   // Low order byte (least significant)
         )
     };
 
@@ -30,7 +33,9 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // LXI SP - Set the stack pointer to the operands
         case 0x31: LXI_SP(operands); break;
 
-        case 0x32: throw UnsupportedOpcodeException(opcode); break;
+        // STA - Copy the contents of the accumulator to the specified memory address
+        case 0x32: STA(operands); break;
+
         case 0x3a: throw UnsupportedOpcodeException(opcode); break;
         case 0xc2: throw UnsupportedOpcodeException(opcode); break;
         case 0xc3: throw UnsupportedOpcodeException(opcode); break;
@@ -58,10 +63,14 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
 
 void Processor::LXI(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair,
         uint16_t operands){
-    b = extractByte<uint16_t>(operands, 0); // Uses little endian
-    c = extractByte<uint16_t>(operands, 1);
+    firstRegisterOfPair = extractByte<uint16_t>(operands, 1);
+    secondRegisterOfPair = extractByte<uint16_t>(operands, 0);
 }
 
-void Processor::LXI_SP(uint16_t operands){
-    stackPointer = operands;
+void Processor::LXI_SP(uint16_t address){
+    stackPointer = address;
+}
+
+void Processor::STA(uint16_t address){
+    memory[address] = a;
 }
