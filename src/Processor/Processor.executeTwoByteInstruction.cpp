@@ -40,7 +40,11 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         case 0xd6: throw UnsupportedOpcodeException(opcode); break;
         case 0xdb: throw UnsupportedOpcodeException(opcode); break;
         case 0xde: throw UnsupportedOpcodeException(opcode); break;
-        case 0xe6: throw UnsupportedOpcodeException(opcode); break;
+
+        // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
+        // storing the result in the accumulator
+        case 0xe6: ANI(firstByteFollowingOpcode); break;
+        
         case 0xee: throw UnsupportedOpcodeException(opcode); break;
         case 0xf6: throw UnsupportedOpcodeException(opcode); break;
         case 0xfe: throw UnsupportedOpcodeException(opcode); break;
@@ -63,4 +67,9 @@ void Processor::ADI(uint8_t addend){
     flags.carry = extractBit<uint16_t>(result, 8);
 
     a = lowOrderByte;
+}
+
+void Processor::ANI(uint8_t valueForBitwiseAnd){
+    a = a & valueForBitwiseAnd;
+    alterFlagsAfterLogicalOperation();
 }
