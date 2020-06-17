@@ -39,7 +39,9 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // LDA - Copy the value at the specified memory address to the accumulator 
         case 0x3a: LDA(operands); break;
         
-        case 0xc2: throw UnsupportedOpcodeException(opcode); break;
+        // JNZ - Jump to the specified memory address if the zero flag equals zero
+        case 0xc2: throw JNZ(operands); break;
+
         case 0xc3: throw UnsupportedOpcodeException(opcode); break;
         case 0xc4: throw UnsupportedOpcodeException(opcode); break;
         case 0xca: throw UnsupportedOpcodeException(opcode); break;
@@ -79,4 +81,8 @@ void Processor::STA(uint16_t address){
 
 void Processor::LDA(uint16_t address){
     a = memory[address];
+}
+
+void Processor::JNZ(uint16_t address){
+    if (flags.zero == 0) JMP(address);
 }

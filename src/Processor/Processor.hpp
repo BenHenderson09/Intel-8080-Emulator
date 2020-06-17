@@ -87,6 +87,7 @@ class Processor {
         void LXI_SP(uint16_t address);
         void STA(uint16_t address);
         void LDA(uint16_t address);
+        void JNZ(uint16_t address);
 };
 
 #endif
