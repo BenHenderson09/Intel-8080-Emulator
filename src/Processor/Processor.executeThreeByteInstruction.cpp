@@ -48,7 +48,12 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         case 0xc4: throw UnsupportedOpcodeException(opcode); break;
         case 0xca: throw UnsupportedOpcodeException(opcode); break;
         case 0xcc: throw UnsupportedOpcodeException(opcode); break;
-        case 0xcd: throw UnsupportedOpcodeException(opcode); break;
+
+        // CALL - A subroutine is called by jumping to the specified memory address.
+        // Also, a return address is pushed onto the stack for use with the RETURN instruction
+        // when the subroutine finishes.
+        case 0xcd: CALL(operands); break;
+        
         case 0xd2: throw UnsupportedOpcodeException(opcode); break;
         case 0xd4: throw UnsupportedOpcodeException(opcode); break;
         case 0xda: throw UnsupportedOpcodeException(opcode); break;
@@ -91,4 +96,14 @@ void Processor::JNZ(uint16_t address){
 
 void Processor::JMP(uint16_t address){
     programCounter = address;
+}
+
+void Processor::CALL(uint16_t address){
+    // Load return address onto the stack
+    memory[stackPointer - 1] = extractByte<uint16_t>(address, 1);
+    memory[stackPointer - 2] = extractByte<uint16_t>(address, 0);
+    stackPointer -= 2;
+
+    // Jump to subroutine
+    JMP(address);
 }
