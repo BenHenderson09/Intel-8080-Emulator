@@ -213,7 +213,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // ANA A - Bitwise and (&) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
-        // The f the accumulator remains the same in this case, with only the flags changing.
+        // The accumulator remains the same in this case, with only the flags changing.
         case 0xa7: ANA(a); break; 
 
         case 0xa8: throw UnsupportedOpcodeException(opcode); break; 
@@ -451,7 +451,7 @@ void Processor::RET(){
 
 void Processor::XCHG(){
     std::swap(h, d); // Swap high order byte
-    std::swap(e, l); // Swap low order byte
+    std::swap(l, e); // Swap low order byte
 }
 
 void Processor::EI(){

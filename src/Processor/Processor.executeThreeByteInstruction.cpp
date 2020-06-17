@@ -10,7 +10,7 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
 
     // The 8080 orders the operands with the least significant byte coming first when
     // reading from left to right (little endian). Here we convert those bytes to
-    // a 16 bit value to make it easier to work with.
+    // a 16 bit value to make it easier to work with for addresses.
     uint16_t operands {
         concatenateTwoNumbers<uint8_t, uint16_t>(
             secondByteFollowingOpcode, // High order byte (most significant)
@@ -36,7 +36,9 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // STA - Copy the contents of the accumulator to the specified memory address
         case 0x32: STA(operands); break;
 
-        case 0x3a: throw UnsupportedOpcodeException(opcode); break;
+        // LDA - Copy the value at the specified memory address to the accumulator 
+        case 0x3a: LDA(operands); break;
+        
         case 0xc2: throw UnsupportedOpcodeException(opcode); break;
         case 0xc3: throw UnsupportedOpcodeException(opcode); break;
         case 0xc4: throw UnsupportedOpcodeException(opcode); break;
@@ -73,4 +75,8 @@ void Processor::LXI_SP(uint16_t address){
 
 void Processor::STA(uint16_t address){
     memory[address] = a;
+}
+
+void Processor::LDA(uint16_t address){
+    a = memory[address];
 }
