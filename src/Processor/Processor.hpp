@@ -88,6 +88,7 @@ class Processor {
         void STA(uint16_t address);
         void LDA(uint16_t address);
         void JNZ(uint16_t address);
+        void JMP(uint16_t address);
 };
 
 #endif

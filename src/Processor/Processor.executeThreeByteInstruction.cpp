@@ -40,9 +40,11 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         case 0x3a: LDA(operands); break;
         
         // JNZ - Jump to the specified memory address if the zero flag equals zero
-        case 0xc2: throw JNZ(operands); break;
+        case 0xc2: JNZ(operands); break;
 
-        case 0xc3: throw UnsupportedOpcodeException(opcode); break;
+        // JMP - Jump to the specified memory address
+        case 0xc3: JMP(operands); break;
+        
         case 0xc4: throw UnsupportedOpcodeException(opcode); break;
         case 0xca: throw UnsupportedOpcodeException(opcode); break;
         case 0xcc: throw UnsupportedOpcodeException(opcode); break;
@@ -85,4 +87,8 @@ void Processor::LDA(uint16_t address){
 
 void Processor::JNZ(uint16_t address){
     if (flags.zero == 0) JMP(address);
+}
+
+void Processor::JMP(uint16_t address){
+    programCounter = address;
 }
