@@ -13,47 +13,34 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         // MVI C - Move immediate data to register C
         case 0x0e: MVI(c, firstByteFollowingOpcode); break;
 
-        case 0x16: throw UnsupportedOpcodeException(opcode); break;
-        case 0x1e: throw UnsupportedOpcodeException(opcode); break;
-
         // MVI H - Move immediate data to register H
         case 0x26: MVI(h, firstByteFollowingOpcode); break;
-
-        case 0x2e: throw UnsupportedOpcodeException(opcode); break;
 
         // MVI M - Move immediate data to the memory location specified by
         // register pair HL
         case 0x36: MVI(
                 memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)],
                 firstByteFollowingOpcode
-            );
-            break;
+            ); break;
 
         // MVI A - Move immediate data to register A
         case 0x3e: MVI(a, firstByteFollowingOpcode); break;
 
         // ADI - Add immediate data to the accumulator
         case 0xc6: ADI(firstByteFollowingOpcode); break;
-        
-        case 0xce: throw UnsupportedOpcodeException(opcode); break;
-        case 0xd3: throw UnsupportedOpcodeException(opcode); break;
-        case 0xd6: throw UnsupportedOpcodeException(opcode); break;
-        case 0xdb: throw UnsupportedOpcodeException(opcode); break;
-        case 0xde: throw UnsupportedOpcodeException(opcode); break;
-
+    
         // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
         // storing the result in the accumulator
         case 0xe6: ANI(firstByteFollowingOpcode); break;
-        
-        case 0xee: throw UnsupportedOpcodeException(opcode); break;
-        case 0xf6: throw UnsupportedOpcodeException(opcode); break;
-
+    
         // CPI - Compare the immediate data with the contents of the accumulator.
         // This is done internally by subtracting the data from the accumulator contents and
         // setting the flags as appropriate without actually changing the value held in the accumulator
         // after the operation has finished. I.e Only the flags change. For example, you could use the zero
         // flag to test for equality.
         case 0xfe: CPI(firstByteFollowingOpcode); break;
+
+        default: throw UnsupportedOpcodeException(opcode);
     }
 
     programCounter += 2;

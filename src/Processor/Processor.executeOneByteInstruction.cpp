@@ -11,312 +11,120 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // NOP - Execution continues, no change to processor
         case 0x00: NOP(); break;
 
-        case 0x02: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x03: throw UnsupportedOpcodeException(opcode); break;
-        case 0x04: throw UnsupportedOpcodeException(opcode); break; 
-
         // DCR B - Decrement register B
         case 0x05: DCR(b); break;
 
-        case 0x07: throw UnsupportedOpcodeException(opcode); break;
-
         // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
         case 0x09: DAD(b, c); break;
-			
-        case 0x0a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x0b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x0c: throw UnsupportedOpcodeException(opcode); break; 
-
+		
         // DCR C - Decrement register C
         case 0x0d: DCR(c); break;
 
         // RRC - Rotate accumulator right
         case 0x0f: RRC(); break;
 
-        case 0x12: throw UnsupportedOpcodeException(opcode); break;
-
         // INX D - Increment register pair DE
-        case 0x13: INX(d, e); break; 
-
-        case 0x14: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x15: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x17: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x13: INX(d, e); break;
 
         // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
         case 0x19: DAD(d, e); break;
 
         // LDAX D - Set the contents of the accumulator to the value at a memory location.
         // The address of this location is found in the specified register pair.
-        case 0x1a: LDAX(d, e); break; 
-
-        case 0x1b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x1c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x1d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x1f: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x1a: LDAX(d, e); break;
 
         // INX H - Increment register pair HL
-        case 0x23: INX(h, l); break; 
-
-        case 0x24: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x25: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x27: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x23: INX(h, l); break;
 
         // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
-        case 0x29: DAD(h, l); break; 
-
-        case 0x2b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x2c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x2d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x2f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x33: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x34: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x35: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x37: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x39: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x3b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x3c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x3d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x3f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x40: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x41: throw UnsupportedOpcodeException(opcode); break;
-        case 0x42: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x43: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x44: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x45: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x46: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x47: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x48: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x49: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4e: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x4f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x50: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x51: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x52: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x53: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x54: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x55: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x29: DAD(h, l); break;
 
         // MOV D,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the D register.
         case 0x56: MOV(d, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
 
-        case 0x57: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x58: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x59: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x5a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x5b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x5c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x5d: throw UnsupportedOpcodeException(opcode); break; 
-
         // MOV E,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the E register.
-        case 0x5e: MOV(e, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break; 
-
-        case 0x5f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x60: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x61: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x62: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x63: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x64: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x65: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x5e: MOV(e, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
 
         // MOV H,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the H register.
-        case 0x66: MOV(h, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break; 
-
-        case 0x67: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x68: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x69: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x6e: throw UnsupportedOpcodeException(opcode); break;
+        case 0x66: MOV(h, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
 
         // MOV L,A - Copy register A to register L
-        case 0x6f: MOV(l, a); break; 
-        
-        case 0x70: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x71: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x72: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x73: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x74: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x75: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x76: throw UnsupportedOpcodeException(opcode); break; 
-        
+        case 0x6f: MOV(l, a); break;
+    
         // MOV M,A - Store the contents of register A at the memory address
         // specified in register pair HL.
-        case 0x77: MOV(memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)], a); break; 
-        
-        case 0x78: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x79: throw UnsupportedOpcodeException(opcode); break; 
-        
+        case 0x77: MOV(memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)], a); break;
+    
         // MOV A,D - Copy register D to register A
-        case 0x7a: MOV(a, d); break; 
+        case 0x7a: MOV(a, d); break;
 
         // MOV A,E - Copy register E to register A
-        case 0x7b: MOV(a, e); break; 
+        case 0x7b: MOV(a, e); break;
 
         // MOV A,H - Copy register H to register A
-        case 0x7c: MOV(a, h); break; 
-
-        case 0x7d: throw UnsupportedOpcodeException(opcode); break; 
+        case 0x7c: MOV(a, h); break;
 
         // MOV A,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the A register.
         case 0x7e: MOV(a, memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)]); break;
 
-        case 0x7f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x80: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x81: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x82: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x83: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x84: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x85: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x86: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x87: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x88: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x89: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8e: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x8f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x90: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x91: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x92: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x93: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x94: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x95: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x96: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x97: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x98: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x99: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9a: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9b: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9c: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9d: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9e: throw UnsupportedOpcodeException(opcode); break; 
-        case 0x9f: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa1: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa2: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa3: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa4: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa5: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa6: throw UnsupportedOpcodeException(opcode); break; 
-
         // ANA A - Bitwise and (&) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
         // The accumulator remains the same in this case, with only the flags changing.
-        case 0xa7: ANA(a); break; 
-
-        case 0xa8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xa9: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xaa: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xab: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xac: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xad: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xae: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xa7: ANA(a); break;
 
         // XRA A - Bitwise exclusive or (^) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
         // The accumulator remains the same in this case, with only the flags changing.
-        case 0xaf: XRA(a); break; 
-
-        case 0xb0: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb1: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb2: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb3: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb4: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb5: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb6: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb7: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xb9: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xba: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xbb: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xbc: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xbd: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xbe: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xbf: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xc0: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xaf: XRA(a); break;
 
         // POP B - Remove two bytes from the top of the stack and copy their values
         // into the register pair BC
-        case 0xc1: POP(b, c); break; 
+        case 0xc1: POP(b, c); break;
 
         // PUSH B - Write register pair BC to the top of the stack
-        case 0xc5: PUSH(b, c); break; 
-
-        case 0xc7: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xc8: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xc5: PUSH(b, c); break;
 
         // RET - Return from subroutine. This works by popping the
         // address at the top of the stack into the program counter,
         // transferring program control.
-        case 0xc9: RET(); break; 
-
-        case 0xcf: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xd0: throw UnsupportedOpcodeException(opcode); break;
+        case 0xc9: RET(); break;
 
         // POP D - Remove two bytes from the top of the stack and copy their values
         // into the register pair DE
-        case 0xd1: POP(d, e); break; 
+        case 0xd1: POP(d, e); break;
 
         // PUSH D - Write register pair DE to the top of the stack
         case 0xd5: PUSH(d, e); break;
 
-        case 0xd7: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xd8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xdf: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xe0: throw UnsupportedOpcodeException(opcode); break; 
-
         // POP H - Remove two bytes from the top of the stack and copy their values
         // into the register pair HL
-        case 0xe1: POP(d, e); break; 
-
-        case 0xe3: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xe1: POP(d, e); break;
 
         // PUSH H - Write register pair HL to the top of the stack
         case 0xe5: PUSH(h, l); break;
 
-        case 0xe7: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xe8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xe9: throw UnsupportedOpcodeException(opcode); break; 
-
         // XCHG - Swap the values of register pairs DE and HL
-        case 0xeb: XCHG(); break; 
-        
-        case 0xef: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xf0: throw UnsupportedOpcodeException(opcode); break; 
-
+        case 0xeb: XCHG(); break;
+    
         // POP PSW - Take the top two bytes off the stack, loading the
         // accumulator with the byte preceding the stack pointer and setting
         // the flags based on the byte at the stack pointer. This "flag byte"
         // at the stack pointer has its bits mapped to specific flags which are
         // specified in the 8080 data book.
-        case 0xf1: POP_PSW(); break; 
-
-        case 0xf3: throw UnsupportedOpcodeException(opcode); break; 
+        case 0xf1: POP_PSW(); break;
 
         // PUSH PSW - Pushes the accumulator followed by the "flag byte"
         // mentioned previously onto the stack.
         case 0xf5: PUSH_PSW(); break;
 
-        case 0xf7: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xf8: throw UnsupportedOpcodeException(opcode); break; 
-        case 0xf9: throw UnsupportedOpcodeException(opcode); break; 
-
         // EI - Enable interrupts
-        case 0xfb: EI(); break; 
+        case 0xfb: EI(); break;
 
-        case 0xff: throw UnsupportedOpcodeException(opcode); break; 
+        default: throw UnsupportedOpcodeException(opcode);
     }
 
     programCounter++;

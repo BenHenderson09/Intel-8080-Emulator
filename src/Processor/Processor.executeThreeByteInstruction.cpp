@@ -26,10 +26,6 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // LXI D - Occupy register pair DE with the operands
         case 0x11: LXI(d, e, operands); break;
 
-        case 0x21: throw UnsupportedOpcodeException(opcode); break;
-        case 0x22: throw UnsupportedOpcodeException(opcode); break;
-        case 0x2a: throw UnsupportedOpcodeException(opcode); break;
-
         // LXI SP - Set the stack pointer to the operands
         case 0x31: LXI_SP(operands); break;
 
@@ -45,28 +41,12 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // JMP - Jump to the specified memory address
         case 0xc3: JMP(operands); break;
         
-        case 0xc4: throw UnsupportedOpcodeException(opcode); break;
-        case 0xca: throw UnsupportedOpcodeException(opcode); break;
-        case 0xcc: throw UnsupportedOpcodeException(opcode); break;
-
         // CALL - A subroutine is called by jumping to the specified memory address.
         // Also, a return address is pushed onto the stack for use with the RETURN instruction
         // when the subroutine finishes.
         case 0xcd: CALL(operands); break;
         
-        case 0xd2: throw UnsupportedOpcodeException(opcode); break;
-        case 0xd4: throw UnsupportedOpcodeException(opcode); break;
-        case 0xda: throw UnsupportedOpcodeException(opcode); break;
-        case 0xdc: throw UnsupportedOpcodeException(opcode); break;
-        case 0xdf: throw UnsupportedOpcodeException(opcode); break;
-        case 0xe2: throw UnsupportedOpcodeException(opcode); break;
-        case 0xe4: throw UnsupportedOpcodeException(opcode); break;
-        case 0xea: throw UnsupportedOpcodeException(opcode); break;
-        case 0xec: throw UnsupportedOpcodeException(opcode); break;
-        case 0xf2: throw UnsupportedOpcodeException(opcode); break;
-        case 0xf4: throw UnsupportedOpcodeException(opcode); break;
-        case 0xfa: throw UnsupportedOpcodeException(opcode); break;
-        case 0xfc: throw UnsupportedOpcodeException(opcode); break;
+        default: throw UnsupportedOpcodeException(opcode);
     }
 
     programCounter += 3;
