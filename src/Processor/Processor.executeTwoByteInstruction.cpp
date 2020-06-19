@@ -8,23 +8,23 @@
 void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
     switch (opcode){
         // MVI B - Move immediate data to register B
-        case 0x06: MVI(b, firstByteFollowingOpcode); break;
+        case 0x06: MVI(registers.b, firstByteFollowingOpcode); break;
         
         // MVI C - Move immediate data to register C
-        case 0x0e: MVI(c, firstByteFollowingOpcode); break;
+        case 0x0e: MVI(registers.c, firstByteFollowingOpcode); break;
 
         // MVI H - Move immediate data to register H
-        case 0x26: MVI(h, firstByteFollowingOpcode); break;
+        case 0x26: MVI(registers.h, firstByteFollowingOpcode); break;
 
         // MVI M - Move immediate data to the memory location specified by
         // register pair HL
         case 0x36: MVI(
-                memory[concatenateTwoNumbers<uint8_t, uint16_t>(h, l)],
+                memory[concatenateTwoNumbers<uint8_t, uint16_t>(registers.h, registers.l)],
                 firstByteFollowingOpcode
             ); break;
 
         // MVI A - Move immediate data to register A
-        case 0x3e: MVI(a, firstByteFollowingOpcode); break;
+        case 0x3e: MVI(registers.a, firstByteFollowingOpcode); break;
 
         // ADI - Add immediate data to the accumulator
         case 0xc6: ADI(firstByteFollowingOpcode); break;
@@ -47,7 +47,7 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         default: throw UnsupportedOpcodeException(opcode);
     }
 
-    programCounter += 2;
+    registers.programCounter += 2;
 }
 
 void Processor::MVI(uint8_t& destination, uint8_t data){
@@ -55,7 +55,7 @@ void Processor::MVI(uint8_t& destination, uint8_t data){
 }
 
 void Processor::ADI(uint8_t addend){
-    uint16_t result{(uint16_t)(a + addend)}; // Use 16 bits to facilitate carry
+    uint16_t result{(uint16_t)(registers.a + addend)}; // Use 16 bits to facilitate carry
     uint8_t lowOrderByte{extractByte<uint16_t>(result, 0)};
 
     flags.sign = extractBit<uint8_t>(lowOrderByte, 7);
@@ -63,18 +63,18 @@ void Processor::ADI(uint8_t addend){
     flags.parity = isThereAnEvenCountOfOnes(lowOrderByte);
     flags.carry = extractBit<uint16_t>(result, 8);
 
-    a = lowOrderByte;
+    registers.a = lowOrderByte;
 }
 
 void Processor::ANI(uint8_t valueForBitwiseAnd){
-    a &= valueForBitwiseAnd;
+    registers.a &= valueForBitwiseAnd;
     alterFlagsAfterLogicalOperation();
 }
 
 void Processor::CPI(uint8_t dataToCompare){
-    uint8_t result = a - dataToCompare;
+    uint8_t result = registers.a - dataToCompare;
 
-    flags.carry = (a < dataToCompare);
+    flags.carry = (registers.a < dataToCompare);
     flags.sign = extractBit<uint8_t>(result, 7);
     flags.zero = (result == 0);
     flags.parity = isThereAnEvenCountOfOnes(result);

@@ -20,7 +20,7 @@ void Processor::loadProgramIntoMemory(const FileBuffer& program){
     memory = new uint8_t[HardwareSpecifications::sizeOfMemoryInBytes];
         
     // Set the program counter to the first address in memory
-    programCounter = 0;
+    registers.programCounter = 0;
 
     // Store the size of the program
     sizeOfProgramInBytes = program.getFileSizeInBytes();
@@ -38,18 +38,18 @@ void Processor::beginEmulation(){
 bool Processor::areThereInstructionsLeftToExecute(){
     static int count;
     count++;
-    return true;//count <= 1550;
-    //return programCounter < sizeOfProgramInBytes;
+    return true;//count <= 2000;
+    //return registers.programCounter < sizeOfProgramInBytes;
 }
 
 void Processor::executeNextInstruction(){
-    uint8_t opcode{memory[programCounter]};
-    uint8_t firstByteFollowingOpcode{memory[programCounter + 1]};
-    uint8_t secondByteFollowingOpcode{memory[programCounter + 2]};
+    uint8_t opcode{memory[registers.programCounter]};
+    uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
+    uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
 
     static int count;
     count++;
-    std::cout << std::dec << count << " | " << std::hex << " Program counter: " << programCounter << " | " <<  " Opcode: " <<(int)memory[programCounter] << " | " <<  " Stack pointer: " << stackPointer << " | " <<  " Top of stack: " << (int)memory[stackPointer] <</* " | " << (int)memory[programCounter+1] << " | " << (int)memory[programCounter+2] <<*/ '\n';
+    std::cout << std::dec << count << " | " << std::hex << " Program counter: " << registers.programCounter << " | " <<  " Opcode: " <<(int)memory[registers.programCounter] << " | " <<  " Stack pointer: " << registers.stackPointer << " | " <<  " Top of stack: " << (int)memory[registers.stackPointer] <</* " | " << (int)memory[registers.programCounter+1] << " | " << (int)memory[registers.programCounter+2] <<*/ '\n';
 
     switch(findNumberOfBytesUsedByOpcode(opcode)){
         case 1:
@@ -71,9 +71,9 @@ void Processor::executeNextInstruction(){
 }
 
 void Processor::alterFlagsAfterLogicalOperation(){
-    flags.zero = (a == 0);
-    flags.sign = extractBit<uint8_t>(a, 7);
-    flags.parity = isThereAnEvenCountOfOnes(a);
+    flags.zero = (registers.a == 0);
+    flags.sign = extractBit<uint8_t>(registers.a, 7);
+    flags.parity = isThereAnEvenCountOfOnes(registers.a);
     flags.carry = 0;
     flags.auxiliaryCarry = 0;
 }

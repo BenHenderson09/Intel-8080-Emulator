@@ -11,7 +11,9 @@ set(HEADER_FILES
     src/Processor/Processor.hpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.hpp
-    src/BinaryArithmetic/BinaryArithmetic.hpp)
+    src/BinaryArithmetic/BinaryArithmetic.hpp
+    src/Registers/Registers.hpp
+    src/RegisterPair/RegisterPair.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
@@ -22,7 +24,8 @@ set(SOURCE_FILES
     src/Processor/Processor.executeThreeByteInstruction.cpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
-    src/BinaryArithmetic/BinaryArithmetic.cpp)
+    src/BinaryArithmetic/BinaryArithmetic.cpp
+    src/RegisterPair/RegisterPair.cpp)
 
 # Setup inline files (for template implementations)
 set(INLINE_FILES
