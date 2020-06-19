@@ -67,7 +67,7 @@ void Processor::ADI(uint8_t addend){
 }
 
 void Processor::ANI(uint8_t valueForBitwiseAnd){
-    a = a & valueForBitwiseAnd;
+    a &= valueForBitwiseAnd;
     alterFlagsAfterLogicalOperation();
 }
 

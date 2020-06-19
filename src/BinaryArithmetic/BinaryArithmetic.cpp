@@ -7,7 +7,7 @@ bool isThereAnEvenCountOfOnes(int number){
         bool firstBitOfBinaryNumberIsEqualToOne{number & 1};
 
         if (firstBitOfBinaryNumberIsEqualToOne) countOfOnesInBinaryNumber++;
-        number = number >> 1; // Remove the first bit of the binary number
+        number >>= 1; // Remove the first bit of the binary number
     }
 
     return countOfOnesInBinaryNumber % 2 == 0;

@@ -163,8 +163,8 @@ void Processor::RRC(){
     // shifts one position to the right and then sets
     // bit 7 of register A to the value of the carry.
     flags.carry = a & 1;
-    a = a >> 1;
-    a = a | (flags.carry << 7);
+    a >>= 1;
+    a |= (flags.carry << 7);
 }
 
 void Processor::INX(uint8_t& firstRegisterOfPair, uint8_t& secondRegisterOfPair){
@@ -189,12 +189,12 @@ void Processor::MOV(uint8_t& destination, uint16_t value){
 }
 
 void Processor::ANA(uint8_t registerForBitwiseAnd){
-    a = a & registerForBitwiseAnd;
+    a &= registerForBitwiseAnd;
     alterFlagsAfterLogicalOperation();
 }
 
 void Processor::XRA(uint8_t registerForBitwiseXor){
-    a = a ^ registerForBitwiseXor;
+    a ^= registerForBitwiseXor;
     alterFlagsAfterLogicalOperation();
 }
 

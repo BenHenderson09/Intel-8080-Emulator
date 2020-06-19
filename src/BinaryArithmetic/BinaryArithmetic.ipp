@@ -54,10 +54,10 @@ void setBit(T& number, int bitIndex, bool value){
 
     if (bitExists){
         if (value){
-            number = number | (1 << bitIndex); // Set bit
+            number |= 1 << bitIndex; // Set bit
         }
         else {
-            number = number & ~(1 << bitIndex); // Clear bit
+            number &= ~(1 << bitIndex); // Clear bit
         }
     }
     else {
