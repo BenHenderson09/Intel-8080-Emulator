@@ -133,8 +133,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 void Processor::NOP(){}
 
 void Processor::DCR(uint8_t& registerToDecrement){
-    // Prevent underflows
-    uint8_t result{registerToDecrement == 0 ? registerToDecrement : --registerToDecrement};
+    // Decrementing when zero will set all bits in the register, resulting in the decimal
+    // value 255.
+    uint8_t result{--registerToDecrement}; 
 
     // The sign is specified in bit seven, which allows programmers to conventionally
     // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
@@ -255,6 +256,7 @@ void Processor::RET(){
     POP(highOrderByte, lowOrderByte);
 
     programCounter = concatenateTwoNumbers<uint8_t, uint16_t>(highOrderByte, lowOrderByte);
+    programCounter--; // Prevent automatically advancing the program counter
 }
 
 void Processor::XCHG(){

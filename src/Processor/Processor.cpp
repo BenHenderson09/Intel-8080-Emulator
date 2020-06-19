@@ -36,13 +36,20 @@ void Processor::beginEmulation(){
 }
 
 bool Processor::areThereInstructionsLeftToExecute(){
-    return programCounter < sizeOfProgramInBytes;
+    static int count;
+    count++;
+    return true;//count <= 1550;
+    //return programCounter < sizeOfProgramInBytes;
 }
 
 void Processor::executeNextInstruction(){
     uint8_t opcode{memory[programCounter]};
     uint8_t firstByteFollowingOpcode{memory[programCounter + 1]};
     uint8_t secondByteFollowingOpcode{memory[programCounter + 2]};
+
+    static int count;
+    count++;
+    std::cout << std::dec << count << " | " << std::hex << " Program counter: " << programCounter << " | " <<  " Opcode: " <<(int)memory[programCounter] << " | " <<  " Stack pointer: " << stackPointer << " | " <<  " Top of stack: " << (int)memory[stackPointer] <</* " | " << (int)memory[programCounter+1] << " | " << (int)memory[programCounter+2] <<*/ '\n';
 
     switch(findNumberOfBytesUsedByOpcode(opcode)){
         case 1:

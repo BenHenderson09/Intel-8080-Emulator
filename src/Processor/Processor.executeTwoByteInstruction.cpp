@@ -29,6 +29,10 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         // ADI - Add immediate data to the accumulator
         case 0xc6: ADI(firstByteFollowingOpcode); break;
     
+        // OUT - The contents of the accumulator are sent to an output device.
+        // Ouput devices have not yet been implemented, so just skip on for now.
+        case 0xd3: break;
+
         // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
         // storing the result in the accumulator
         case 0xe6: ANI(firstByteFollowingOpcode); break;

@@ -18,13 +18,15 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         )
     };
 
-    switch (opcode)
-    {
+    switch (opcode){
         // LXI B - Occupy register pair BC with the operands
         case 0x01: LXI(b, c, operands); break;
 
         // LXI D - Occupy register pair DE with the operands
         case 0x11: LXI(d, e, operands); break;
+
+        // LXI H - Occupy register pair HL  with the operands
+        case 0x21: LXI(h, l, operands); break;
 
         // LXI SP - Set the stack pointer to the operands
         case 0x31: LXI_SP(operands); break;
@@ -71,19 +73,24 @@ void Processor::LDA(uint16_t address){
 }
 
 void Processor::JNZ(uint16_t address){
-    if (flags.zero == 0) JMP(address);
+    if (!flags.zero) JMP(address);
 }
 
 void Processor::JMP(uint16_t address){
     programCounter = address;
+    
+    // Prevent from advancing to the next instruction automatically, as JMP is a way of
+    // choosing the next instruction manually.
+    programCounter -= 3;
 }
 
 void Processor::CALL(uint16_t address){
     // Load return address onto the stack
-    memory[stackPointer - 1] = extractByte<uint16_t>(address, 1);
-    memory[stackPointer - 2] = extractByte<uint16_t>(address, 0);
+    uint16_t returnAddress = programCounter + 3;
+    memory[stackPointer - 1] = extractByte<uint16_t>(returnAddress, 1);
+    memory[stackPointer - 2] = extractByte<uint16_t>(returnAddress, 0);
     stackPointer -= 2;
-
+    
     // Jump to subroutine
     JMP(address);
 }
