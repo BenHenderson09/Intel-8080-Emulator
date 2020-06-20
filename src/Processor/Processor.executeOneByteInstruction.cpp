@@ -39,6 +39,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
         case 0x29: DAD(registers.hl); break;
 
+        // DCR M - Decrement the value located at the specified memory address
+        case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
+
         // MOV D,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the D register.
         case 0x56: MOV(registers.d, memory[registers.hl.getPairValue()]); break;
@@ -88,6 +91,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // PUSH B - Write register pair BC to the top of the stack
         case 0xc5: PUSH(registers.bc); break;
 
+        // RZ - If the Zero bit is one, a RET instruction occurs
+        case 0xc8: RZ(); break;
+
         // RET - Return from subroutine. This works by popping the
         // address at the top of the stack into the program counter,
         // transferring program control.
@@ -132,10 +138,10 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
 void Processor::NOP(){}
 
-void Processor::DCR(uint8_t& registerToDecrement){
+void Processor::DCR(uint8_t& byteToDecrement){
     // Decrementing when zero will set all bits in the register, resulting in the decimal
     // value 255.
-    uint8_t result{--registerToDecrement}; 
+    uint8_t result{--byteToDecrement}; 
 
     // The sign is specified in bit seven, which allows programmers to conventionally
     // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
@@ -219,7 +225,6 @@ void Processor::POP_PSW(){
     registers.stackPointer += 2;
 }
 
-
 void Processor::PUSH(const RegisterPair& registerPair){
     // Keeping in mind how the stack descends through memory, the two addresses below
     // the stack pointer will be set to the value of the register pair.
@@ -252,6 +257,10 @@ void Processor::RET(){
     registers.programCounter--; // Prevent automatically advancing the program counter
 
     registers.stackPointer += 2; // Remove from the stack
+}
+
+void Processor::RZ(){
+    if (flags.zero) RET();
 }
 
 void Processor::XCHG(){

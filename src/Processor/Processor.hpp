@@ -14,19 +14,19 @@ class Processor {
 
         void beginEmulation();
 
-    private:
-        Registers registers;
-        ArithmeticAndLogicFlags flags;
-
         // Dynamically allocated buffer to represent the memory. Also store the size of the program
         // so we know when to stop iterating over memory addresses.
         uint8_t* memory;
         uint16_t sizeOfProgramInBytes;
 
+    private:
+        Registers registers;
+        ArithmeticAndLogicFlags flags;
+
         // The processor has an "Interrupt Enable" on pin 16. Two instructions, EI and DI, set this pin,
         // and this pin turns off or turns on the interrupt system, so if it is disabled,
         // interrupts will do nothing.
-        bool interruptEnable;
+        bool interruptEnable{true};
 
         void executeNextInstruction();
         bool areThereInstructionsLeftToExecute();
@@ -45,7 +45,7 @@ class Processor {
         // One byte instructions. Defined in "Processor.executeOneByteInstruction" as they only
         // act as helpers to that function. The same goes for two and three byte instructions.
         void NOP();
-        void DCR(uint8_t& registerToDecrement);
+        void DCR(uint8_t& byteToDecrement);
         void DAD(const RegisterPair& registerPair);
         void RRC();
         void INX(RegisterPair& registerPair);
@@ -57,6 +57,7 @@ class Processor {
         void POP_PSW();
         void PUSH(const RegisterPair& registerPair);
         void PUSH_PSW();
+        void RZ();
         void RET();
         void XCHG();
         void EI();
@@ -68,8 +69,7 @@ class Processor {
         void CPI(uint8_t dataToCompare);
 
         // Three byte instructions
-        void LXI(RegisterPair& registerPair,
-            uint8_t firstOperand, uint8_t secondOperand);
+        void LXI(RegisterPair& registerPair, uint8_t firstOperand, uint8_t secondOperand);
         void LXI_SP(uint16_t address);
         void STA(uint16_t address);
         void LDA(uint16_t address);

@@ -33,6 +33,10 @@ void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollo
         // Ouput devices have not yet been implemented, so just skip on for now.
         case 0xd3: break;
 
+        // IN - An input device writes a byte to the accumulator.
+        // Input devices have not yet been implemented, so just skip on for now.
+        case 0xdb: break;
+
         // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
         // storing the result in the accumulator
         case 0xe6: ANI(firstByteFollowingOpcode); break;

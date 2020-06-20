@@ -38,4 +38,9 @@ add_executable(8080_emulator ${SOURCE_FILES} ${INLINE_FILES} ${HEADER_FILES})
 include_directories(deps/FileBuffer/include)
 find_library(FILE_BUFFER FileBuffer deps/FileBuffer/lib)
 
-target_link_libraries(8080_emulator LINK_PUBLIC ${FILE_BUFFER})
+include_directories(deps/SDL2/include)
+find_library(SDL2 SDL2 deps/SDL2/lib)
+
+set(LIBRARIES ${FILE_BUFFER} ${SDL2})
+
+target_link_libraries(8080_emulator LINK_PUBLIC ${LIBRARIES})
