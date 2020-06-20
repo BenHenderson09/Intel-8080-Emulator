@@ -46,6 +46,9 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
         // Also, a return address is pushed onto the stack for use with the RETURN instruction
         // when the subroutine finishes.
         case 0xcd: CALL(address); break;
+
+        // JC - Jump to the specified memory address if the carry flag is one.
+        case 0xda: JC(address); break;
         
         default: throw UnsupportedOpcodeException(opcode);
     }
@@ -91,4 +94,8 @@ void Processor::CALL(uint16_t address){
     
     // Jump to subroutine
     JMP(address);
+}
+
+void Processor::JC(uint16_t address){
+    if (flags.carry) JMP(address);
 }

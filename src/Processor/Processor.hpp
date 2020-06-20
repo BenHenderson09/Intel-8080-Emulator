@@ -76,6 +76,7 @@ class Processor {
         void JNZ(uint16_t address);
         void JMP(uint16_t address);
         void CALL(uint16_t address);
+        void JC(uint16_t address);
 };
 
 #endif

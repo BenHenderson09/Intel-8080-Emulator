@@ -36,6 +36,7 @@ void Processor::beginEmulation(){
     while (areThereInstructionsLeftToExecute()){
         executeNextInstruction();
     
+        // Testing out a mock VBI interrupt
         currentTime += 0.0000003;
 
         if (interruptEnable && (currentTime - lastInterrupt) > (1.0/60.0)){
