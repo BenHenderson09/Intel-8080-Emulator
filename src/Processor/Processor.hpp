@@ -49,6 +49,7 @@ class Processor {
         void DAD(const RegisterPair& registerPair);
         void RRC();
         void INX(RegisterPair& registerPair);
+        void STC();
         void LDAX(const RegisterPair& registerPair);
         void MOV(uint8_t& destination, uint16_t value);
         void ANA(uint8_t registerForBitwiseAnd);

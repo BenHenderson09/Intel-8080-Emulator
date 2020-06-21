@@ -46,6 +46,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // DCR M - Decrement the value located at the specified memory address
         case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
 
+        // STC - Set the carry flag
+        case 0x37: STC();
+
         // DCR A - Decrement register A
         case 0x3d: DCR(registers.a); break;
 
@@ -186,6 +189,10 @@ void Processor::INX(RegisterPair& registerPair){
     else {
         registerPair.secondRegister++;
     }
+}
+
+void Processor::STC(){
+    flags.carry = true;
 }
 
 void Processor::LDAX(const RegisterPair& registerPair){
