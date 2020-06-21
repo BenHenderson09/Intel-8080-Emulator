@@ -275,7 +275,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // PUSH B - Write register pair BC to the top of the stack
         case 0xc5: PUSH(registers.bc); break;
 
-        // RZ - If the Zero bit is one, a RET instruction occurs
+        // RZ - If the zero bit is one, a RET instruction occurs
         case 0xc8: RZ(); break;
 
         // RET - Return from subroutine. This works by popping the
@@ -289,6 +289,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // PUSH D - Write register pair DE to the top of the stack
         case 0xd5: PUSH(registers.de); break;
+
+        // RC - If the carry bit is one, a RET instruction occurs
+        case 0xd8: RC(); break;
 
         // POP H - Remove two bytes from the top of the stack and copy their values
         // into the register pair HL
@@ -445,6 +448,10 @@ void Processor::RET(){
     registers.programCounter--; // Prevent automatically advancing the program counter
 
     registers.stackPointer += 2; // Remove from the stack
+}
+
+void Processor::RC(){
+    if (flags.carry) RET();
 }
 
 void Processor::RZ(){

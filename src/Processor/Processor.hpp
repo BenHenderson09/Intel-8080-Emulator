@@ -59,6 +59,7 @@ class Processor {
         void PUSH(const RegisterPair& registerPair);
         void PUSH_PSW();
         void RZ();
+        void RC();
         void RET();
         void XCHG();
         void EI();
