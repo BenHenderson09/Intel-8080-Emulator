@@ -49,6 +49,9 @@ void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFol
 
         case 0xca: JZ(address); break;
 
+        // JNC - Jump if the carry flag is not set
+        case 0xd2: JNC(address); break;
+
         // JC - Jump to the specified memory address if the carry flag is one.
         case 0xda: JC(address); break;
         
@@ -100,6 +103,10 @@ void Processor::CALL(uint16_t address){
 
 void Processor::JZ(uint16_t address){
     if (flags.zero) JMP(address);
+}
+
+void Processor::JNC(uint16_t address){
+    if (!flags.carry) JMP(address);
 }
 
 void Processor::JC(uint16_t address){
