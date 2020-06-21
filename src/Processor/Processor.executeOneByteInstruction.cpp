@@ -17,6 +17,10 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
         case 0x09: DAD(registers.bc); break;
 		
+        // LDAX B - Set the contents of the accumulator to the value at a memory location.
+        // The address of this value is found in register pair BC.
+        case 0x0a: LDAX(registers.bc); break;
+
         // DCR C - Decrement register C
         case 0x0d: DCR(registers.c); break;
 
@@ -30,7 +34,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         case 0x19: DAD(registers.de); break;
 
         // LDAX D - Set the contents of the accumulator to the value at a memory location.
-        // The address of this location is found in the specified register pair.
+        // The address of this value is found in register pair DE.
         case 0x1a: LDAX(registers.de); break;
 
         // INX H - Increment register pair HL
@@ -41,6 +45,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // DCR M - Decrement the value located at the specified memory address
         case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
+
+        // DCR A - Decrement register A
+        case 0x3d: DCR(registers.a); break;
 
         // MOV D,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the D register.
