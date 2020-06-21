@@ -130,9 +130,30 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // MOV D,A - Copy register A to register D
         case 0x57: MOV(registers.d, registers.a); break;
 
+        // MOV E,B - Copy register B to register E
+        case 0x58: MOV(registers.e, registers.b); break;
+
+        // MOV E,C - Copy register C to register E
+        case 0x59: MOV(registers.e, registers.c); break;
+
+        // MOV E,D - Copy register D to register E 
+        case 0x5a: MOV(registers.e, registers.d); break;
+
+        // MOV E,E - Copy register E to register E (null operation)
+        case 0x5b: MOV(registers.e, registers.e); break;
+
+        // MOV E,H - Copy register H to register E
+        case 0x5c: MOV(registers.e, registers.h); break;
+
+        // MOV E,L - Copy register L to register E
+        case 0x5d: MOV(registers.e, registers.l); break;
+
         // MOV E,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the E register.
         case 0x5e: MOV(registers.e, memory[registers.hl.getPairValue()]); break;
+
+        // MOV E,A - Copy register A to register E
+        case 0x5f: MOV(registers.e, registers.a); break;
 
         // MOV H,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the H register.
