@@ -180,9 +180,55 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // MOV H,A - Copy register A to register H
         case 0x67: MOV(registers.h, registers.a); break;
 
+        // MOV L,B - Copy register B to register L
+        case 0x68: MOV(registers.l, registers.b); break;
+
+        // MOV L,C - Copy register C to register L
+        case 0x69: MOV(registers.l, registers.c); break;
+
+        // MOV L,D - Copy register D to register L 
+        case 0x6a: MOV(registers.l, registers.d); break;
+
+        // MOV L,E - Copy register E to register L
+        case 0x6b: MOV(registers.l, registers.e); break;
+
+        // MOV L,H - Copy register H to register L 
+        case 0x6c: MOV(registers.l, registers.h); break;
+
+        // MOV L,L - Copy register L to register L (null operation)
+        case 0x6d: MOV(registers.l, registers.l); break;
+
+        // MOV L,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the L register.
+        case 0x6e: MOV(registers.l, memory[registers.hl.getPairValue()]); break;
+
         // MOV L,A - Copy register A to register L
         case 0x6f: MOV(registers.l, registers.a); break;
     
+        // MOV M,B - Store the contents of register B at the memory address
+        // specified in register pair HL.
+        case 0x70: MOV(memory[registers.hl.getPairValue()], registers.b); break;
+
+        // MOV M,C - Store the contents of register C at the memory address
+        // specified in register pair HL.
+        case 0x71: MOV(memory[registers.hl.getPairValue()], registers.c); break;
+
+        // MOV M,D - Store the contents of register D at the memory address
+        // specified in register pair HL.
+        case 0x72: MOV(memory[registers.hl.getPairValue()], registers.d); break;
+
+        // MOV M,E - Store the contents of register E at the memory address
+        // specified in register pair HL.
+        case 0x73: MOV(memory[registers.hl.getPairValue()], registers.e); break;
+
+        // MOV M,H - Store the contents of register H at the memory address
+        // specified in register pair HL.
+        case 0x74: MOV(memory[registers.hl.getPairValue()], registers.h); break;
+
+        // MOV M,L - Store the contents of register L at the memory address
+        // specified in register pair HL.
+        case 0x75: MOV(memory[registers.hl.getPairValue()], registers.l); break;
+
         // MOV M,A - Store the contents of register A at the memory address
         // specified in register pair HL.
         case 0x77: MOV(memory[registers.hl.getPairValue()], registers.a); break;
