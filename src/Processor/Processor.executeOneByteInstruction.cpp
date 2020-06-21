@@ -268,7 +268,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // The accumulator remains the same in this case, with only the flags changing.
         case 0xaf: XRA(registers.a); break;
 
-        case 0xc6: ORA(memory[registers.hl.getPairValue()]);
+        case 0xb6: ORA(memory[registers.hl.getPairValue()]);
 
         // POP B - Remove two bytes from the top of the stack and copy their values
         // into the register pair BC
