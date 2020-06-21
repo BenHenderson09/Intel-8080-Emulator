@@ -11,6 +11,9 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // NOP - Execution continues, no change to processor
         case 0x00: NOP(); break;
 
+        // INX B - Increment register pair BC
+        case 0x03: INX(registers.bc); break;
+
         // DCR B - Decrement register B
         case 0x05: DCR(registers.b); break;
 
@@ -51,6 +54,31 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // DCR A - Decrement register A
         case 0x3d: DCR(registers.a); break;
+
+        // MOV B,B - Copy register B to register B (null operation)
+        case 0x40: MOV(registers.b, registers.b); break;
+
+        // MOV B,C - Copy register C to register B
+        case 0x41: MOV(registers.b, registers.c); break;
+
+        // MOV B,D - Copy register D to register B
+        case 0x42: MOV(registers.b, registers.d); break;
+
+        // MOV B,E - Copy register E to register B
+        case 0x43: MOV(registers.b, registers.e); break;
+
+        // MOV B,H - Copy register H to register B
+        case 0x44: MOV(registers.b, registers.h); break;
+
+        // MOV B,L - Copy register L to register B
+        case 0x45: MOV(registers.b, registers.l); break;
+
+        // MOV B,M - In this case, register pair HL stores a memory address,
+        // so copy the value at this address to the B register.
+        case 0x46: MOV(registers.b, memory[registers.hl.getPairValue()]); break;
+
+        // MOV B,A - Copy register A to register B
+        case 0x47: MOV(registers.b, registers.a); break;
 
         // MOV D,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the D register.
