@@ -26,7 +26,7 @@ class Processor {
         // The processor has an "Interrupt Enable" on pin 16. Two instructions, EI and DI, set this pin,
         // and this pin turns off or turns on the interrupt system, so if it is disabled,
         // interrupts will do nothing.
-        bool interruptEnable{true};
+        bool interruptEnable{false};
 
         void executeNextInstruction();
         bool areThereInstructionsLeftToExecute();
@@ -54,6 +54,7 @@ class Processor {
         void MOV(uint8_t& destination, uint16_t value);
         void ANA(uint8_t registerForBitwiseAnd);
         void XRA(uint8_t registerForBitwiseXor);
+        void ORA(uint8_t valueForBitwiseOr);
         void POP(RegisterPair& registerPair);
         void POP_PSW();
         void PUSH(const RegisterPair& registerPair);

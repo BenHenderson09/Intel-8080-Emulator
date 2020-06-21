@@ -268,6 +268,8 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // The accumulator remains the same in this case, with only the flags changing.
         case 0xaf: XRA(registers.a); break;
 
+        case 0xc6: ORA(memory[registers.hl.getPairValue()]);
+
         // POP B - Remove two bytes from the top of the stack and copy their values
         // into the register pair BC
         case 0xc1: POP(registers.bc); break;
@@ -387,6 +389,11 @@ void Processor::ANA(uint8_t registerForBitwiseAnd){
 
 void Processor::XRA(uint8_t registerForBitwiseXor){
     registers.a ^= registerForBitwiseXor;
+    alterFlagsAfterLogicalOperation();
+}
+
+void Processor::ORA(uint8_t valueForBitwiseOr){
+    registers.a |= valueForBitwiseOr;
     alterFlagsAfterLogicalOperation();
 }
 
