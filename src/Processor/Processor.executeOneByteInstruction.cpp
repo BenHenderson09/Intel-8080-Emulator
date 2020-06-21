@@ -233,6 +233,12 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // specified in register pair HL.
         case 0x77: MOV(memory[registers.hl.getPairValue()], registers.a); break;
     
+        // MOV A,B - Copy register B to register A
+        case 0x78: MOV(registers.a, registers.b);
+
+        // MOV A,C - Copy register C to register A
+        case 0x79: MOV(registers.a, registers.c);
+
         // MOV A,D - Copy register D to register A
         case 0x7a: MOV(registers.a, registers.d); break;
 
@@ -242,9 +248,15 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
         // MOV A,H - Copy register H to register A
         case 0x7c: MOV(registers.a, registers.h); break;
 
+        // MOV A,L - Copy register L to register A
+        case 0x7d: MOV(registers.a, registers.l); break;
+
         // MOV A,M - In this case, register pair HL stores a memory address,
         // so copy the value at this address to the A register.
         case 0x7e: MOV(registers.a, memory[registers.hl.getPairValue()]); break;
+
+        // MOV A,A - Copy register A to register A (null operation)
+        case 0x7f: MOV(registers.a, registers.a); break;
 
         // ANA A - Bitwise and (&) operates on the accumulator and register A
         // (A is the same register as the accumulator), with the result stored in the accumulator.
