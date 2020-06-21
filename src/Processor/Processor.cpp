@@ -30,33 +30,13 @@ void Processor::loadProgramIntoMemory(const FileBuffer& program){
 }
 
 void Processor::beginEmulation(){
-    long double lastInterrupt{0};
-    long double currentTime{0};
-    
     while (areThereInstructionsLeftToExecute()){
         executeNextInstruction();
-    
-        // Testing out a mock VBI interrupt
-        currentTime += 0.0000003;
-
-        if (interruptEnable && (currentTime - lastInterrupt) > (1.0/60.0)){
-            
-            memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
-            memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
-            registers.stackPointer -= 2;
-
-            registers.programCounter = 16;
-
-            lastInterrupt = currentTime;
-        }
     }
 }
 
 bool Processor::areThereInstructionsLeftToExecute(){
-    static int count;
-    count++;
-
-    return true;//registers.programCounter < sizeOfProgramInBytes;
+    return registers.programCounter < sizeOfProgramInBytes;
 }
 
 void Processor::executeNextInstruction(){
