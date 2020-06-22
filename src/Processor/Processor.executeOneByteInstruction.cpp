@@ -297,7 +297,7 @@ void Processor::executeOneByteInstruction(uint8_t opcode){
 
         // POP H - Remove two bytes from the top of the stack and copy their values
         // into the register pair HL
-        case 0xe1: POP(registers.de); break;
+        case 0xe1: POP(registers.hl); break;
 
         // PUSH H - Write register pair HL to the top of the stack
         case 0xe5: PUSH(registers.hl); break;

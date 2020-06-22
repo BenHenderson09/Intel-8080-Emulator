@@ -84,4 +84,7 @@ void Processor::interrupt(uint16_t address){
 
     // Set the program counter to specified address to execute the interrupt
     registers.programCounter = address;
+
+    //  Prevent other interrupts from interfering
+    interruptEnable = false;
 }
