@@ -44,8 +44,9 @@ void Processor::executeNextInstruction(){
     uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
     uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
 
-    static int count;
+    static int count{0};
     count++;
+
     std::cout << std::dec << count << " | " << std::hex << " Program counter: " << registers.programCounter << " | " <<  " Opcode: " <<(int)memory[registers.programCounter] << " | " <<  " Stack pointer: " << registers.stackPointer << " | " <<  " Top of stack: " << (int)memory[registers.stackPointer] <</* " | " << (int)memory[registers.programCounter+1] << " | " << (int)memory[registers.programCounter+2] <<*/ '\n';
 
     switch(findNumberOfBytesUsedByOpcode(opcode)){
@@ -73,4 +74,14 @@ void Processor::alterFlagsAfterLogicalOperation(){
     flags.parity = isThereAnEvenCountOfOnes(registers.a);
     flags.carry = 0;
     flags.auxiliaryCarry = 0;
+}
+
+void Processor::interrupt(uint16_t address){
+    // Push the program counter onto the stack
+    memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
+    memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
+    registers.stackPointer -= 2;
+
+    // Set the program counter to specified address to execute the interrupt
+    registers.programCounter = address;
 }

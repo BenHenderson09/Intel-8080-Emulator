@@ -32,6 +32,7 @@ class Processor {
         bool areThereInstructionsLeftToExecute();
         void loadProgramIntoMemory(const FileBuffer& program);
         void alterFlagsAfterLogicalOperation();
+        void interrupt(uint16_t address);
 
         // Instructions take a maximum of 3 bytes
         void executeOneByteInstruction(uint8_t opcode);
