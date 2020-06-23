@@ -20,7 +20,7 @@ struct Registers {
     // stack and the program counter holds a memory address pointing to the next instruction
     // to be executed.
     uint16_t stackPointer;
-    uint16_t programCounter;
+    uint16_t programCounter{0};
 
     // Register pairs
     RegisterPair bc{b, c};

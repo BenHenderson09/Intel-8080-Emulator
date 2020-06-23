@@ -2,10 +2,12 @@
 #define PROCESSOR_HPP
 
 #include <cstdint>
+#include <vector>
 #include <FileBuffer.hpp>
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 #include "../Registers/Registers.hpp"
 #include "../RegisterPair/RegisterPair.hpp"
+#include "../ProcessorObserver/ProcessorObserver.hpp"
 
 class Processor {
     public:
@@ -13,27 +15,35 @@ class Processor {
         ~Processor();
 
         void beginEmulation();
+        void attachObserver(ProcessorObserver& observer);
+        void interrupt(uint16_t address);
+        bool areInterruptsEnabled();
+        uint8_t readByteFromMemory(uint16_t address);
 
     private:
         Registers registers;
         ArithmeticAndLogicFlags flags;
 
-        // Dynamically allocated buffer to represent the memory.
-        // Note that the 16 bit address bus supports 2^16 memory addresses (0xffff).
-        // Also store the size of the program so we know when to stop iterating over memory addresses.
+        // Observers are notified when an instruction is executed,
+        // and will conduct some action as a result.
+        std::vector<ProcessorObserver*> observers;
+
+        // Dynamically allocated buffer to represent the memory. Also store the size of the program
+        // so we know when to stop iterating over memory addresses.
         uint8_t* memory{new uint8_t[0xffff]};
         uint16_t sizeOfProgramInBytes;
 
-        // The processor has an "Interrupt Enable" on pin 16. Two instructions, EI and DI, set this pin,
+        // The processor has an "Interrupt Enable" setting on pin 16. Two instructions, EI and DI, set this pin,
         // and this pin turns off or turns on the interrupt system, so if it is disabled,
         // interrupts will do nothing.
         bool interruptEnable{false};
 
         void executeNextInstruction();
+        void notifyObserversOfInstructionExecution();
         bool areThereInstructionsLeftToExecute();
         void loadProgramIntoMemory(const FileBuffer& program);
         void alterFlagsAfterLogicalOperation();
-        void interrupt(uint16_t address);
+        
 
         // Instructions take a maximum of 3 bytes
         void executeOneByteInstruction(uint8_t opcode);

@@ -4,6 +4,39 @@
 #include "Processor.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../../config/OpcodeDetails.hpp"
+#include "../ProcessorObserver/ProcessorObserver.hpp"
+
+void Processor::beginEmulation(){
+    while (areThereInstructionsLeftToExecute()){
+        executeNextInstruction();
+    }
+}
+
+void Processor::interrupt(uint16_t address){
+    // Push the program counter onto the stack
+    memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
+    memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
+    registers.stackPointer -= 2;
+
+    // Set the program counter to specified address to execute the interrupt
+    registers.programCounter = address;
+
+    //  Prevent other interrupts from interfering
+    interruptEnable = false;
+}
+
+bool Processor::areInterruptsEnabled(){
+    return interruptEnable;
+}
+
+uint8_t Processor::readByteFromMemory(uint16_t address){
+    return memory[address];
+}
+
+void Processor::attachObserver(ProcessorObserver& observer){
+    observers.push_back(&observer);
+}
 
 Processor::Processor(const FileBuffer& program){
     loadProgramIntoMemory(program);
@@ -15,20 +48,11 @@ Processor::~Processor(){
 }
 
 void Processor::loadProgramIntoMemory(const FileBuffer& program){
-    // Set the program counter to the first address in memory
-    registers.programCounter = 0;
-
     // Store the size of the program
     sizeOfProgramInBytes = program.getFileSizeInBytes();
 
-    // Copy over the program contents into memory
+    // Load into memory
     program.copyBufferContentsToAnotherBuffer(memory, 0xffff);
-}
-
-void Processor::beginEmulation(){
-    while (areThereInstructionsLeftToExecute()){
-        executeNextInstruction();
-    }
 }
 
 bool Processor::areThereInstructionsLeftToExecute(){
@@ -39,11 +63,6 @@ void Processor::executeNextInstruction(){
     uint8_t opcode{memory[registers.programCounter]};
     uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
     uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
-
-    static int count{0};
-    count++;
-
-    std::cout << std::dec << count << " | " << std::hex << " Program counter: " << registers.programCounter << " | " <<  " Opcode: " <<(int)memory[registers.programCounter] << " | " <<  " Stack pointer: " << registers.stackPointer << " | " <<  " Top of stack: " << (int)memory[registers.stackPointer] <</* " | " << (int)memory[registers.programCounter+1] << " | " << (int)memory[registers.programCounter+2] <<*/ '\n';
 
     switch(findNumberOfBytesUsedByOpcode(opcode)){
         case 1:
@@ -62,6 +81,16 @@ void Processor::executeNextInstruction(){
             );
             break;
     }
+
+    notifyObserversOfInstructionExecution();
+}
+
+void Processor::notifyObserversOfInstructionExecution(){
+    uint8_t opcode{memory[registers.programCounter]};
+
+    for (ProcessorObserver* observer : observers){
+        observer->notifyInstructionHasBeenExecuted(opcode);
+    }
 }
 
 void Processor::alterFlagsAfterLogicalOperation(){
@@ -70,17 +99,4 @@ void Processor::alterFlagsAfterLogicalOperation(){
     flags.parity = isThereAnEvenCountOfOnes(registers.a);
     flags.carry = 0;
     flags.auxiliaryCarry = 0;
-}
-
-void Processor::interrupt(uint16_t address){
-    // Push the program counter onto the stack
-    memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
-    memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
-    registers.stackPointer -= 2;
-
-    // Set the program counter to specified address to execute the interrupt
-    registers.programCounter = address;
-
-    //  Prevent other interrupts from interfering
-    interruptEnable = false;
 }

@@ -12,7 +12,8 @@ set(HEADER_FILES
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.hpp
     src/BinaryArithmetic/BinaryArithmetic.hpp
     src/Registers/Registers.hpp
-    src/RegisterPair/RegisterPair.hpp)
+    src/RegisterPair/RegisterPair.hpp
+    src/ProcessorObserver/ProcessorObserver.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
