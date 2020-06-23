@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <vector>
-#include <FileBuffer.hpp>
+#include <FileBuffer/FileBuffer.hpp>
 #include <string>
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 #include "../Registers/Registers.hpp"

@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
-#include <FileBuffer.hpp>
+#include <FileBuffer/FileBuffer.hpp>
 #include "Processor.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"

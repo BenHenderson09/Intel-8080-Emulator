@@ -1,7 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <cstdint>
-#include <FileBuffer.hpp>
+#include <FileBuffer/FileBuffer.hpp>
 #include "Processor/Processor.hpp"
 
 int main(int argc, char** argv){
