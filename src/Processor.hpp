@@ -5,10 +5,10 @@
 #include <vector>
 #include <FileBuffer/FileBuffer.hpp>
 #include <string>
-#include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
-#include "../Registers/Registers.hpp"
-#include "../RegisterPair/RegisterPair.hpp"
-#include "../ProcessorObserver/ProcessorObserver.hpp"
+#include "ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
+#include "Registers/Registers.hpp"
+#include "RegisterPair/RegisterPair.hpp"
+#include "ProcessorObserver/ProcessorObserver.hpp"
 
 class Processor {
     public:

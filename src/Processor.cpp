@@ -3,10 +3,10 @@
 #include <string>
 #include <FileBuffer/FileBuffer.hpp>
 #include "Processor.hpp"
-#include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
-#include "../../config/OpcodeDetails.hpp"
-#include "../ProcessorObserver/ProcessorObserver.hpp"
+#include "findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
+#include "BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../config/OpcodeDetails.hpp"
+#include "ProcessorObserver/ProcessorObserver.hpp"
 
 Processor::Processor(const std::string& programFileLocation){
     loadProgramIntoMemory(programFileLocation);

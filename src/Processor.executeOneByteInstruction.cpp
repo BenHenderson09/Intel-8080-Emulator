@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <stdexcept>
 #include "Processor.hpp"
-#include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
+#include "BinaryArithmetic/BinaryArithmetic.hpp"
 
 void Processor::executeOneByteInstruction(uint8_t opcode){
     switch(opcode){

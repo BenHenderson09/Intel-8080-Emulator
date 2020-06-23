@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <stdexcept>
 #include "Processor.hpp"
-#include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
+#include "BinaryArithmetic/BinaryArithmetic.hpp"
 
 void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
     switch (opcode){
