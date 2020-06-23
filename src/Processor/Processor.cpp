@@ -1,11 +1,25 @@
 #include <cstdint>
 #include <iostream>
+#include <string>
 #include <FileBuffer.hpp>
 #include "Processor.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 #include "../../config/OpcodeDetails.hpp"
 #include "../ProcessorObserver/ProcessorObserver.hpp"
+
+Processor::Processor(const std::string& programFileLocation){
+    loadProgramIntoMemory(programFileLocation);
+}
+
+Processor::Processor(const char* programFileLocation){
+    loadProgramIntoMemory(std::string(programFileLocation));
+}
+
+Processor::~Processor(){
+    // Free up memory
+    delete[] memory;
+}
 
 void Processor::beginEmulation(){
     while (areThereInstructionsLeftToExecute()){
@@ -38,16 +52,9 @@ void Processor::attachObserver(ProcessorObserver& observer){
     observers.push_back(&observer);
 }
 
-Processor::Processor(const FileBuffer& program){
-    loadProgramIntoMemory(program);
-};
+void Processor::loadProgramIntoMemory(const std::string& programFileLocation){
+    FileBuffer program{programFileLocation};
 
-Processor::~Processor(){
-    // Free up memory
-    delete[] memory;
-}
-
-void Processor::loadProgramIntoMemory(const FileBuffer& program){
     // Store the size of the program
     sizeOfProgramInBytes = program.getFileSizeInBytes();
 
@@ -63,6 +70,8 @@ void Processor::executeNextInstruction(){
     uint8_t opcode{memory[registers.programCounter]};
     uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
     uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
+
+    std::cout << std::hex << registers.programCounter << '\n';
 
     switch(findNumberOfBytesUsedByOpcode(opcode)){
         case 1:

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <FileBuffer.hpp>
+#include <string>
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 #include "../Registers/Registers.hpp"
 #include "../RegisterPair/RegisterPair.hpp"
@@ -11,7 +12,8 @@
 
 class Processor {
     public:
-        Processor(const FileBuffer& program);
+        Processor(const std::string& programFileLocation);
+        Processor(const char* programFileLocation);
         ~Processor();
 
         void beginEmulation();
@@ -38,10 +40,10 @@ class Processor {
         // interrupts will do nothing.
         bool interruptEnable{false};
 
+        void loadProgramIntoMemory(const std::string& programFileLocation);
         void executeNextInstruction();
         void notifyObserversOfInstructionExecution();
         bool areThereInstructionsLeftToExecute();
-        void loadProgramIntoMemory(const FileBuffer& program);
         void alterFlagsAfterLogicalOperation();
         
 

@@ -6,16 +6,14 @@
 
 int main(int argc, char** argv){
     try {
-        const char* programFileLocation{argv[1]};
-        FileBuffer program{programFileLocation};
-        Processor processor{program};
+        Processor processor{argv[1]};
 
         processor.beginEmulation();
     }
     catch (const std::exception& err){
         std::cerr << err.what() << '\n';
 
-        return EXIT_FAILURE;
+        return 1;
     }
 
     return 0;
