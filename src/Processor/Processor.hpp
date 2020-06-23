@@ -14,14 +14,15 @@ class Processor {
 
         void beginEmulation();
 
-        // Dynamically allocated buffer to represent the memory. Also store the size of the program
-        // so we know when to stop iterating over memory addresses.
-        uint8_t* memory;
-        uint16_t sizeOfProgramInBytes;
-
     private:
         Registers registers;
         ArithmeticAndLogicFlags flags;
+
+        // Dynamically allocated buffer to represent the memory.
+        // Note that the 16 bit address bus supports 2^16 memory addresses (0xffff).
+        // Also store the size of the program so we know when to stop iterating over memory addresses.
+        uint8_t* memory{new uint8_t[0xffff]};
+        uint16_t sizeOfProgramInBytes;
 
         // The processor has an "Interrupt Enable" on pin 16. Two instructions, EI and DI, set this pin,
         // and this pin turns off or turns on the interrupt system, so if it is disabled,

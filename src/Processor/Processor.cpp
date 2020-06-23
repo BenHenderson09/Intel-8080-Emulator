@@ -2,7 +2,6 @@
 #include <iostream>
 #include <FileBuffer.hpp>
 #include "Processor.hpp"
-#include "../../config/HardwareSpecifications.hpp"
 #include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 
@@ -16,9 +15,6 @@ Processor::~Processor(){
 }
 
 void Processor::loadProgramIntoMemory(const FileBuffer& program){
-    // Reserve a buffer on the heap for the memory
-    memory = new uint8_t[HardwareSpecifications::sizeOfMemoryInBytes];
-        
     // Set the program counter to the first address in memory
     registers.programCounter = 0;
 
@@ -26,7 +22,7 @@ void Processor::loadProgramIntoMemory(const FileBuffer& program){
     sizeOfProgramInBytes = program.getFileSizeInBytes();
 
     // Copy over the program contents into memory
-    program.copyBufferContentsToAnotherBuffer(memory, HardwareSpecifications::sizeOfMemoryInBytes);
+    program.copyBufferContentsToAnotherBuffer(memory, 0xffff);
 }
 
 void Processor::beginEmulation(){

@@ -4,8 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Setup header files
-set(HEADER_FILES 
-    config/HardwareSpecifications.hpp
+set(HEADER_FILES
     config/OpcodeDetails.hpp
     src/ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp
     src/Processor/Processor.hpp
