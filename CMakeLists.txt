@@ -1,4 +1,4 @@
-project(Intel8080)
+project(Intel8080Emulator)
 cmake_minimum_required(VERSION 3.12)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
@@ -8,18 +8,19 @@ set(INCLUDE_DIRS
     config
     src/ArithmeticAndLogicFlags
     src/findNumberOfBytesUsedByOpcode
-    src/UnsupportedOpcodeException
     src/BinaryArithmetic
+    src/UnsupportedOpcodeException
     src/Registers
     src/RegisterPair
+    src/Processor
     src/ProcessorObserver)
 
 # Setup source files
 set(SOURCE_FILES
-    src/Processor.cpp
-    src/Processor.executeOneByteInstruction.cpp
-    src/Processor.executeTwoByteInstruction.cpp
-    src/Processor.executeThreeByteInstruction.cpp
+    src/Processor/Processor.cpp
+    src/Processor/Processor.executeOneByteInstruction.cpp
+    src/Processor/Processor.executeTwoByteInstruction.cpp
+    src/Processor/Processor.executeThreeByteInstruction.cpp
     src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
@@ -44,4 +45,4 @@ foreach (INCLUDE_DIR ${INCLUDE_DIRS})
     )
 endforeach()
 
-install(FILES src/Processor.hpp DESTINATION include/${PROJECT_NAME})
+install(FILES src/Intel8080.hpp DESTINATION include/${PROJECT_NAME})
