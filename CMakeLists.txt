@@ -5,11 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Setup include directories
 set(INCLUDE_DIRS
-    config
     src/ArithmeticAndLogicFlags
-    src/findNumberOfBytesUsedByOpcode
-    src/BinaryArithmetic
-    src/UnsupportedOpcodeException
     src/Registers
     src/RegisterPair
     src/Processor

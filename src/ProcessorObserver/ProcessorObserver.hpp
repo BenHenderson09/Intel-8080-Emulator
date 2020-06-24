@@ -1,11 +1,13 @@
 #ifndef PROCESSOR_OBSERVER
 #define PROCESSOR_OBSERVER
 
-class ProcessorObserver {
-    public:
-        virtual ~ProcessorObserver(){}
+namespace Intel8080 {
+    class ProcessorObserver {
+        public:
+            virtual ~ProcessorObserver(){}
 
-        virtual void notifyInstructionHasBeenExecuted(uint8_t opcode) = 0;
+            virtual void notifyInstructionHasBeenExecuted(uint8_t opcode) = 0;
+    };
 };
 
 #endif
