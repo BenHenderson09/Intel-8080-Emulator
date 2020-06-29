@@ -4,7 +4,7 @@
 #include <FileBuffer/FileBuffer.hpp>
 #include "Processor.hpp"
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
-#include "../findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.hpp"
+#include "../FindOpcodeDetail/FindOpcodeDetail.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 #include "../../config/OpcodeDetails.hpp"
 #include "../ProcessorObserver/ProcessorObserver.hpp"

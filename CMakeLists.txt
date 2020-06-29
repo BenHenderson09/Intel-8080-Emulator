@@ -9,7 +9,8 @@ set(INCLUDE_DIRS
     src/Registers
     src/RegisterPair
     src/Processor
-    src/ProcessorObserver)
+    src/ProcessorObserver
+    src/FindOpcodeDetail)
 
 # Setup source files
 set(SOURCE_FILES
@@ -17,7 +18,7 @@ set(SOURCE_FILES
     src/Processor/Processor.executeOneByteInstruction.cpp
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
-    src/findNumberOfBytesUsedByOpcode/findNumberOfBytesUsedByOpcode.cpp
+    src/FindOpcodeDetail/FindOpcodeDetail.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
     src/RegisterPair/RegisterPair.cpp)

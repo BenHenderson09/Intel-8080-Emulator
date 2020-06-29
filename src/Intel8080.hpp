@@ -3,3 +3,4 @@
 #include "ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 #include "Registers/Registers.hpp"
 #include "RegisterPair/RegisterPair.hpp"
+#include "FindOpcodeDetail/FindOpcodeDetail.hpp"

@@ -15,4 +15,5 @@ namespace Intel8080 {
         bool auxiliaryCarry; // TODO look into this bit's behaviour
     };
 }
+
 #endif
