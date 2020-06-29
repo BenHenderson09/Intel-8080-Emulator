@@ -3,7 +3,7 @@
 
 #include <map>
 
-namespace OpcodeDetails {
+namespace OpcodeConfig {
     const std::map<uint8_t, int> bytesUsedByOpcodes {
         { 0x00, 1},
         { 0x02, 1},

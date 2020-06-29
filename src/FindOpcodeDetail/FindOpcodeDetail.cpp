@@ -1,6 +1,6 @@
 #include <cstdint>
 #include "FindOpcodeDetail.hpp"
-#include "../../config/OpcodeDetails.hpp"
+#include "../../config/OpcodeConfig.hpp"
 
 namespace {
     int findOpcodeFromMap(uint8_t opcode, const std::map<uint8_t, int>& map){
@@ -17,10 +17,10 @@ namespace {
 
 namespace Intel8080 {
     int findNumberOfBytesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeDetails::bytesUsedByOpcodes);
+        return findOpcodeFromMap(opcode, OpcodeConfig::bytesUsedByOpcodes);
     }
 
     int findNumberOfCyclesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeDetails::cyclesUsedByOpcodes);
+        return findOpcodeFromMap(opcode, OpcodeConfig::cyclesUsedByOpcodes);
     }
 }

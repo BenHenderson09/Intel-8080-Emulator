@@ -6,7 +6,7 @@
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
 #include "../FindOpcodeDetail/FindOpcodeDetail.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
-#include "../../config/OpcodeDetails.hpp"
+#include "../../config/OpcodeConfig.hpp"
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 
 namespace Intel8080 {
@@ -72,8 +72,6 @@ namespace Intel8080 {
         uint8_t opcode{memory[registers.programCounter]};
         uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
         uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
-
-        std::cout << std::hex << registers.programCounter << '\n';
 
         switch(findNumberOfBytesUsedByOpcode(opcode)){
             case 1:
