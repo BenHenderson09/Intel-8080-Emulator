@@ -51,7 +51,7 @@ namespace Intel8080 {
             case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
 
             // STC - Set the carry flag
-            case 0x37: STC();
+            case 0x37: STC(); break;
 
             // DCR A - Decrement register A
             case 0x3d: DCR(registers.a); break;
