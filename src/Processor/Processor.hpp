@@ -63,6 +63,7 @@ namespace Intel8080 {
             void DCR(uint8_t& byteToDecrement);
             void DAD(const RegisterPair& registerPair);
             void RRC();
+            void RAR();
             void INX(RegisterPair& registerPair);
             void STC();
             void LDAX(const RegisterPair& registerPair);

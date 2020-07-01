@@ -41,6 +41,9 @@ namespace Intel8080 {
             // The address of this value is found in register pair DE.
             case 0x1a: LDAX(registers.de); break;
 
+            // RAR - Rotate accumulator right through carry
+            case 0x1f: RAR(); break;
+
             // INX H - Increment register pair HL
             case 0x23: INX(registers.hl); break;
 
@@ -359,6 +362,17 @@ namespace Intel8080 {
         flags.carry = registers.a & 1;
         registers.a >>= 1;
         registers.a |= (flags.carry << 7);
+    }
+
+    void Processor::RAR(){
+        // Save bit 0 of the accumulator and then shift the accumulator one position
+        // to the right. Set bit 7 of the accumulator to the value of the carry bit
+        // and then set the carry bit to the saved first bit of the accumulator in its
+        // original state.
+        bool firstBitOfAccumulator{extractBit<uint16_t>(registers.a, 0)};
+        registers.a >>= 1;
+        setBit<uint8_t>(registers.a, 7, flags.carry);
+        flags.carry = firstBitOfAccumulator;
     }
 
     void Processor::INX(RegisterPair& registerPair){

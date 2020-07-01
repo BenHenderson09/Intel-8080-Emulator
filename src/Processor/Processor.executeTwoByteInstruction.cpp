@@ -17,6 +17,9 @@ namespace Intel8080 {
             // MVI H - Move immediate data to register H
             case 0x26: MVI(registers.h, firstByteFollowingOpcode); break;
 
+            // MVI L - Move immediate data to register L
+            case 0x2e: MVI(registers.l, firstByteFollowingOpcode); break;
+
             // MVI M - Move immediate data to the memory location specified by
             // register pair HL
             case 0x36: MVI(
