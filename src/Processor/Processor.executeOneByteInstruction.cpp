@@ -28,6 +28,9 @@ namespace Intel8080 {
             // The address of this value is found in register pair BC.
             case 0x0a: LDAX(registers.bc); break;
 
+            // DCX B - Decrement register pair BC
+            case 0x0b: DCX(registers.bc); break;
+
             // INR C - Increment register C
             case 0x0c: INR(registers.c); break;
 
@@ -50,6 +53,9 @@ namespace Intel8080 {
             // The address of this value is found in register pair DE.
             case 0x1a: LDAX(registers.de); break;
 
+            // DCX D - Decrement register pair DE
+            case 0x1b: DCX(registers.de); break;
+
             // INR E - Increment register E
             case 0x1c: INR(registers.e); break;
 
@@ -65,6 +71,9 @@ namespace Intel8080 {
             // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
             case 0x29: DAD(registers.hl); break;
 
+            // DCX H - Decrement register pair HL
+            case 0x2b: DCX(registers.hl); break;
+
             // INR L - Increment register L
             case 0x2c: INR(registers.l); break;
 
@@ -76,6 +85,9 @@ namespace Intel8080 {
 
             // STC - Set the carry flag
             case 0x37: STC(); break;
+
+            // DCX SP - Decrement the stack pointer
+            case 0x3b: DCX_SP(); break;
 
             // INR A - Increment register A
             case 0x3c: INR(registers.a); break;
@@ -404,6 +416,20 @@ namespace Intel8080 {
         
         // Bit 16 is set if a carry has occurred
         flags.carry = extractBit<uint32_t>(result, 16);
+    }
+
+    void Processor::DCX(const RegisterPair& registerPair){
+        if (registerPair.secondRegister == 0){
+            registerPair.secondRegister = 0xff;
+            registerPair.firstRegister--;
+        }
+        else {
+            registerPair.secondRegister--;
+        }
+    }
+
+    void Processor::DCX_SP(){
+        registers.stackPointer--;
     }
 
     void Processor::RRC(){

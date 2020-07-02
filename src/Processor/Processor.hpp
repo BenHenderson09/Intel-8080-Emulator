@@ -62,6 +62,8 @@ namespace Intel8080 {
             void NOP();
             void DCR(uint8_t& valueToDecrement);
             void DAD(const RegisterPair& registerPair);
+            void DCX(const RegisterPair& registerPair);
+            void DCX_SP();
             void RRC();
             void RAR();
             void INX(RegisterPair& registerPair);
