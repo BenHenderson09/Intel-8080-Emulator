@@ -15,6 +15,9 @@ namespace Intel8080 {
             // INX B - Increment register pair BC
             case 0x03: INX(registers.bc); break;
 
+            // INR B - Increment register B
+            case 0x04: INR(registers.b); break;
+
             // DCR B - Decrement register B
             case 0x05: DCR(registers.b); break;
 
@@ -25,6 +28,9 @@ namespace Intel8080 {
             // The address of this value is found in register pair BC.
             case 0x0a: LDAX(registers.bc); break;
 
+            // INR C - Increment register C
+            case 0x0c: INR(registers.c); break;
+
             // DCR C - Decrement register C
             case 0x0d: DCR(registers.c); break;
 
@@ -34,6 +40,9 @@ namespace Intel8080 {
             // INX D - Increment register pair DE
             case 0x13: INX(registers.de); break;
 
+            // INR D - Increment register D
+            case 0x14: INR(registers.d); break;
+
             // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
 
@@ -41,20 +50,35 @@ namespace Intel8080 {
             // The address of this value is found in register pair DE.
             case 0x1a: LDAX(registers.de); break;
 
+            // INR E - Increment register E
+            case 0x1c: INR(registers.e); break;
+
             // RAR - Rotate accumulator right through carry
             case 0x1f: RAR(); break;
 
             // INX H - Increment register pair HL
             case 0x23: INX(registers.hl); break;
 
+            // INR H - Increment register H
+            case 0x24: INR(registers.h); break;
+
             // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
             case 0x29: DAD(registers.hl); break;
+
+            // INR L - Increment register L
+            case 0x2c: INR(registers.l); break;
+
+            // INR M - Increment value held at the memory location specified by register pair HL
+            case 0x34: INR(memory[registers.hl.getPairValue()]); break;
 
             // DCR M - Decrement the value located at the specified memory address
             case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
 
             // STC - Set the carry flag
             case 0x37: STC(); break;
+
+            // INR A - Increment register A
+            case 0x3c: INR(registers.a); break;
 
             // DCR A - Decrement register A
             case 0x3d: DCR(registers.a); break;
@@ -290,11 +314,12 @@ namespace Intel8080 {
             // ORA L - Perform bitwise or on the accumulator with register L.
             case 0xb5: ORA(registers.l); break;
 
-            // ORA M  - Perform bitwise or on the accumulator with the value held at the memory location
-            // specified by register pair hl.
+            // ORA M  - Perform bitwise or on the accumulator with the value held at
+            // the memory location specified by register pair hl.
             case 0xb6: ORA(memory[registers.hl.getPairValue()]); break;
 
-            // ORA A - Perform bitwise or on the accumulator with the accumulator (null operation).
+            // ORA A - Perform bitwise or on the accumulator with the accumulator. Only changes
+            // flags.
             case 0xb7: ORA(registers.a); break;
 
             // RNZ - Return if not zero. If the Zero bit is zero, a return operation is performed.
@@ -357,10 +382,10 @@ namespace Intel8080 {
 
     void Processor::NOP(){}
 
-    void Processor::DCR(uint8_t& byteToDecrement){
+    void Processor::DCR(uint8_t& valueToDecrement){
         // Decrementing when zero will set all bits in the register, resulting in the decimal
         // value 255.
-        uint8_t result{--byteToDecrement}; 
+        uint8_t result{--valueToDecrement}; 
 
         // The sign is specified in bit seven, which allows programmers to conventionally
         // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
@@ -409,6 +434,14 @@ namespace Intel8080 {
         else {
             registerPair.secondRegister++;
         }
+    }
+
+    void Processor::INR(uint8_t& valueToIncrement){
+        uint8_t result{++valueToIncrement}; 
+
+        flags.sign = extractBit<uint8_t>(result, 7);
+        flags.zero = (result == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result);
     }
 
     void Processor::STC(){
