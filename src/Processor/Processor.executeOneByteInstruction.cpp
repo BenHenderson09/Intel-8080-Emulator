@@ -372,6 +372,9 @@ namespace Intel8080 {
             // PUSH H - Write register pair HL to the top of the stack
             case 0xe5: PUSH(registers.hl); break;
 
+            // PCHL - Set the program counter to the address held by register pair HL
+            case 0xe9: PCHL(); break;
+
             // XCHG - Swap the values of register pairs DE and HL
             case 0xeb: XCHG(); break;
         
@@ -571,6 +574,10 @@ namespace Intel8080 {
     void Processor::XTHL(){
         std::swap(registers.h, memory[registers.stackPointer+1]);
         std::swap(registers.l, memory[registers.stackPointer]);
+    }
+
+    void Processor::PCHL(){
+        registers.programCounter = registers.hl.getPairValue();
     }
 
     void Processor::RZ(){
