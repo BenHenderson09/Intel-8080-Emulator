@@ -274,10 +274,10 @@ namespace Intel8080 {
             case 0x77: MOV(memory[registers.hl.getPairValue()], registers.a); break;
         
             // MOV A,B - Copy register B to register A
-            case 0x78: MOV(registers.a, registers.b);
+            case 0x78: MOV(registers.a, registers.b); break;
 
             // MOV A,C - Copy register C to register A
-            case 0x79: MOV(registers.a, registers.c);
+            case 0x79: MOV(registers.a, registers.c); break;
 
             // MOV A,D - Copy register D to register A
             case 0x7a: MOV(registers.a, registers.d); break;
