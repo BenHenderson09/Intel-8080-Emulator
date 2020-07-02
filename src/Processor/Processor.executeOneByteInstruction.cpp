@@ -352,6 +352,9 @@ namespace Intel8080 {
             // transferring program control.
             case 0xc9: RET(); break;
 
+            // RNC - If the carry bit is zero, perform a return operation
+            case 0xd0: RNC(); break;
+
             // POP D - Remove two bytes from the top of the stack and copy their values
             // into the register pair DE
             case 0xd1: POP(registers.de); break;
@@ -565,6 +568,10 @@ namespace Intel8080 {
         registers.programCounter--; // Prevent automatically advancing the program counter
 
         registers.stackPointer += 2; // Remove from the stack
+    }
+
+    void Processor::RNC(){
+        if (!flags.carry) RET();
     }
 
     void Processor::RC(){
