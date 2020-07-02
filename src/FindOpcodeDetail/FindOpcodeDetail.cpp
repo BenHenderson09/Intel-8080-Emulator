@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <sstream>
 #include "FindOpcodeDetail.hpp"
 #include "../../config/OpcodeConfig.hpp"
 
@@ -10,7 +11,10 @@ namespace {
             return iteratorAtOpcode->second;
         }
         else {
-            throw std::runtime_error("Not a valid opcode: " + std::to_string(opcode));
+            std::stringstream stream;
+            stream << "Not a valid opcode: 0x" << std::hex << (int)opcode;
+
+            throw std::runtime_error(stream.str());
         }
     }
 }
