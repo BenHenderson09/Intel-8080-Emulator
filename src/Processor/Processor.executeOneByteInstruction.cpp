@@ -272,7 +272,30 @@ namespace Intel8080 {
             // The accumulator remains the same in this case, with only the flags changing.
             case 0xaf: XRA(registers.a); break;
 
-            case 0xb6: ORA(memory[registers.hl.getPairValue()]);
+            // ORA B - Perform bitwise or on the accumulator with register B.
+            case 0xb0: ORA(registers.b); break;
+
+            // ORA C - Perform bitwise or on the accumulator with register C.
+            case 0xb1: ORA(registers.c); break;
+
+            // ORA D - Perform bitwise or on the accumulator with register D.
+            case 0xb2: ORA(registers.d); break;
+
+            // ORA E - Perform bitwise or on the accumulator with register E.
+            case 0xb3: ORA(registers.e); break;
+
+            // ORA H - Perform bitwise or on the accumulator with register H.
+            case 0xb4: ORA(registers.h); break;
+
+            // ORA L - Perform bitwise or on the accumulator with register L.
+            case 0xb5: ORA(registers.l); break;
+
+            // ORA M  - Perform bitwise or on the accumulator with the value held at the memory location
+            // specified by register pair hl.
+            case 0xb6: ORA(memory[registers.hl.getPairValue()]); break;
+
+            // ORA A - Perform bitwise or on the accumulator with the accumulator (null operation).
+            case 0xb7: ORA(registers.a); break;
 
             // RNZ - Return if not zero. If the Zero bit is zero, a return operation is performed.
             case 0xc0: RNZ(); break;
