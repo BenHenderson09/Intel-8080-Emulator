@@ -60,6 +60,9 @@ namespace Intel8080 {
             // JC - Jump to the specified memory address if the carry flag is one.
             case 0xda: JC(address); break;
             
+            // JPO - If parity flag is zero, carry out a jump operation
+            case 0xe2: JPO(address); break;
+
             default: throw UnsupportedOpcodeException(opcode);
         }
 
@@ -121,5 +124,9 @@ namespace Intel8080 {
 
     void Processor::JC(uint16_t address){
         if (flags.carry) JMP(address);
+    }
+
+    void Processor::JPO(uint16_t address){
+        if (!flags.parity) JMP(address);
     }
 }
