@@ -366,6 +366,9 @@ namespace Intel8080 {
             // into the register pair HL
             case 0xe1: POP(registers.hl); break;
 
+            // XTHL - The top 16 bits of the stack are exchanged with register pair HL
+            case 0xe3: XTHL(); break;
+
             // PUSH H - Write register pair HL to the top of the stack
             case 0xe5: PUSH(registers.hl); break;
 
@@ -563,6 +566,11 @@ namespace Intel8080 {
 
     void Processor::RC(){
         if (flags.carry) RET();
+    }
+
+    void Processor::XTHL(){
+        std::swap(registers.h, memory[registers.stackPointer+1]);
+        std::swap(registers.l, memory[registers.stackPointer]);
     }
 
     void Processor::RZ(){
