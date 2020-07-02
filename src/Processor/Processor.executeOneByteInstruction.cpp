@@ -274,6 +274,9 @@ namespace Intel8080 {
 
             case 0xb6: ORA(memory[registers.hl.getPairValue()]);
 
+            // RNZ - Return if not zero. If the Zero bit is zero, a return operation is performed.
+            case 0xc0: RNZ(); break;
+
             // POP B - Remove two bytes from the top of the stack and copy their values
             // into the register pair BC
             case 0xc1: POP(registers.bc); break;
@@ -410,6 +413,10 @@ namespace Intel8080 {
     void Processor::ORA(uint8_t valueForBitwiseOr){
         registers.a |= valueForBitwiseOr;
         alterFlagsAfterLogicalOperation();
+    }
+
+    void Processor::RNZ(){
+        if (!flags.zero) RET();
     }
 
     void Processor::POP(RegisterPair& registerPair){
