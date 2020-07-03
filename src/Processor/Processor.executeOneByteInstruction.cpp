@@ -648,6 +648,7 @@ namespace Intel8080 {
 
     void Processor::PCHL(){
         registers.programCounter = registers.hl.getPairValue();
+        registers.programCounter--; // Prevent automatic increment
     }
 
     void Processor::RZ(){
