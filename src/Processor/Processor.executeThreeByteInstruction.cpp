@@ -28,6 +28,10 @@ namespace Intel8080 {
             // LXI H - Occupy register pair HL  with the operands
             case 0x21: LXI(registers.hl, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
 
+            // SHLD - The specified memory location will be set to the value of the L register and the 
+            // memory location above this is set to the H register
+            case 0x22: SHLD(address); break;
+
             // LHLD - The L register is set to the value at the specified memory address and
             // the H register is set to the value at the memory address one place above. 
             case 0x2a: LHLD(address); break;
@@ -80,6 +84,11 @@ namespace Intel8080 {
 
     void Processor::LXI_SP(uint16_t address){
         registers.stackPointer = address;
+    }
+
+    void Processor::SHLD(uint16_t address){
+        memory[address] = registers.l;
+        memory[address + 1] = registers.h;
     }
 
     void Processor::LHLD(uint16_t address){

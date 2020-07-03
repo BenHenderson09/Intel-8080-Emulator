@@ -102,6 +102,7 @@ namespace Intel8080 {
             // Three byte instructions
             void LXI(RegisterPair& registerPair, uint8_t firstOperand, uint8_t secondOperand);
             void LXI_SP(uint16_t address);
+            void SHLD(uint16_t address);
             void LHLD(uint16_t address);
             void STA(uint16_t address);
             void LDA(uint16_t address);
