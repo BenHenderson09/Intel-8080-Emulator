@@ -55,12 +55,16 @@ namespace Intel8080 {
             // address 
             case 0xc4: CNZ(address); break;
 
+            // JZ - Carry out a jump operation if zero flag is equal to one
+            case 0xca: JZ(address); break;
+
+            // CZ - Carry out a call operation if the carry flag is equal to one
+            case 0xcc: CZ(address); break;
+
             // CALL - A subroutine is called by jumping to the specified memory address.
             // Also, a return address is pushed onto the stack for use with the RETURN instruction
             // when the subroutine finishes.
             case 0xcd: CALL(address); break;
-
-            case 0xca: JZ(address); break;
 
             // JNC - Jump if the carry flag is not set
             case 0xd2: JNC(address); break;
@@ -133,6 +137,10 @@ namespace Intel8080 {
 
     void Processor::JZ(uint16_t address){
         if (flags.zero) JMP(address);
+    }
+
+    void Processor::CZ(uint16_t address){
+        if (flags.carry) CALL(address);
     }
 
     void Processor::JNC(uint16_t address){
