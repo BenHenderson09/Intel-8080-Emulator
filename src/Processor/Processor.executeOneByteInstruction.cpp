@@ -48,7 +48,7 @@ namespace Intel8080 {
 
             // INR D - Increment register D
             case 0x14: INR(registers.d); break;
-
+            
             // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
 
