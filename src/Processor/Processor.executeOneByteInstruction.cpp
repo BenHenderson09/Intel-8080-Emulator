@@ -298,6 +298,31 @@ namespace Intel8080 {
             // MOV A,A - Copy register A to register A (null operation)
             case 0x7f: MOV(registers.a, registers.a); break;
 
+            // ADD B - Add register B to the accumulator
+            case 0x80: ADD(registers.b); break; 
+
+            // ADD C - Add register C to the accumulator
+            case 0x81: ADD(registers.c); break; 
+
+            // ADD D - Add register D to the accumulator
+            case 0x82: ADD(registers.d); break; 
+
+            // ADD E - Add register E to the accumulator
+            case 0x83: ADD(registers.e); break; 
+
+            // ADD H - Add register H to the accumulator
+            case 0x84: ADD(registers.h); break; 
+
+            // ADD L - Add register L to the accumulator
+            case 0x85: ADD(registers.l); break; 
+
+            // ADD M - Add the value at the memory address specified by register pair HL to the
+            // accumulator
+            case 0x86: ADD(memory[registers.hl.getPairValue()]); break;
+
+            // ADD A - Add the accumulator to the accumulator (doubled)
+            case 0x87: ADD(registers.a); break; 
+
             // ANA A - Bitwise and (&) operates on the accumulator and register A
             // (A is the same register as the accumulator), with the result stored in the accumulator.
             // The accumulator remains the same in this case, with only the flags changing.
@@ -489,6 +514,16 @@ namespace Intel8080 {
 
     void Processor::MOV(uint8_t& destination, uint16_t value){
         destination = value;
+    }
+
+    void Processor::ADD(uint8_t valueToAddToAccumulator){
+        uint16_t result{registers.a + valueToAddToAccumulator};
+        registers.a = extractByte<uint16_t>(result, 0);
+
+        flags.carry = extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint16_t>(result, 7);
+        flags.zero = (registers.a == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result);
     }
 
     void Processor::ANA(uint8_t registerForBitwiseAnd){

@@ -71,6 +71,7 @@ namespace Intel8080 {
             void STC();
             void LDAX(const RegisterPair& registerPair);
             void MOV(uint8_t& destination, uint16_t value);
+            void ADD(uint8_t valueToAddToAccumulator);
             void ANA(uint8_t registerForBitwiseAnd);
             void XRA(uint8_t registerForBitwiseXor);
             void ORA(uint8_t valueForBitwiseOr);
