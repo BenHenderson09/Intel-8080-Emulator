@@ -328,9 +328,30 @@ namespace Intel8080 {
             // The accumulator remains the same in this case, with only the flags changing.
             case 0xa7: ANA(registers.a); break;
 
-            // XRA A - Bitwise exclusive or (^) operates on the accumulator and register A
-            // (A is the same register as the accumulator), with the result stored in the accumulator.
-            // The accumulator remains the same in this case, with only the flags changing.
+            // XRA B - Bitwise exclusive or (^) operates on the accumulator with register B.
+            case 0xa8: XRA(registers.b); break;
+
+            // XRA C - Bitwise exclusive or (^) operates on the accumulator with register C.
+            case 0xa9: XRA(registers.c); break;
+
+            // XRA D - Bitwise exclusive or (^) operates on the accumulator with register D.
+            case 0xaa: XRA(registers.d); break;
+
+            // XRA E - Bitwise exclusive or (^) operates on the accumulator with register E.
+            case 0xab: XRA(registers.e); break;
+
+            // XRA H - Bitwise exclusive or (^) operates on the accumulator with register H.
+            case 0xac: XRA(registers.h); break;
+
+            // XRA L - Bitwise exclusive or (^) operates on the accumulator with register L.
+            case 0xad: XRA(registers.l); break;
+
+            // XRA M - Bitwise exclusive or (^) operates on the accumulator with the value at the
+            // memory address specified by register pair HL.
+            case 0xae: XRA(memory[registers.hl.getPairValue()]); break;
+
+            // XRA A - Bitwise exclusive or (^) operates on the accumulator with the accumulator.
+            // Only the flags change in this case.
             case 0xaf: XRA(registers.a); break;
 
             // ORA B - Perform bitwise or on the accumulator with register B.
