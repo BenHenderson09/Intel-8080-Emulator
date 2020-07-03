@@ -341,7 +341,29 @@ namespace Intel8080 {
             // ADD A - Add the accumulator to the accumulator (doubled)
             case 0x87: ADD(registers.a); break; 
 
-            // ANA A - Bitwise and (&) operates on the accumulator and register A
+            // ANA B - Bitwise and (&) operates on the accumulator with register B
+            case 0xa0: ANA(registers.b); break;
+
+            // ANA C - Bitwise and (&) operates on the accumulator with register C
+            case 0xa1: ANA(registers.c); break;
+
+            // ANA D - Bitwise and (&) operates on the accumulator with register D
+            case 0xa2: ANA(registers.d); break;
+
+            // ANA E - Bitwise and (&) operates on the accumulator with register E
+            case 0xa3: ANA(registers.e); break;
+
+            // ANA H - Bitwise and (&) operates on the accumulator with register H
+            case 0xa4: ANA(registers.h); break;
+
+            // ANA L - Bitwise and (&) operates on the accumulator with register L
+            case 0xa5: ANA(registers.l); break;
+
+            // ANA M - Bitwise and (&) operates on the accumulator with the value at 
+            // the memory location specified by register pair HL.
+            case 0xa6: ANA(memory[registers.hl.getPairValue()]); break;
+
+            // ANA A - Bitwise and (&) operates on the accumulator with register A
             // (A is the same register as the accumulator), with the result stored in the accumulator.
             // The accumulator remains the same in this case, with only the flags changing.
             case 0xa7: ANA(registers.a); break;
