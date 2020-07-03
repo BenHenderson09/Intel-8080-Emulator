@@ -97,6 +97,7 @@ namespace Intel8080 {
             void SUI(uint8_t valueToSubtractFromAccumulator);
             void ANI(uint8_t valueForBitwiseAnd);
             void CPI(uint8_t dataToCompare);
+            void ORI(uint8_t valueForBitwiseOr);
 
             // Three byte instructions
             void LXI(RegisterPair& registerPair, uint8_t firstOperand, uint8_t secondOperand);

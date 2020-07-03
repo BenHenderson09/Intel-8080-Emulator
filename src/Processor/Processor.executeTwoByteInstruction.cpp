@@ -61,6 +61,9 @@ namespace Intel8080 {
             // flag to test for equality.
             case 0xfe: CPI(firstByteFollowingOpcode); break;
 
+            // ORI - A bitwise or is carried out with the byte of immediate data and the accumulator
+            case 0xf6: ORI(firstByteFollowingOpcode); break;
+
             default: throw UnsupportedOpcodeException(opcode);
         }
 
@@ -106,5 +109,14 @@ namespace Intel8080 {
         flags.sign = extractBit<uint8_t>(result, 7);
         flags.zero = (result == 0);
         flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
+    void Processor::ORI(uint8_t valueForBitwiseOr){
+        registers.a |= valueForBitwiseOr;
+
+        flags.carry = 0;
+        flags.sign = extractBit<uint8_t>(registers.a, 7);
+        flags.zero = (registers.a == 0);
+        flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
 }
