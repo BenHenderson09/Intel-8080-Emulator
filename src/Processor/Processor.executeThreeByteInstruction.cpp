@@ -58,7 +58,7 @@ namespace Intel8080 {
             // JZ - Carry out a jump operation if zero flag is equal to one
             case 0xca: JZ(address); break;
 
-            // CZ - Carry out a call operation if the carry flag is equal to one
+            // CZ - Carry out a call operation if the zero flag is equal to one
             case 0xcc: CZ(address); break;
 
             // CALL - A subroutine is called by jumping to the specified memory address.
@@ -143,7 +143,7 @@ namespace Intel8080 {
     }
 
     void Processor::CZ(uint16_t address){
-        if (flags.carry) CALL(address);
+        if (flags.zero) CALL(address);
     }
 
     void Processor::JNC(uint16_t address){
