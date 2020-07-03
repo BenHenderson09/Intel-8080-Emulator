@@ -48,6 +48,9 @@ namespace Intel8080 {
 
             // INR D - Increment register D
             case 0x14: INR(registers.d); break;
+
+            // DCR D - Decrement register D
+            case 0x15: DCR(registers.d); break;
             
             // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
@@ -62,6 +65,9 @@ namespace Intel8080 {
             // INR E - Increment register E
             case 0x1c: INR(registers.e); break;
 
+            // DCR E - Decrement register E
+            case 0x1d: DCR(registers.e); break;
+
             // RAR - Rotate accumulator right through carry
             case 0x1f: RAR(); break;
 
@@ -71,6 +77,9 @@ namespace Intel8080 {
             // INR H - Increment register H
             case 0x24: INR(registers.h); break;
 
+            // DCR H - Decrement register H
+            case 0x25: DCR(registers.h); break;
+
             // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
             case 0x29: DAD(registers.hl); break;
 
@@ -79,6 +88,9 @@ namespace Intel8080 {
 
             // INR L - Increment register L
             case 0x2c: INR(registers.l); break;
+
+            // DCR L - Decrement register L
+            case 0x2d: DCR(registers.l); break;
 
             // INR M - Increment value held at the memory location specified by register pair HL
             case 0x34: INR(memory[registers.hl.getPairValue()]); break;
