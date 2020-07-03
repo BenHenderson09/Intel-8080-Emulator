@@ -75,6 +75,9 @@ namespace Intel8080 {
             // JPO - If parity flag is zero, carry out a jump operation
             case 0xe2: JPO(address); break;
 
+            // JM - Carry out a jump operation if the sign flag is one
+            case 0xfa: JM(address); break;
+
             default: throw UnsupportedOpcodeException(opcode);
         }
 
@@ -154,4 +157,8 @@ namespace Intel8080 {
     void Processor::JPO(uint16_t address){
         if (!flags.parity) JMP(address);
     }
-}
+
+    void Processor::JM(uint16_t address){
+        if (!flags.sign) JMP(address);
+    }
+};

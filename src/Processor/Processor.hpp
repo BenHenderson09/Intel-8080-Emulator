@@ -115,6 +115,7 @@ namespace Intel8080 {
             void JNC(uint16_t address);
             void JC(uint16_t address);
             void JPO(uint16_t address);
+            void JM(uint16_t address);
     };
 }
 
