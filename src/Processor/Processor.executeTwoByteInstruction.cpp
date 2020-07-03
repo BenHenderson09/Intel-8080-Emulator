@@ -41,6 +41,9 @@ namespace Intel8080 {
             // Input devices have not yet been implemented, so just skip on for now.
             case 0xdb: break;
 
+            // SUI - The byte of immediate data is subtracted from the accumulator
+            case 0xd6: SUI(firstByteFollowingOpcode); break;
+
             // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
             // storing the result in the accumulator
             case 0xe6: ANI(firstByteFollowingOpcode); break;
@@ -72,6 +75,17 @@ namespace Intel8080 {
         flags.carry = extractBit<uint16_t>(result, 8);
 
         registers.a = lowOrderByte;
+    }
+
+    void Processor::SUI(uint8_t valueToSubtractFromAccumulator){
+        uint8_t result{registers.a - valueToSubtractFromAccumulator};
+
+        flags.carry = (registers.a < valueToSubtractFromAccumulator);
+        flags.sign = extractBit<uint8_t>(result, 7);
+        flags.zero = (result == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result);
+
+        registers.a = result;
     }
 
     void Processor::ANI(uint8_t valueForBitwiseAnd){
