@@ -369,6 +369,9 @@ namespace Intel8080 {
             // PUSH B - Write register pair BC to the top of the stack
             case 0xc5: PUSH(registers.bc); break;
 
+            // RST 0 - Call a subroutine at the first byte in memory.
+            case 0xc7: RST(0); break;
+
             // RZ - If the zero bit is one, a RET instruction occurs
             case 0xc8: RZ(); break;
 
@@ -376,6 +379,9 @@ namespace Intel8080 {
             // address at the top of the stack into the program counter,
             // transferring program control.
             case 0xc9: RET(); break;
+
+            // RST 1 - Call a subroutine at the second byte in memory.
+            case 0xcf: RST(1); break;
 
             // RNC - If the carry bit is zero, perform a return operation
             case 0xd0: RNC(); break;
@@ -387,8 +393,14 @@ namespace Intel8080 {
             // PUSH D - Write register pair DE to the top of the stack
             case 0xd5: PUSH(registers.de); break;
 
+            // RST 2 - Call a subroutine at the third byte in memory.
+            case 0xd7: RST(2); break;
+
             // RC - If the carry bit is one, a RET instruction occurs
             case 0xd8: RC(); break;
+
+            // RST 3 - Call a subroutine at the fourth byte in memory.
+            case 0xdf: RST(3); break;
 
             // POP H - Remove two bytes from the top of the stack and copy their values
             // into the register pair HL
@@ -400,12 +412,18 @@ namespace Intel8080 {
             // PUSH H - Write register pair HL to the top of the stack
             case 0xe5: PUSH(registers.hl); break;
 
+            // RST 4 - Call a subroutine at the fifth byte in memory.
+            case 0xe7: RST(4); break;
+
             // PCHL - Set the program counter to the address held by register pair HL
             case 0xe9: PCHL(); break;
 
             // XCHG - Swap the values of register pairs DE and HL
             case 0xeb: XCHG(); break;
         
+            // RST 5 - Call a subroutine at the sixth byte in memory.
+            case 0xef: RST(5); break;
+
             // POP PSW - Take the top two bytes off the stack, loading the
             // accumulator with the byte preceding the stack pointer and setting
             // the flags based on the byte at the stack pointer. This "flag byte"
@@ -417,8 +435,14 @@ namespace Intel8080 {
             // mentioned previously onto the stack.
             case 0xf5: PUSH_PSW(); break;
 
+            // RST 6 - Call a subroutine at the seventh byte in memory.
+            case 0xf7: RST(6); break;
+
             // EI - Enable interrupts
             case 0xfb: EI(); break;
+
+            // RST 7 - Call a subroutine at the eighth byte in memory.
+            case 0xff: RST(7); break;
 
             default: throw UnsupportedOpcodeException(opcode);
         }
@@ -517,7 +541,7 @@ namespace Intel8080 {
     }
 
     void Processor::ADD(uint8_t valueToAddToAccumulator){
-        uint16_t result{registers.a + valueToAddToAccumulator};
+        uint16_t result{uint16_t(registers.a + valueToAddToAccumulator)};
         registers.a = extractByte<uint16_t>(result, 0);
 
         flags.carry = extractBit<uint16_t>(result, 8);
@@ -543,6 +567,10 @@ namespace Intel8080 {
 
     void Processor::RNZ(){
         if (!flags.zero) RET();
+    }
+
+    void Processor::RST(int subroutineNumber){
+        CALL(subroutineNumber * 8);
     }
 
     void Processor::POP(RegisterPair& registerPair){

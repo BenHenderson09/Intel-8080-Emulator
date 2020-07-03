@@ -76,6 +76,7 @@ namespace Intel8080 {
             void XRA(uint8_t registerForBitwiseXor);
             void ORA(uint8_t valueForBitwiseOr);
             void RNZ();
+            void RST(int subroutineNumber);
             void POP(RegisterPair& registerPair);
             void POP_PSW();
             void PUSH(const RegisterPair& registerPair);
