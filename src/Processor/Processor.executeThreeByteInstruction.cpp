@@ -108,7 +108,7 @@ namespace Intel8080 {
     }
 
     void Processor::CNZ(uint16_t address){
-        if (flags.zero) CALL(address);
+        if (!flags.zero) CALL(address);
     }
 
     void Processor::CALL(uint16_t address){
