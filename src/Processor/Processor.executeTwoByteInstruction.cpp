@@ -43,12 +43,15 @@ namespace Intel8080 {
             // Ouput devices have not yet been implemented, so just skip on for now.
             case 0xd3: break;
 
+            // SUI - The byte of immediate data is subtracted from the accumulator
+            case 0xd6: SUI(firstByteFollowingOpcode); break;
+
             // IN - An input device writes a byte to the accumulator.
             // Input devices have not yet been implemented, so just skip on for now.
             case 0xdb: break;
 
-            // SUI - The byte of immediate data is subtracted from the accumulator
-            case 0xd6: SUI(firstByteFollowingOpcode); break;
+            // SBI - The byte of immediate data and the carry bit are subtracted from the accumulator.
+            case 0xde: SBI(firstByteFollowingOpcode); break;
 
             // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
             // storing the result in the accumulator
@@ -97,6 +100,17 @@ namespace Intel8080 {
         registers.a = result;
     }
 
+    void Processor::SBI(uint8_t valueToSubtractFromAccumulator){
+        uint16_t result{registers.a - valueToSubtractFromAccumulator - flags.carry};
+
+        flags.carry = extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint16_t>(result, 7);
+        flags.zero = (result == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result);
+
+        registers.a = extractByte<uint16_t>(result, 0);
+    }
+
     void Processor::ANI(uint8_t valueForBitwiseAnd){
         registers.a &= valueForBitwiseAnd;
         alterFlagsAfterLogicalOperation();
@@ -119,4 +133,4 @@ namespace Intel8080 {
         flags.zero = (registers.a == 0);
         flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
-}
+};

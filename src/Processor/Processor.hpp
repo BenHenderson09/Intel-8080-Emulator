@@ -95,6 +95,7 @@ namespace Intel8080 {
             void MVI(uint8_t& destination, uint8_t data);
             void ADI(uint8_t addend);
             void SUI(uint8_t valueToSubtractFromAccumulator);
+            void SBI(uint8_t valueToSubtractFromAccumulator);
             void ANI(uint8_t valueForBitwiseAnd);
             void CPI(uint8_t dataToCompare);
             void ORI(uint8_t valueForBitwiseOr);
