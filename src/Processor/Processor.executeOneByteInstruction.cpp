@@ -92,6 +92,9 @@ namespace Intel8080 {
             // DCR L - Decrement register L
             case 0x2d: DCR(registers.l); break;
 
+            // CMA - Perform a bitwise not on the accumulator
+            case 0x2f: CMA(); break;
+
             // INR M - Increment value held at the memory location specified by register pair HL
             case 0x34: INR(memory[registers.hl.getPairValue()]); break;
 
@@ -499,6 +502,10 @@ namespace Intel8080 {
 
         flags.zero = (result == 0);
         flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
+    void Processor::CMA(){
+        registers.a = ~registers.a;
     }
 
     void Processor::RLC(){

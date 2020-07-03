@@ -61,6 +61,7 @@ namespace Intel8080 {
             // act as helpers to that function. The same goes for two and three byte instructions.
             void NOP();
             void DCR(uint8_t& valueToDecrement);
+            void CMA();
             void RLC();
             void DAD(const RegisterPair& registerPair);
             void DCX(const RegisterPair& registerPair);
