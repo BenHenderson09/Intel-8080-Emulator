@@ -101,7 +101,7 @@ namespace Intel8080 {
     }
 
     void Processor::SBI(uint8_t valueToSubtractFromAccumulator){
-        uint16_t result{registers.a - valueToSubtractFromAccumulator - flags.carry};
+        uint16_t result{uint16_t(registers.a - valueToSubtractFromAccumulator - flags.carry)};
 
         flags.carry = extractBit<uint16_t>(result, 8);
         flags.sign = extractBit<uint16_t>(result, 7);
