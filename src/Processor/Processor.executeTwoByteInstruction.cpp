@@ -78,7 +78,7 @@ namespace Intel8080 {
     }
 
     void Processor::SUI(uint8_t valueToSubtractFromAccumulator){
-        uint8_t result{registers.a - valueToSubtractFromAccumulator};
+        uint8_t result{uint8_t(registers.a - valueToSubtractFromAccumulator)};
 
         flags.carry = (registers.a < valueToSubtractFromAccumulator);
         flags.sign = extractBit<uint8_t>(result, 7);

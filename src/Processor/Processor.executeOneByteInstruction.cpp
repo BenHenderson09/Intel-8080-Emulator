@@ -21,6 +21,9 @@ namespace Intel8080 {
             // DCR B - Decrement register B
             case 0x05: DCR(registers.b); break;
 
+            // RLC - Rotate accumulator left
+            case 0x07: RLC(); break;
+
             // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
             case 0x09: DAD(registers.bc); break;
             
@@ -484,6 +487,14 @@ namespace Intel8080 {
 
         flags.zero = (result == 0);
         flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
+    void Processor::RLC(){
+        // The carry bit is set to bit 7 of the accumulator, the accumulator is shifted one position
+        // left and then bit 0 of the accumulator is set to the same value as the carry bit.
+        flags.carry = extractBit<uint8_t>(registers.a, 7);
+        registers.a <<= 1;
+        setBit<uint8_t>(registers.a, 0, flags.carry);
     }
 
     void Processor::DAD(const RegisterPair& registerPair){
