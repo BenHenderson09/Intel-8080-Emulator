@@ -46,7 +46,11 @@ namespace Intel8080 {
 
             // JMP - Jump to the specified memory address
             case 0xc3: JMP(address); break;
-            
+
+            // CNZ - If the zero flag equals one, a CALL operation is performed at the specified
+            // address 
+            case 0xc4: CNZ(address); break;
+
             // CALL - A subroutine is called by jumping to the specified memory address.
             // Also, a return address is pushed onto the stack for use with the RETURN instruction
             // when the subroutine finishes.
@@ -101,6 +105,10 @@ namespace Intel8080 {
         // Prevent from advancing to the next instruction automatically, as JMP is a way of
         // choosing the next instruction manually.
         registers.programCounter -= 3;
+    }
+
+    void Processor::CNZ(uint16_t address){
+        if (flags.zero) CALL(address);
     }
 
     void Processor::CALL(uint16_t address){

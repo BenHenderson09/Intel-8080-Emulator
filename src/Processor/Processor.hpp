@@ -106,6 +106,7 @@ namespace Intel8080 {
             void LDA(uint16_t address);
             void JNZ(uint16_t address);
             void JMP(uint16_t address);
+            void CNZ(uint16_t address);
             void CALL(uint16_t address);
             void JZ(uint16_t address);
             void JNC(uint16_t address);
