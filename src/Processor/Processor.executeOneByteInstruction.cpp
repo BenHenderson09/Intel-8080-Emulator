@@ -341,6 +341,31 @@ namespace Intel8080 {
             // ADD A - Add the accumulator to the accumulator (doubled)
             case 0x87: ADD(registers.a); break; 
 
+            // SUB B - Register B is subtracted from the accumulator
+            case 0x90: SUB(registers.b); break;
+
+            // SUB C - Register C is subtracted from the accumulator
+            case 0x91: SUB(registers.c); break;
+
+            // SUB D - Register D is subtracted from the accumulator
+            case 0x92: SUB(registers.d); break;
+
+            // SUB E - Register E is subtracted from the accumulator
+            case 0x93: SUB(registers.e); break;
+
+            // SUB H - Register H is subtracted from the accumulator
+            case 0x94: SUB(registers.h); break;
+
+            // SUB L - Register L is subtracted from the accumulator
+            case 0x95: SUB(registers.l); break;
+
+            // SUB M - The value at the memory address specified by the register pair HL
+            // is subtracted from the accumulator
+            case 0x96: SUB(memory[registers.hl.getPairValue()]); break;
+
+            // SUB A - The accumulator is subtracted from the accumulator
+            case 0x97: SUB(registers.a); break;
+
             // ANA B - Bitwise and (&) operates on the accumulator with register B
             case 0xa0: ANA(registers.b); break;
 
@@ -648,6 +673,16 @@ namespace Intel8080 {
         flags.parity = isThereAnEvenCountOfOnes(result);
     }
 
+    void Processor::SUB(uint8_t valueToSubtractFromAccumulator){
+        uint16_t result{uint16_t(registers.a - valueToSubtractFromAccumulator)};
+        registers.a = extractByte<uint16_t>(result, 0);
+
+        flags.carry = extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint16_t>(result, 7);
+        flags.zero = (registers.a == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
     void Processor::ANA(uint8_t registerForBitwiseAnd){
         registers.a &= registerForBitwiseAnd;
         alterFlagsAfterLogicalOperation();
@@ -664,7 +699,7 @@ namespace Intel8080 {
     }
 
     void Processor::CMP(uint8_t valueToCompare){
-        uint16_t result{registers.a - valueToCompare};
+        uint16_t result{uint16_t(registers.a - valueToCompare)};
         uint8_t firstByteOfResult{extractByte<uint16_t>(result, 0)};
 
         flags.carry = extractBit<uint16_t>(result, 8);
