@@ -69,6 +69,9 @@ namespace Intel8080 {
             // JNC - Jump if the carry flag is not set
             case 0xd2: JNC(address); break;
 
+            // CNC - If the carry flag is zero, perform a call operation
+            case 0xd4: CNC(address); break;
+
             // JC - Jump to the specified memory address if the carry flag is one.
             case 0xda: JC(address); break;
             
@@ -148,6 +151,10 @@ namespace Intel8080 {
 
     void Processor::JNC(uint16_t address){
         if (!flags.carry) JMP(address);
+    }
+
+    void Processor::CNC(uint16_t address){
+        if (!flags.carry) CALL(address);
     }
 
     void Processor::JC(uint16_t address){
