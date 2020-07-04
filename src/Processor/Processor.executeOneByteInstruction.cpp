@@ -420,6 +420,31 @@ namespace Intel8080 {
             // flags.
             case 0xb7: ORA(registers.a); break;
 
+            // CMP B - Register B is compared with the accumulator, changing only the flags.
+            case 0xb8: CMP(registers.b); break;
+
+            // CMP C - Register C is compared with the accumulator, changing only the flags.
+            case 0xb9: CMP(registers.c); break;
+
+            // CMP D - Register D is compared with the accumulator, changing only the flags.
+            case 0xba: CMP(registers.d); break;
+
+            // CMP E - Register E is compared with the accumulator, changing only the flags.
+            case 0xbb: CMP(registers.e); break;
+
+            // CMP H - Register H is compared with the accumulator, changing only the flags.
+            case 0xbc: CMP(registers.h); break;
+
+            // CMP L - Register L is compared with the accumulator, changing only the flags.
+            case 0xbd: CMP(registers.l); break;
+
+            // CMP M - The value held in memory at the address specified by register pair HL
+            // is compared with the accumulator, changing only the flags.
+            case 0xbe: CMP(memory[registers.hl.getPairValue()]); break;
+
+            // CMP A - The accumulator is compared with the accumulator, changing only the flags.
+            case 0xbf: CMP(registers.a); break;
+
             // RNZ - Return if not zero. If the Zero bit is zero, a return operation is performed.
             case 0xc0: RNZ(); break;
 
@@ -636,6 +661,16 @@ namespace Intel8080 {
     void Processor::ORA(uint8_t valueForBitwiseOr){
         registers.a |= valueForBitwiseOr;
         alterFlagsAfterLogicalOperation();
+    }
+
+    void Processor::CMP(uint8_t valueToCompare){
+        uint16_t result{registers.a - valueToCompare};
+        uint8_t firstByteOfResult{extractByte<uint16_t>(result, 0)};
+
+        flags.carry = extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint16_t>(result, 7);
+        flags.zero = firstByteOfResult == 0;
+        flags.parity = isThereAnEvenCountOfOnes(firstByteOfResult);
     }
 
     void Processor::RNZ(){
