@@ -11,7 +11,7 @@ namespace Intel8080 {
 
             virtual uint8_t readByte() const = 0;
 
-            const int portNumber;
+            const uint8_t portNumber;
     };
 };
 

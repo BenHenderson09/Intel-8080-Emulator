@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdint>
 #include <stdexcept>
+#include <algorithm>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
@@ -47,8 +48,7 @@ namespace Intel8080 {
             case 0xd6: SUI(firstByteFollowingOpcode); break;
 
             // IN - An input device writes a byte to the accumulator.
-            // Input devices have not yet been implemented, so just skip on for now.
-            case 0xdb: break;
+            case 0xdb: IN(firstByteFollowingOpcode); break;
 
             // SBI - The byte of immediate data and the carry bit are subtracted from the accumulator.
             case 0xde: SBI(firstByteFollowingOpcode); break;
@@ -98,6 +98,23 @@ namespace Intel8080 {
         flags.parity = isThereAnEvenCountOfOnes(result);
 
         registers.a = result;
+    }
+
+    void Processor::IN(uint8_t portNumber){
+        auto iteratorToSpecifiedDevice {
+            std::find_if(
+                inputDevices.begin(),
+                inputDevices.end(),
+                [portNumber](InputDevice* device){return device->portNumber == portNumber;}
+            )
+        };
+
+        if (iteratorToSpecifiedDevice != inputDevices.end()){
+            registers.a = (*iteratorToSpecifiedDevice)->readByte();
+        }
+        else {
+            throw std::runtime_error("No input devices are attached to the specified port.");
+        }
     }
 
     void Processor::SBI(uint8_t valueToSubtractFromAccumulator){
