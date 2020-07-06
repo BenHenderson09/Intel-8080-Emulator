@@ -10,6 +10,7 @@ set(INCLUDE_DIRS
     src/RegisterPair
     src/Processor
     src/ProcessorObserver
+    src/InputDevice
     src/FindOpcodeDetail)
 
 # Setup source files
@@ -18,6 +19,7 @@ set(SOURCE_FILES
     src/Processor/Processor.executeOneByteInstruction.cpp
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
+    src/InputDevice/InputDevice.cpp
     src/FindOpcodeDetail/FindOpcodeDetail.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp

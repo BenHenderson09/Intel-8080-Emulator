@@ -8,6 +8,7 @@
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 #include "../../config/OpcodeConfig.hpp"
 #include "../ProcessorObserver/ProcessorObserver.hpp"
+#include "../InputDevice/InputDevice.hpp"
 
 namespace Intel8080 {
     Processor::Processor(const std::string& programFileLocation){
@@ -52,6 +53,10 @@ namespace Intel8080 {
 
     void Processor::attachObserver(ProcessorObserver& observer){
         observers.push_back(&observer);
+    }
+
+    void Processor::attachInputDevice(InputDevice& inputDevice){
+        inputDevices.push_back(&inputDevice);
     }
 
     void Processor::loadProgramIntoMemory(const std::string& programFileLocation){
