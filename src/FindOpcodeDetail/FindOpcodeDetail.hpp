@@ -1,5 +1,5 @@
-#ifndef FIND_OPCODE_DETAIL
-#define FIND_OPCODE_DETAIL
+#ifndef FIND_OPCODE_DETAIL_HPP
+#define FIND_OPCODE_DETAIL_HPP
 
 #include <cstdint>
 #include <map>

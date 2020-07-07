@@ -1,5 +1,5 @@
-#ifndef REGISTER_PAIR
-#define REGISTER_PAIR
+#ifndef REGISTER_PAIR_HPP
+#define REGISTER_PAIR_HPP
 
 #include <cstdint>
 

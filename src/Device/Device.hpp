@@ -1,5 +1,5 @@
-#ifndef DEVICE
-#define DEVICE
+#ifndef DEVICE_HPP
+#define DEVICE_HPP
 
 #include <vector>
 #include <cstdint>

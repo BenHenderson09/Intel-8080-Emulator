@@ -1,5 +1,5 @@
-#ifndef OUTPUT_DEVICE
-#define OUTPUT_DEVICE
+#ifndef OUTPUT_DEVICE_HPP
+#define OUTPUT_DEVICE_HPP
 
 #include <cstdint>
 #include <vector>
@@ -12,7 +12,7 @@ namespace Intel8080 {
             OutputDevice(const std::initializer_list<uint8_t>& portNumbers);
             virtual ~OutputDevice(){}
 
-            virtual uint8_t writeByte(uint8_t portNumber, uint8_t byte) const = 0;
+            virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0;
     };
 };
 

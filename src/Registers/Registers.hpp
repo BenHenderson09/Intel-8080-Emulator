@@ -1,5 +1,5 @@
-#ifndef REGISTERS
-#define REGISTERS
+#ifndef REGISTERS_HPP
+#define REGISTERS_HPP
 
 #include <cstdint>
 #include "../RegisterPair/RegisterPair.hpp"

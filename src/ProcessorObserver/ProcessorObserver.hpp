@@ -1,5 +1,5 @@
-#ifndef PROCESSOR_OBSERVER
-#define PROCESSOR_OBSERVER
+#ifndef PROCESSOR_OBSERVER_HPP
+#define PROCESSOR_OBSERVER_HPP
 
 #include <cstdint>
 
