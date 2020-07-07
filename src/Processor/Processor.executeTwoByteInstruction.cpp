@@ -5,6 +5,7 @@
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../findDeviceByPortNumber/findDeviceByPortNumber.hpp"
 
 namespace Intel8080 {
     void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
@@ -101,20 +102,14 @@ namespace Intel8080 {
     }
 
     void Processor::IN(uint8_t portNumber){
-        auto iteratorToSpecifiedDevice {
-            std::find_if(
-                inputDevices.begin(),
-                inputDevices.end(),
-                [portNumber](InputDevice* device){return device->portNumber == portNumber;}
-            )
+        // Upcast to treat InputDevice pointers as Device pointers
+        std::vector<Device*> devices(inputDevices.begin(), inputDevices.end());
+
+        InputDevice* deviceAttachedToPort{
+            (InputDevice*)findDeviceByPortNumber(devices, portNumber)
         };
 
-        if (iteratorToSpecifiedDevice != inputDevices.end()){
-            registers.a = (*iteratorToSpecifiedDevice)->readByte();
-        }
-        else {
-            throw std::runtime_error("No input devices are attached to the specified port.");
-        }
+        registers.a = deviceAttachedToPort->readByte(portNumber);
     }
 
     void Processor::SBI(uint8_t valueToSubtractFromAccumulator){

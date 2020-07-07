@@ -1,5 +1,6 @@
 #include "InputDevice.hpp"
 
 namespace Intel8080 {
-    InputDevice::InputDevice(int portNumber) : portNumber{portNumber}{}
+    InputDevice::InputDevice(const std::initializer_list<uint8_t>& portNumbers)
+        : Device(portNumbers){}
 }

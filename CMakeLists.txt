@@ -23,7 +23,8 @@ set(SOURCE_FILES
     src/FindOpcodeDetail/FindOpcodeDetail.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
-    src/RegisterPair/RegisterPair.cpp)
+    src/RegisterPair/RegisterPair.cpp
+    src/findDeviceByPortNumber/findDeviceByPortNumber.cpp)
 
 # Create the shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
