@@ -6,6 +6,8 @@
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 #include "../findDeviceByPortNumber/findDeviceByPortNumber.hpp"
+#include "../InputDevice/InputDevice.hpp"
+#include "../OutputDevice/OutputDevice.hpp"
 
 namespace Intel8080 {
     void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
@@ -42,8 +44,7 @@ namespace Intel8080 {
             case 0xc6: ADI(firstByteFollowingOpcode); break;
         
             // OUT - The contents of the accumulator are sent to an output device.
-            // Ouput devices have not yet been implemented, so just skip on for now.
-            case 0xd3: break;
+            case 0xd3: OUT(firstByteFollowingOpcode); break;
 
             // SUI - The byte of immediate data is subtracted from the accumulator
             case 0xd6: SUI(firstByteFollowingOpcode); break;
@@ -88,6 +89,17 @@ namespace Intel8080 {
         flags.carry = extractBit<uint16_t>(result, 8);
 
         registers.a = lowOrderByte;
+    }
+    
+    void Processor::OUT(uint8_t portNumber){
+        // Upcast to treat OutputDevice pointers as Device pointers
+        std::vector<Device*> devices(outputDevices.begin(), outputDevices.end());
+
+        OutputDevice* deviceAttachedToPort{
+            (OutputDevice*)findDeviceByPortNumber(devices, portNumber)
+        };
+
+        deviceAttachedToPort->writeByte(portNumber, registers.a);
     }
 
     void Processor::SUI(uint8_t valueToSubtractFromAccumulator){

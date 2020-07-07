@@ -55,8 +55,12 @@ namespace Intel8080 {
         observers.push_back(&observer);
     }
 
-    void Processor::attachInputDevice(InputDevice& inputDevice){
-        inputDevices.push_back(&inputDevice);
+    void Processor::attachInputDevice(InputDevice& device){
+        inputDevices.push_back(&device);
+    }
+
+    void Processor::attachOutputDevice(OutputDevice& device){
+        outputDevices.push_back(&device);
     }
 
     void Processor::loadProgramIntoMemory(const std::string& programFileLocation){

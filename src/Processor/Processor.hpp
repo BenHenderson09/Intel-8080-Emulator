@@ -10,6 +10,7 @@
 #include "../RegisterPair/RegisterPair.hpp"
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 #include "../InputDevice/InputDevice.hpp"
+#include "../OutputDevice/OutputDevice.hpp"
 
 namespace Intel8080 {
     class Processor {
@@ -21,6 +22,7 @@ namespace Intel8080 {
             void beginEmulation();
             void attachObserver(ProcessorObserver& observer);
             void attachInputDevice(InputDevice& device);
+            void attachOutputDevice(OutputDevice& device);
             void interrupt(uint16_t address);
             bool areInterruptsEnabled();
             uint8_t readByteFromMemory(uint16_t address);
@@ -33,10 +35,9 @@ namespace Intel8080 {
             // and will conduct some action as a result.
             std::vector<ProcessorObserver*> observers;
 
-            // When an IN instruction occurs, the next byte following the opcode is read.
-            // This byte specifies the portnumber of the input device to read
-            // a byte of data from. This byte is then loaded into the accumulator.
+            // External IO devices
             std::vector<InputDevice*> inputDevices;
+            std::vector<OutputDevice*> outputDevices;
 
             // Dynamically allocated buffer to represent the memory. Also store the size of the program
             // so we know when to stop iterating over memory addresses.
@@ -103,6 +104,7 @@ namespace Intel8080 {
             // Two byte instructions
             void MVI(uint8_t& destination, uint8_t data);
             void ADI(uint8_t addend);
+            void OUT(uint8_t portNumber);
             void SUI(uint8_t valueToSubtractFromAccumulator);
             void IN(uint8_t portNumber);
             void SBI(uint8_t valueToSubtractFromAccumulator);

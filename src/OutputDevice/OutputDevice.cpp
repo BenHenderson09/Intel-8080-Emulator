@@ -1,9 +1,9 @@
 #include <initializer_list>
 #include <cstdint>
 #include "../Device/Device.hpp"
-#include "InputDevice.hpp"
+#include "OutputDevice.hpp"
 
 namespace Intel8080 {
-    InputDevice::InputDevice(const std::initializer_list<uint8_t>& portNumbers)
+    OutputDevice::OutputDevice(const std::initializer_list<uint8_t>& portNumbers)
         : Device(portNumbers){}
 }
