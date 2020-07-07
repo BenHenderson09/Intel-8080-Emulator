@@ -5,7 +5,6 @@
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
-#include "../findDeviceByPortNumber/findDeviceByPortNumber.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
 
@@ -92,14 +91,7 @@ namespace Intel8080 {
     }
     
     void Processor::OUT(uint8_t portNumber){
-        // Upcast to treat OutputDevice pointers as Device pointers
-        std::vector<Device*> devices(outputDevices.begin(), outputDevices.end());
 
-        OutputDevice* deviceAttachedToPort{
-            (OutputDevice*)findDeviceByPortNumber(devices, portNumber)
-        };
-
-        deviceAttachedToPort->writeByte(portNumber, registers.a);
     }
 
     void Processor::SUI(uint8_t valueToSubtractFromAccumulator){
@@ -114,14 +106,7 @@ namespace Intel8080 {
     }
 
     void Processor::IN(uint8_t portNumber){
-        // Upcast to treat InputDevice pointers as Device pointers
-        std::vector<Device*> devices(inputDevices.begin(), inputDevices.end());
 
-        InputDevice* deviceAttachedToPort{
-            (InputDevice*)findDeviceByPortNumber(devices, portNumber)
-        };
-
-        registers.a = deviceAttachedToPort->readByte(portNumber);
     }
 
     void Processor::SBI(uint8_t valueToSubtractFromAccumulator){
