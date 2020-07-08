@@ -10,6 +10,7 @@ set(INCLUDE_DIRS
     src/RegisterPair
     src/Processor
     src/ProcessorObserver
+    src/Device
     src/InputDevice
     src/OutputDevice
     src/FindOpcodeDetail)
@@ -20,10 +21,10 @@ set(SOURCE_FILES
     src/Processor/Processor.executeOneByteInstruction.cpp
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
-    src/Device/Device.cpp
     src/InputDevice/InputDevice.cpp
     src/OutputDevice/OutputDevice.cpp
     src/FindOpcodeDetail/FindOpcodeDetail.cpp
+    src/isDeviceAttachedToPort/isDeviceAttachedToPort.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
     src/RegisterPair/RegisterPair.cpp)

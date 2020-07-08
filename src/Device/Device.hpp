@@ -5,12 +5,10 @@
 #include <cstdint>
 
 namespace Intel8080 {
+    // Tagging interface for external IO devices
     class Device {
         public:
-            Device(const std::initializer_list<uint8_t>& portNumbers);
             virtual ~Device(){};
-
-            const std::vector<uint8_t>& portNumbers;
     };
 };
 
