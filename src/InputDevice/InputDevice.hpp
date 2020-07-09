@@ -12,7 +12,7 @@ namespace Intel8080 {
             InputDevice(const std::initializer_list<uint8_t>& inputPortNumbers);
             virtual ~InputDevice(){}
 
-            virtual uint8_t readByte(uint8_t portNumber) const = 0;
+            virtual uint8_t readByte(uint8_t portNumber, uint8_t accumulator) = 0;
 
             const std::vector<uint8_t> inputPortNumbers;
     };

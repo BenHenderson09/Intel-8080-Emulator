@@ -13,6 +13,9 @@ template <typename T>
 bool extractBit(T number, int bitIndex);
 
 template <typename T>
+uint8_t extractNibble(T number, int nibbleIndex);
+
+template <typename T>
 uint8_t extractByte(T number, int byteIndex);
 
 template <typename T>

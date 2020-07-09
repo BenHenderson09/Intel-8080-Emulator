@@ -95,7 +95,6 @@ namespace Intel8080 {
         for (OutputDevice* device : outputDevices){
             if (isDeviceAttachedToPort(device->outputPortNumbers, portNumber)){
                 device->writeByte(portNumber, registers.a);
-                return;
             }
         }
     }
@@ -114,8 +113,7 @@ namespace Intel8080 {
     void Processor::IN(uint8_t portNumber){
         for (InputDevice* device : inputDevices){
             if (isDeviceAttachedToPort(device->inputPortNumbers, portNumber)){
-                registers.a = device->readByte(portNumber);
-                return;
+                registers.a = device->readByte(portNumber, registers.a);
             }
         }
     }

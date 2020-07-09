@@ -80,6 +80,13 @@ namespace Intel8080 {
             // DCR H - Decrement register H
             case 0x25: DCR(registers.h); break;
 
+            // DAA - If the least significant four bits of the accumulator make a number greater
+            // than 9, or if the auxiliary carry flag is set, then add six to the accumulator.
+            // If the most significant four bits of the accumulator make a number greater than
+            // 9, or if the carry flag is set, the most significant four bits of the accumulator are
+            // incremented by six.
+            case 0x27: DAA(); break;
+
             // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
             case 0x29: DAD(registers.hl); break;
 
@@ -574,6 +581,27 @@ namespace Intel8080 {
 
         flags.zero = (result == 0);
         flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
+    void Processor::DAA(){
+        uint8_t mostSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 1)};
+        uint8_t leastSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
+
+        if (leastSignificantNibbleOfAccumulator > 9){
+            registers.a += 6;
+        }
+
+        if (mostSignificantNibbleOfAccumulator > 9){
+            mostSignificantNibbleOfAccumulator += 6;
+
+            registers.a = 
+                (mostSignificantNibbleOfAccumulator << 4) | leastSignificantNibbleOfAccumulator;
+
+            flags.carry = extractBit<uint8_t>(mostSignificantNibbleOfAccumulator, 4);
+            flags.sign = extractBit<uint8_t>(mostSignificantNibbleOfAccumulator, 3);
+            flags.zero = (mostSignificantNibbleOfAccumulator == 0);
+            flags.parity = isThereAnEvenCountOfOnes(mostSignificantNibbleOfAccumulator);
+        }
     }
 
     void Processor::CMA(){

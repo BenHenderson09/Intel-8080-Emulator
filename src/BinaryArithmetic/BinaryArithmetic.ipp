@@ -32,6 +32,24 @@ bool extractBit(T number, int bitIndex){
 }
 
 template <typename T>
+uint8_t extractNibble(T number, int nibbleIndex){
+    bool nibbleExists{nibbleIndex >= 0 && (sizeof(T) / 0.5) >= (nibbleIndex + 1)};
+
+    if (nibbleExists){
+        int bitsInFrontOfTheNibble{nibbleIndex * 4};
+
+        // Create a number in which the bits at the nibble index are set to 1,
+        // allowing us to extract this nibble from "number". Then shift out the
+        // trailing bits to achieve a single nibble result.
+        return (number & (0xff << bitsInFrontOfTheNibble)) >> bitsInFrontOfTheNibble;
+    }
+    else {
+        throw std::invalid_argument("Nibble at specified index doesn't exist.");
+    }
+}
+
+
+template <typename T>
 uint8_t extractByte(T number, int byteIndex){
     bool byteExists{byteIndex >= 0 && sizeof(T) >= (byteIndex + 1)};
 

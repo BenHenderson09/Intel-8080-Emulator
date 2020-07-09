@@ -5,7 +5,7 @@
 #include <cstdint>
 
 namespace Intel8080 {
-    // Tagging interface for external IO devices
+    // Tagging class for external IO devices
     class Device {
         public:
             virtual ~Device(){};
