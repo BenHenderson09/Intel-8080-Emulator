@@ -1,5 +1,4 @@
 #include <initializer_list>
-#include <iostream>
 #include <cstdint>
 #include "../Device/Device.hpp"
 #include "InputDevice.hpp"

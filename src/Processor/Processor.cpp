@@ -1,5 +1,4 @@
 #include <cstdint>
-#include <iostream>
 #include <string>
 #include <FileBuffer/FileBuffer.hpp>
 #include "Processor.hpp"

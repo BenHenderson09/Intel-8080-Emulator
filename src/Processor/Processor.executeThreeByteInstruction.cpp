@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstdint>
 #include <stdexcept>
 #include "Processor.hpp"

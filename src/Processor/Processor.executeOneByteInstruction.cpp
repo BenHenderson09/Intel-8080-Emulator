@@ -1,4 +1,3 @@
-#include <iostream>
 #include <iomanip>
 #include <cstdint>
 #include <stdexcept>
@@ -347,6 +346,31 @@ namespace Intel8080 {
 
             // ADD A - Add the accumulator to the accumulator (doubled)
             case 0x87: ADD(registers.a); break; 
+
+            // ADC B - Add register B and the the carry bit to the accumulator
+            case 0x88: ADC(registers.b); break;
+
+            // ADC C - Add register C and the the carry bit to the accumulator
+            case 0x89: ADC(registers.c); break;
+
+            // ADC D - Add register D and the the carry bit to the accumulator
+            case 0x8a: ADC(registers.d); break;
+
+            // ADC E - Add register E and the the carry bit to the accumulator
+            case 0x8b: ADC(registers.e); break;
+
+            // ADC H - Add register H and the the carry bit to the accumulator
+            case 0x8c: ADC(registers.h); break;
+
+            // ADC L - Add register L and the the carry bit to the accumulator
+            case 0x8d: ADC(registers.l); break;                        
+
+            // ADC M - Add the value at the memory location specified by register pair HL
+            // and the the carry bit to the accumulator.
+            case 0x8e: ADC(memory[registers.hl.getPairValue()]); break;
+
+            // ADC A - Add register A and the the carry bit to the accumulator
+            case 0x8f: ADC(registers.a); break;
 
             // SUB B - Register B is subtracted from the accumulator
             case 0x90: SUB(registers.b); break;
@@ -699,6 +723,10 @@ namespace Intel8080 {
         flags.sign = extractBit<uint16_t>(result, 7);
         flags.zero = (registers.a == 0);
         flags.parity = isThereAnEvenCountOfOnes(result);
+    }
+
+    void Processor::ADC(uint8_t valueToAddToAccumulator){
+        ADD(valueToAddToAccumulator + flags.carry);
     }
 
     void Processor::SUB(uint8_t valueToSubtractFromAccumulator){

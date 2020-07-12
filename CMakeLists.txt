@@ -21,6 +21,7 @@ set(SOURCE_FILES
     src/Processor/Processor.executeOneByteInstruction.cpp
     src/Processor/Processor.executeTwoByteInstruction.cpp
     src/Processor/Processor.executeThreeByteInstruction.cpp
+    src/Device/Device.cpp
     src/InputDevice/InputDevice.cpp
     src/OutputDevice/OutputDevice.cpp
     src/FindOpcodeDetail/FindOpcodeDetail.cpp

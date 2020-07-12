@@ -1,6 +1,5 @@
 #include <cstdint>
 #include <stdexcept>
-#include <iostream>
 
 // Return type U must have at least twice the bits type T has.
 // I.e, two uint8_t numbers can be concatenated to make a uint16_t number
@@ -41,7 +40,7 @@ uint8_t extractNibble(T number, int nibbleIndex){
         // Create a number in which the bits at the nibble index are set to 1,
         // allowing us to extract this nibble from "number". Then shift out the
         // trailing bits to achieve a single nibble result.
-        return (number & (0xff << bitsInFrontOfTheNibble)) >> bitsInFrontOfTheNibble;
+        return (number & (0xf << bitsInFrontOfTheNibble)) >> bitsInFrontOfTheNibble;
     }
     else {
         throw std::invalid_argument("Nibble at specified index doesn't exist.");

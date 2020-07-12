@@ -8,7 +8,7 @@ namespace Intel8080 {
     // Tagging class for external IO devices
     class Device {
         public:
-            virtual ~Device(){};
+            virtual ~Device() = 0;
     };
 };
 
