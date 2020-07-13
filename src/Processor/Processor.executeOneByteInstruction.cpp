@@ -11,6 +11,10 @@ namespace Intel8080 {
             // NOP - Execution continues, no change to processor
             case 0x00: NOP(); break;
 
+            // STAX B - The contents of the accumulator are stored at the memory location specified in
+            // register pair BC
+            case 0x02: STAX(registers.bc); break;
+
             // INX B - Increment register pair BC
             case 0x03: INX(registers.bc); break;
 
@@ -42,6 +46,10 @@ namespace Intel8080 {
             // RRC - Rotate accumulator right
             case 0x0f: RRC(); break;
 
+            // STAX D - The contents of the accumulator are stored at the memory location specified in
+            // register pair DE
+            case 0x12: STAX(registers.de); break;
+
             // INX D - Increment register pair DE
             case 0x13: INX(registers.de); break;
 
@@ -51,6 +59,9 @@ namespace Intel8080 {
             // DCR D - Decrement register D
             case 0x15: DCR(registers.d); break;
             
+            // RAL - Rotate accumulator left through carry
+            case 0x17: RAL(); break;
+
             // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
 
@@ -594,6 +605,10 @@ namespace Intel8080 {
 
     void Processor::NOP(){}
 
+    void Processor::STAX(const RegisterPair& registerPair){
+        memory[registerPair.getPairValue()] = registers.a;
+    }
+
     void Processor::DCR(uint8_t& valueToDecrement){
         // Decrementing when zero will set all bits in the register, resulting in the decimal
         // value 255.
@@ -683,6 +698,17 @@ namespace Intel8080 {
         registers.a >>= 1;
         setBit<uint8_t>(registers.a, 7, flags.carry);
         flags.carry = firstBitOfAccumulator;
+    }
+
+    void Processor::RAL(){
+        // Save bit 7 of the accumulator and then shift the accumulator one position
+        // to the left. Set bit 0 of the accumulator to the value of the carry bit
+        // and then set the carry bit to the saved last bit of the accumulator in its
+        // original state.
+        bool lastBitOfAccumulator{extractBit<uint16_t>(registers.a, 7)};
+        registers.a <<= 1;
+        setBit<uint8_t>(registers.a, 0, flags.carry);
+        flags.carry = lastBitOfAccumulator;
     }
 
     void Processor::INX(RegisterPair& registerPair){

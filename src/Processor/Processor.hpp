@@ -67,6 +67,7 @@ namespace Intel8080 {
             // One byte instructions. Defined in "Processor.executeOneByteInstruction" as they only
             // act as helpers to that function. The same goes for two and three byte instructions.
             void NOP();
+            void STAX(const RegisterPair& registerPair);
             void DCR(uint8_t& valueToDecrement);
             void DAA();
             void CMA();
@@ -76,6 +77,7 @@ namespace Intel8080 {
             void DCX_SP();
             void RRC();
             void RAR();
+            void RAL();
             void INX(RegisterPair& registerPair);
             void INR(uint8_t& valueToIncrement);
             void STC();
