@@ -130,6 +130,9 @@ namespace Intel8080 {
             // DCR A - Decrement register A
             case 0x3d: DCR(registers.a); break;
 
+            // CMC - Toggle the carry bit
+            case 0x3f: CMC(); break;
+
             // MOV B,B - Copy register B to register B (null operation)
             case 0x40: MOV(registers.b, registers.b); break;
 
@@ -678,6 +681,10 @@ namespace Intel8080 {
 
     void Processor::DCX_SP(){
         registers.stackPointer--;
+    }
+
+    void Processor::CMC(){
+        flags.carry = !flags.carry;
     }
 
     void Processor::RRC(){

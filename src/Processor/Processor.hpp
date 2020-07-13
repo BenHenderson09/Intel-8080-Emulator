@@ -75,6 +75,7 @@ namespace Intel8080 {
             void DAD(const RegisterPair& registerPair);
             void DCX(const RegisterPair& registerPair);
             void DCX_SP();
+            void CMC();
             void RRC();
             void RAR();
             void RAL();
