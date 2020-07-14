@@ -843,8 +843,11 @@ namespace Intel8080 {
         uint8_t flagByte{0};
         setBit<uint8_t>(flagByte, 7, flags.sign);
         setBit<uint8_t>(flagByte, 6, flags.zero);
+        setBit<uint8_t>(flagByte, 5, 0);
         setBit<uint8_t>(flagByte, 4, flags.auxiliaryCarry);
+        setBit<uint8_t>(flagByte, 3, 0);
         setBit<uint8_t>(flagByte, 2, flags.parity);
+        setBit<uint8_t>(flagByte, 1, 1);
         setBit<uint8_t>(flagByte, 0, flags.carry);
 
         memory[registers.stackPointer - 1] = registers.a;
