@@ -628,22 +628,29 @@ namespace Intel8080 {
     void Processor::DAA(){
         uint8_t mostSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 1)};
         uint8_t leastSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
+ 
+        if (flags.auxiliaryCarry || leastSignificantNibbleOfAccumulator > 9) {
+            // Increase by six, will result in a carry
+            leastSignificantNibbleOfAccumulator =
+                extractNibble<uint8_t>(leastSignificantNibbleOfAccumulator + 6, 0);
 
-        if (leastSignificantNibbleOfAccumulator > 9){
-            registers.a += 6;
+            // Apply the carry
+            flags.auxiliaryCarry = true;
+            mostSignificantNibbleOfAccumulator += 1;
         }
 
-        if (mostSignificantNibbleOfAccumulator > 9){
-            mostSignificantNibbleOfAccumulator += 6;
-
-            registers.a = 
-                (mostSignificantNibbleOfAccumulator << 4) | leastSignificantNibbleOfAccumulator;
-
-            flags.carry = extractBit<uint8_t>(mostSignificantNibbleOfAccumulator, 4);
-            flags.sign = extractBit<uint8_t>(mostSignificantNibbleOfAccumulator, 3);
-            flags.zero = (mostSignificantNibbleOfAccumulator == 0);
-            flags.parity = isThereAnEvenCountOfOnes(mostSignificantNibbleOfAccumulator);
+        if (flags.carry || mostSignificantNibbleOfAccumulator > 9) {
+            mostSignificantNibbleOfAccumulator += 6; // Increase by six, will result in a carry
+            flags.carry = true; // Apply the carry
         }
+
+        // Make an 8 bit number to load into the accumulator
+        registers.a =
+            (mostSignificantNibbleOfAccumulator << 4) | leastSignificantNibbleOfAccumulator;
+        
+        flags.zero = registers.a == 0;
+        flags.sign = extractBit<uint16_t>(registers.a, 7);
+        flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
 
     void Processor::CMA(){
