@@ -626,30 +626,22 @@ namespace Intel8080 {
     }
 
     void Processor::DAA(){
-        uint8_t mostSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 1)};
         uint8_t leastSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
- 
-        if (flags.auxiliaryCarry || leastSignificantNibbleOfAccumulator > 9) {
-            // Increase by six, will result in a carry
-            leastSignificantNibbleOfAccumulator =
-                extractNibble<uint8_t>(leastSignificantNibbleOfAccumulator + 6, 0);
 
-            // Apply the carry
-            flags.auxiliaryCarry = true;
-            mostSignificantNibbleOfAccumulator += 1;
+        if (flags.auxiliaryCarry || leastSignificantNibbleOfAccumulator > 9) {
+            registers.a += 6; // Increase the low order nibble by six. Creates a carry.
+            flags.auxiliaryCarry = true; // Apply the carry.
         }
+        
+        uint8_t mostSignificantNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 1)};
 
         if (flags.carry || mostSignificantNibbleOfAccumulator > 9) {
-            mostSignificantNibbleOfAccumulator += 6; // Increase by six, will result in a carry
+            registers.a += 0x60; // Increase the high order nibble by six. Creates a carry.
             flags.carry = true; // Apply the carry
         }
 
-        // Make an 8 bit number to load into the accumulator
-        registers.a =
-            (mostSignificantNibbleOfAccumulator << 4) | leastSignificantNibbleOfAccumulator;
-        
         flags.zero = registers.a == 0;
-        flags.sign = extractBit<uint16_t>(registers.a, 7);
+        flags.sign = extractBit<uint8_t>(registers.a, 7);
         flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
 
@@ -757,12 +749,22 @@ namespace Intel8080 {
 
     void Processor::ADD(uint8_t valueToAddToAccumulator){
         uint16_t result{uint16_t(registers.a + valueToAddToAccumulator)};
-        registers.a = extractByte<uint16_t>(result, 0);
 
         flags.carry = extractBit<uint16_t>(result, 8);
         flags.sign = extractBit<uint16_t>(result, 7);
-        flags.zero = (registers.a == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result);
+        flags.zero = ((result&0xff) == 0);
+        flags.parity = isThereAnEvenCountOfOnes(result&0xff);
+
+        uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
+        uint8_t lowOrderNibbleOfValueToAdd{extractNibble<uint8_t>(valueToAddToAccumulator, 0)};
+
+        uint8_t sumOfLowOrderNibbles {
+            uint8_t(lowOrderNibbleOfAccumulator + lowOrderNibbleOfValueToAdd)
+        };
+
+        flags.auxiliaryCarry = extractBit<uint8_t>(sumOfLowOrderNibbles, 4);
+
+        registers.a = extractByte<uint16_t>(result, 0);
     }
 
     void Processor::ADC(uint8_t valueToAddToAccumulator){
@@ -815,7 +817,7 @@ namespace Intel8080 {
     void Processor::POP(RegisterPair& registerPair){
         // The top of the stack descends through memory. I.e a POP operation will
         // result with the stack pointer being at a higher address, and vice versa for PUSH.
-        // Note that we aren't actually erasing the previous stack data after we copy it to
+        // Note that we aren'registers.a actually erasing the previous stack data after we copy it to
         // the register pair, we just move the stack pointer.
         // Later on, PUSH operations will just overwrite the previous data, so we're essentially
         // removing it from the stack without deleting it.
