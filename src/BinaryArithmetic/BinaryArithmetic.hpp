@@ -5,6 +5,8 @@
 #include "BinaryArithmetic.ipp"
 
 bool isThereAnEvenCountOfOnes(int number);
+uint16_t twosComplementEightBitSubtraction(uint8_t minuend, uint8_t subtrahend);
+uint8_t twosComplementFourBitSubtraction(uint8_t minuend, uint8_t subtrahend);
 
 template <typename T, typename U>
 U concatenateTwoNumbers(T first, T second);

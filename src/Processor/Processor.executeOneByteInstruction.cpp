@@ -613,16 +613,15 @@ namespace Intel8080 {
     }
 
     void Processor::DCR(uint8_t& valueToDecrement){
-        // Decrementing when zero will set all bits in the register, resulting in the decimal
-        // value 255.
-        uint8_t result{--valueToDecrement}; 
+        uint8_t result{uint8_t(valueToDecrement - 1)};
+        uint8_t lowOrderNibbleOfValueToDecrement{extractNibble<uint8_t>(valueToDecrement, 0)};
 
-        // The sign is specified in bit seven, which allows programmers to conventionally
-        // treat 8 bit numbers as having a range of -128 to +127 (two's complement).
         flags.sign = extractBit<uint8_t>(result, 7);
-
-        flags.zero = (result == 0);
+        flags.zero = result == 0;
         flags.parity = isThereAnEvenCountOfOnes(result);
+        flags.auxiliaryCarry = lowOrderNibbleOfValueToDecrement == 0;
+
+        valueToDecrement = result;
     }
 
     void Processor::DAA(){
@@ -728,11 +727,15 @@ namespace Intel8080 {
     }
 
     void Processor::INR(uint8_t& valueToIncrement){
-        uint8_t result{++valueToIncrement}; 
+        uint8_t result{uint8_t(valueToIncrement + 1)};
+        uint8_t lowOrderNibbleOfValueToIncrement{extractNibble<uint8_t>(valueToIncrement, 0)};
 
         flags.sign = extractBit<uint8_t>(result, 7);
-        flags.zero = (result == 0);
+        flags.zero = result == 0;
         flags.parity = isThereAnEvenCountOfOnes(result);
+        flags.auxiliaryCarry = (lowOrderNibbleOfValueToIncrement + 1) > 0xf;
+
+        valueToIncrement = result;
     }
 
     void Processor::STC(){
