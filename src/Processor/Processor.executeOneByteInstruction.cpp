@@ -754,11 +754,12 @@ namespace Intel8080 {
 
     void Processor::ADD(uint8_t valueToAddToAccumulator){
         uint16_t result{uint16_t(registers.a + valueToAddToAccumulator)};
+        uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
 
         flags.carry = extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint16_t>(result, 7);
-        flags.zero = ((result&0xff) == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result&0xff);
+        flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
+        flags.zero = lowOrderByteOfResult == 0;
+        flags.parity = isThereAnEvenCountOfOnes(lowOrderByteOfResult);
 
         uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
         uint8_t lowOrderNibbleOfValueToAdd{extractNibble<uint8_t>(valueToAddToAccumulator, 0)};
@@ -769,7 +770,7 @@ namespace Intel8080 {
 
         flags.auxiliaryCarry = extractBit<uint8_t>(sumOfLowOrderNibbles, 4);
 
-        registers.a = extractByte<uint16_t>(result, 0);
+        registers.a = lowOrderByteOfResult;
     }
 
     void Processor::ADC(uint8_t valueToAddToAccumulator){
@@ -818,13 +819,22 @@ namespace Intel8080 {
     }
 
     void Processor::CMP(uint8_t valueToCompare){
-        uint16_t result{uint16_t(registers.a - valueToCompare)};
+        uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
+        uint8_t lowOrderNibbleOfValueToCompare{extractNibble<uint8_t>(valueToCompare, 0)};
+
+        uint16_t result{twosComplementByteSubtraction(registers.a, valueToCompare)};
         uint8_t firstByteOfResult{extractByte<uint16_t>(result, 0)};
 
-        flags.carry = extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint16_t>(result, 7);
+        flags.carry = !extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint8_t>(firstByteOfResult, 7);
         flags.zero = firstByteOfResult == 0;
         flags.parity = isThereAnEvenCountOfOnes(firstByteOfResult);
+        flags.auxiliaryCarry = extractBit<uint8_t>(
+            twosComplementNibbleSubtraction(
+                lowOrderNibbleOfAccumulator,
+                lowOrderNibbleOfValueToCompare
+            ), 4
+        );
     }
 
     void Processor::RNZ(){

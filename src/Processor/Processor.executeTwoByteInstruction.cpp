@@ -79,15 +79,7 @@ namespace Intel8080 {
     }
 
     void Processor::ADI(uint8_t addend){
-        uint16_t result{(uint16_t)(registers.a + addend)}; // Use 16 bits to facilitate carry
-        uint8_t lowOrderByte{extractByte<uint16_t>(result, 0)};
-
-        flags.sign = extractBit<uint8_t>(lowOrderByte, 7);
-        flags.zero = (lowOrderByte == 0);
-        flags.parity = isThereAnEvenCountOfOnes(lowOrderByte);
-        flags.carry = extractBit<uint16_t>(result, 8);
-
-        registers.a = lowOrderByte;
+        ADD(addend);
     }
     
     void Processor::OUT(uint8_t portNumber){
@@ -99,14 +91,7 @@ namespace Intel8080 {
     }
 
     void Processor::SUI(uint8_t valueToSubtractFromAccumulator){
-        uint8_t result{uint8_t(registers.a - valueToSubtractFromAccumulator)};
-
-        flags.carry = (registers.a < valueToSubtractFromAccumulator);
-        flags.sign = extractBit<uint8_t>(result, 7);
-        flags.zero = (result == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result);
-
-        registers.a = result;
+        SUB(valueToSubtractFromAccumulator);
     }
 
     void Processor::IN(uint8_t portNumber){
@@ -118,14 +103,7 @@ namespace Intel8080 {
     }
 
     void Processor::SBI(uint8_t valueToSubtractFromAccumulator){
-        uint16_t result{uint16_t(registers.a - valueToSubtractFromAccumulator - flags.carry)};
-
-        flags.carry = extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint16_t>(result, 7);
-        flags.zero = (result == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result);
-
-        registers.a = extractByte<uint16_t>(result, 0);
+        SUB(valueToSubtractFromAccumulator + flags.carry);
     }
 
     void Processor::ANI(uint8_t valueForBitwiseAnd){
@@ -134,12 +112,7 @@ namespace Intel8080 {
     }
 
     void Processor::CPI(uint8_t dataToCompare){
-        uint8_t result = registers.a - dataToCompare;
-
-        flags.carry = (registers.a < dataToCompare);
-        flags.sign = extractBit<uint8_t>(result, 7);
-        flags.zero = (result == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result);
+        CMP(dataToCompare);
     }
 
     void Processor::ORI(uint8_t valueForBitwiseOr){
@@ -147,7 +120,7 @@ namespace Intel8080 {
 
         flags.carry = 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.zero = (registers.a == 0);
+        flags.zero = registers.a == 0;
         flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
 };
