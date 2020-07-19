@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <cstdint>
+#include "isValuePresentInVector.ipp"
 
 namespace Intel8080 {
-    bool isDeviceAttachedToPort(const std::vector<uint8_t>& portNumbers, uint8_t portNumber);
+    template <typename T>
+    bool isValuePresentInVector(const std::vector<T>& vector, T value);
 }
 
 #endif

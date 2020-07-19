@@ -6,7 +6,7 @@
 #include "../BinaryArithmetic/BinaryArithmetic.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
-#include "../isDeviceAttachedToPort/isDeviceAttachedToPort.hpp"
+#include "../isValuePresentInVector/isValuePresentInVector.hpp"
 
 namespace Intel8080 {
     void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
@@ -84,7 +84,7 @@ namespace Intel8080 {
     
     void Processor::OUT(uint8_t portNumber){
         for (OutputDevice* device : outputDevices){
-            if (isDeviceAttachedToPort(device->outputPortNumbers, portNumber)){
+            if (isValuePresentInVector(device->outputPortNumbers, portNumber)){
                 device->writeByte(portNumber, registers.a);
             }
         }
@@ -96,7 +96,7 @@ namespace Intel8080 {
 
     void Processor::IN(uint8_t portNumber){
         for (InputDevice* device : inputDevices){
-            if (isDeviceAttachedToPort(device->inputPortNumbers, portNumber)){
+            if (isValuePresentInVector(device->inputPortNumbers, portNumber)){
                 registers.a = device->readByte(portNumber, registers.a);
             }
         }

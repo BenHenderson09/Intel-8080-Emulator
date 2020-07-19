@@ -25,7 +25,7 @@ set(SOURCE_FILES
     src/InputDevice/InputDevice.cpp
     src/OutputDevice/OutputDevice.cpp
     src/FindOpcodeDetail/FindOpcodeDetail.cpp
-    src/isDeviceAttachedToPort/isDeviceAttachedToPort.cpp
+    src/isValuePresentInVector/isValuePresentInVector.ipp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
     src/RegisterPair/RegisterPair.cpp)
