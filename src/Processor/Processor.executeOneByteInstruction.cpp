@@ -619,7 +619,9 @@ namespace Intel8080 {
         flags.sign = extractBit<uint8_t>(result, 7);
         flags.zero = result == 0;
         flags.parity = isThereAnEvenCountOfOnes(result);
-        flags.auxiliaryCarry = lowOrderNibbleOfValueToDecrement == 0;
+        flags.auxiliaryCarry = extractBit<uint8_t> (
+            twosComplementNibbleSubtraction(lowOrderNibbleOfValueToDecrement, 1), 4
+        );
 
         valueToDecrement = result;
     }
@@ -775,13 +777,29 @@ namespace Intel8080 {
     }
 
     void Processor::SUB(uint8_t valueToSubtractFromAccumulator){
-        uint16_t result{uint16_t(registers.a - valueToSubtractFromAccumulator)};
-        registers.a = extractByte<uint16_t>(result, 0);
+        uint8_t lowOrderNibbleOfAccumulator {
+            extractNibble<uint8_t>(registers.a, 0)
+        };
 
-        flags.carry = extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint16_t>(result, 7);
-        flags.zero = (registers.a == 0);
-        flags.parity = isThereAnEvenCountOfOnes(result);
+        uint8_t lowOrderNibbleOfValueToSubtract {
+            extractNibble<uint8_t>(valueToSubtractFromAccumulator, 0)
+        };
+        
+        uint16_t result{twosComplementByteSubtraction(registers.a, valueToSubtractFromAccumulator)};
+        uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
+
+        flags.carry = !extractBit<uint16_t>(result, 8);
+        flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
+        flags.zero = lowOrderByteOfResult == 0;
+        flags.parity = isThereAnEvenCountOfOnes(lowOrderByteOfResult);
+        flags.auxiliaryCarry = extractBit<uint8_t>(
+            twosComplementNibbleSubtraction(
+                lowOrderNibbleOfAccumulator,
+                lowOrderNibbleOfValueToSubtract
+            ), 4
+        );
+
+        registers.a = lowOrderByteOfResult;
     }
 
     void Processor::ANA(uint8_t registerForBitwiseAnd){
