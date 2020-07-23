@@ -9,6 +9,11 @@
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 #include "../InputDevice/InputDevice.hpp"
 
+#include <chrono>
+#include <iostream>
+#include <unistd.h>
+#include <thread>
+
 namespace Intel8080 {
     Processor::Processor(const std::string& programFileLocation){
         loadProgramIntoMemory(programFileLocation);
@@ -24,9 +29,71 @@ namespace Intel8080 {
     }
 
     void Processor::beginEmulation(){
-        while (areThereInstructionsLeftToExecute()){
+        auto timeWhenSleepFactorAdjusted{std::chrono::steady_clock::now()};
+        int cyclesRanSinceSleepFactorAdjusted{0};
+        double secondsPerCycle{1.0 / 3000000};
+        int totalExecutionTimeElapsedInNanoseconds{0};
+        int totalExecutionTimeMeantToBeElapsedInNanoseconds{0};
+        double sleepFactor{1};
+
+        while (areThereInstructionsLeftToExecute()) {
+            int cyclesUsedByOpcode{
+                findNumberOfCyclesUsedByOpcode(memory[registers.programCounter])
+            };
+
+            cyclesRanSinceSleepFactorAdjusted += cyclesUsedByOpcode;
+
+            auto timeBeforeExecution{std::chrono::steady_clock::now()};
             executeNextInstruction();
+            auto timeAfterExecution{std::chrono::steady_clock::now()};
+
+            int executionTimeInNanoseconds{int((timeAfterExecution-timeBeforeExecution).count())};
+            int desiredExecutionTimeInNanoseconds{
+                int(cyclesUsedByOpcode * secondsPerCycle * 1000000000)
+            };
+
+            totalExecutionTimeElapsedInNanoseconds += executionTimeInNanoseconds;
+            totalExecutionTimeMeantToBeElapsedInNanoseconds += desiredExecutionTimeInNanoseconds;
+
+            if (totalExecutionTimeMeantToBeElapsedInNanoseconds - totalExecutionTimeElapsedInNanoseconds >= 10000){
+                std::this_thread::sleep_for(std::chrono::nanoseconds(10000));
+
+                totalExecutionTimeElapsedInNanoseconds += 10000 * sleepFactor;
+            }
+
+            sleepFactor += determineSleepFactorAdjustment(
+                timeWhenSleepFactorAdjusted,
+                cyclesRanSinceSleepFactorAdjusted
+            );
         }
+    }
+
+    double Processor::determineSleepFactorAdjustment(
+            std::chrono::time_point<std::chrono::steady_clock>& timeWhenSleepFactorAdjusted,
+            int& cyclesRanSinceSleepFactorAdjusted){
+        int delayBetweenAdjustmentsInNanoseconds{10000000};
+        int numberOfCyclesAwayFromDesiredClockSpeed{0};
+
+        int nanosecondsElapsedSincePreviousAdjustment{
+            int((std::chrono::steady_clock::now() - timeWhenSleepFactorAdjusted).count())
+        };
+
+        bool hasTheSpecifiedDelayElapsed {
+            nanosecondsElapsedSincePreviousAdjustment >= delayBetweenAdjustmentsInNanoseconds
+        };
+
+        if (hasTheSpecifiedDelayElapsed){
+            // Positive means we're running to slowly, negative means too fast.
+            numberOfCyclesAwayFromDesiredClockSpeed = 30000 - cyclesRanSinceSleepFactorAdjusted;
+
+            timeWhenSleepFactorAdjusted = std::chrono::steady_clock::now();
+            cyclesRanSinceSleepFactorAdjusted = 0;
+        }
+
+        // The sleep factor will be increased or decreased by the percentage inaccuracy,
+        // which will slow down or speed up the execution proportional to how close we are 
+        // to the desired clock speed.
+        return numberOfCyclesAwayFromDesiredClockSpeed / 30000.0;
     }
 
     void Processor::interrupt(uint16_t address){

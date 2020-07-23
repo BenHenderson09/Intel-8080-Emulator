@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <chrono>
 #include <FileBuffer/FileBuffer.hpp>
 #include <string>
 #include "../ArithmeticAndLogicFlags/ArithmeticAndLogicFlags.hpp"
@@ -51,6 +52,12 @@ namespace Intel8080 {
 
             void loadProgramIntoMemory(const std::string& programFileLocation);
             void executeNextInstruction();
+
+            double determineSleepFactorAdjustment(
+                std::chrono::time_point<std::chrono::steady_clock>& timeWhenSleepFactorAdjusted,
+                int& cyclesRanSinceSleepFactorAdjusted
+            );
+
             void notifyObserversOfInstructionExecution();
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
