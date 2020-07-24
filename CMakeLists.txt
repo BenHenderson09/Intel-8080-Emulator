@@ -26,6 +26,7 @@ set(SOURCE_FILES
     src/OutputDevice/OutputDevice.cpp
     src/FindOpcodeDetail/FindOpcodeDetail.cpp
     src/isValuePresentInVector/isValuePresentInVector.ipp
+    src/timeToRunInNanoseconds/timeToRunInNanoseconds.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryArithmetic/BinaryArithmetic.cpp
     src/RegisterPair/RegisterPair.cpp)

@@ -1,5 +1,5 @@
-#ifndef OPCODE_DETAILS_HPP
-#define OPCODE_DETAILS_HPP
+#ifndef OPCODE_CONFIG_HPP
+#define OPCODE_CONFIG_HPP
 
 #include <map>
 
