@@ -1,5 +1,5 @@
-#ifndef IS_DEVICE_ATTACHED_TO_PORT_HPP
-#define IS_DEVICE_ATTACHED_TO_PORT_HPP
+#ifndef IS_VALUE_PRESENT_IN_VECTOR_HPP
+#define IS_VALUE_PRESENT_IN_VECTOR_HPP
 
 #include <vector>
 #include <cstdint>

@@ -52,13 +52,8 @@ namespace Intel8080 {
 
             void loadProgramIntoMemory(const std::string& programFileLocation);
             void executeNextInstruction();
-            void handleInstructionSleep(int execTimeInNanoseconds);
-
-            double determineSleepFactorAdjustment(
-                std::chrono::time_point<std::chrono::steady_clock>& timeWhenSleepFactorAdjusted,
-                int& cyclesRanSinceSleepFactorAdjusted
-            );
-
+            void handleSleepAfterInstructionExecution(int execTimeInNanoseconds);
+            double determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted);
             void notifyObserversOfInstructionExecution();
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();

@@ -39,11 +39,11 @@ namespace Intel8080 {
             )};
 
             // Allows the emulator to run at the 8080 clock speed
-            handleInstructionSleep(execTimeInNanoseconds);
+            handleSleepAfterInstructionExecution(execTimeInNanoseconds);
         }
     }
 
-    void Processor::handleInstructionSleep(int execTimeInNanoseconds){
+    void Processor::handleSleepAfterInstructionExecution(int execTimeInNanoseconds){
         static double nanosecondsPerCycle{1e9 / ProcessorConfig::clockSpeedInHertz};
         static double sleepFactor{1};
         static auto timeWhenSleepFactorAdjusted{steadyClock::now()};
@@ -63,15 +63,13 @@ namespace Intel8080 {
             totalExecTimeInNanoseconds += 1e4 * sleepFactor;
         }
 
-        sleepFactor += determineSleepFactorAdjustment(
-            timeWhenSleepFactorAdjusted,
-            cyclesRanSinceSleepFactorAdjusted
-        );
+        sleepFactor += determineSleepFactorAdjustment(cyclesRanSinceSleepFactorAdjusted);
+        cyclesRanSinceSleepFactorAdjusted = 0;
     }
 
-    double Processor::determineSleepFactorAdjustment(
-            std::chrono::time_point<steadyClock>& timeWhenSleepFactorAdjusted,
-            int& cyclesRanSinceSleepFactorAdjusted){
+    double Processor::determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted){
+        static auto timeWhenSleepFactorAdjusted{steadyClock::now()};
+
         int delayBetweenAdjustmentsInNanoseconds{int(1e7)};
         int desiredCyclesPerAdjustment {int(
             ProcessorConfig::clockSpeedInHertz *
@@ -92,7 +90,6 @@ namespace Intel8080 {
                 desiredCyclesPerAdjustment - cyclesRanSinceSleepFactorAdjusted;
 
             timeWhenSleepFactorAdjusted = steadyClock::now();
-            cyclesRanSinceSleepFactorAdjusted = 0;
 
             // The sleep factor will be increased or decreased by the percentage inaccuracy,
             // which will slow down or speed up the execution proportional to how close we are 
