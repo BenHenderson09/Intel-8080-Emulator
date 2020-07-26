@@ -12,8 +12,7 @@ set(INCLUDE_DIRS
     src/ProcessorObserver
     src/Device
     src/InputDevice
-    src/OutputDevice
-    src/FindOpcodeDetail)
+    src/OutputDevice)
 
 # Setup source files
 set(SOURCE_FILES
