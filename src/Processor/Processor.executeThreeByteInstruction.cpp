@@ -167,4 +167,4 @@ namespace Intel8080 {
     void Processor::JM(uint16_t address){
         if (flags.sign) JMP(address);
     }
-};
+}

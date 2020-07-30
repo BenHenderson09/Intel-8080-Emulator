@@ -174,10 +174,8 @@ namespace Intel8080 {
     }
 
     void Processor::notifyObserversOfInstructionExecution(){
-        uint8_t opcode{memory[registers.programCounter]};
-
         for (ProcessorObserver* observer : observers){
-            observer->notifyInstructionHasBeenExecuted(opcode);
+            observer->notifyInstructionHasBeenExecuted();
         }
     }
 

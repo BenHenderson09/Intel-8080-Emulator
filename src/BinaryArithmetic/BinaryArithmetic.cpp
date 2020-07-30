@@ -23,6 +23,6 @@ uint8_t twosComplementNibbleSubtraction(uint8_t minuend, uint8_t subtrahend){
         return minuend + (~subtrahend & 0xf) + 1;
     }
     else {
-        throw std::runtime_error("Nibble subtraction must have nibbles as operands.");
+        throw std::invalid_argument{"Nibble subtraction must have nibbles as operands."};
     }
 }

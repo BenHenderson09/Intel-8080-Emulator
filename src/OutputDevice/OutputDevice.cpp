@@ -1,6 +1,5 @@
 #include <initializer_list>
 #include <cstdint>
-#include "../Device/Device.hpp"
 #include "OutputDevice.hpp"
 
 namespace Intel8080 {

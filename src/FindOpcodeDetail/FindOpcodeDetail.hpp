@@ -2,7 +2,6 @@
 #define FIND_OPCODE_DETAIL_HPP
 
 #include <cstdint>
-#include <map>
 
 namespace Intel8080 {
     int findNumberOfBytesUsedByOpcode(uint8_t opcode);

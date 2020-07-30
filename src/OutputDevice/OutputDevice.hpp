@@ -4,10 +4,9 @@
 #include <cstdint>
 #include <vector>
 #include <initializer_list>
-#include "../Device/Device.hpp"
 
 namespace Intel8080 {
-    class OutputDevice : public Device {
+    class OutputDevice {
         public:
             OutputDevice(const std::initializer_list<uint8_t>& outputPortNumbers);
             virtual ~OutputDevice(){}
@@ -16,6 +15,6 @@ namespace Intel8080 {
 
             const std::vector<uint8_t> outputPortNumbers;
     };
-};
+}
 
 #endif

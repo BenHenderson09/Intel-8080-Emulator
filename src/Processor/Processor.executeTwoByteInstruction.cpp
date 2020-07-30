@@ -123,4 +123,4 @@ namespace Intel8080 {
         flags.zero = registers.a == 0;
         flags.parity = isThereAnEvenCountOfOnes(registers.a);
     }
-};
+}

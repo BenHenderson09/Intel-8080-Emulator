@@ -2,7 +2,6 @@
 #define IS_VALUE_PRESENT_IN_VECTOR_HPP
 
 #include <vector>
-#include <cstdint>
 #include "isValuePresentInVector.ipp"
 
 namespace Intel8080 {

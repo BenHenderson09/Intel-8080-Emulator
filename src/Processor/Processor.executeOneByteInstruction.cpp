@@ -660,7 +660,7 @@ namespace Intel8080 {
 
     void Processor::DAD(const RegisterPair& registerPair){
         // Use 32 bits to facilitate carry
-        uint32_t result{(uint32_t)(registers.hl.getPairValue() + registerPair.getPairValue())};
+        uint32_t result{uint32_t(registers.hl.getPairValue() + registerPair.getPairValue())};
 
         // The first 16 bits will be assigned to register pair HL. This ignores the carry bit.
         registers.hl.setPairValue(result);
@@ -938,4 +938,4 @@ namespace Intel8080 {
     void Processor::EI(){
         interruptEnable = true;
     }
-};
+}

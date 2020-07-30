@@ -12,9 +12,9 @@ namespace {
         }
         else {
             std::stringstream stream;
-            stream << "Not a valid opcode: 0x" << std::hex << (int)opcode;
+            stream << "Not a valid opcode: 0x" << std::hex << int(opcode);
 
-            throw std::runtime_error(stream.str());
+            throw std::invalid_argument{stream.str()};
         }
     }
 }
