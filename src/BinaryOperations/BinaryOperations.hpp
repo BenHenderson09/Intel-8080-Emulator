@@ -1,8 +1,8 @@
-#ifndef BINARY_ARITHMETIC_HPP
-#define BINARY_ARITHMETIC_HPP
+#ifndef BINARY_OPERATIONS_HPP
+#define BINARY_OPERATIONS_HPP
 
 #include <cstdint>
-#include "BinaryArithmetic.ipp"
+#include "BinaryOperations.ipp"
 
 bool isThereAnEvenCountOfOnes(int number);
 uint16_t twosComplementByteSubtraction(uint8_t minuend, uint8_t subtrahend);

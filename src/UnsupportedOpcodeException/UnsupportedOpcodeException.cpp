@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <stdexcept>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -9,7 +10,8 @@ UnsupportedOpcodeException::UnsupportedOpcodeException(uint8_t opcode) :
 
 std::string UnsupportedOpcodeException::createErrorMessage(uint8_t opcode){
     std::stringstream stream;
-    stream << "The following opcode is unsupported: 0x" << std::hex << int(opcode);
+    stream << "The following opcode is unsupported: 0x"
+    << std::hex << static_cast<int>(opcode);
 
     return stream.str();
 }

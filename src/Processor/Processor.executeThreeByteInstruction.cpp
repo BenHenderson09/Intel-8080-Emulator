@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../BinaryOperations/BinaryOperations.hpp"
 
 namespace Intel8080 {
     void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode,

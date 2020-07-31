@@ -14,7 +14,7 @@ U concatenateTwoNumbers(T first, T second){
         return ((U() | first) << numberOfBitsInTypeT) | second;
     }
     else {
-        throw std::invalid_argument("Type U must have at least 2x capacity of type T.");
+        throw std::invalid_argument{"Type U must have at least 2x capacity of type T."};
     }
 }
 
@@ -26,7 +26,7 @@ bool extractBit(T number, int bitIndex){
         return (number & (1 << bitIndex)) != 0;
     }
     else {
-        throw std::invalid_argument("Bit at specified index doesn't exist.");
+        throw std::out_of_range{"Bit at specified index doesn't exist."};
     }
 }
 
@@ -43,7 +43,7 @@ uint8_t extractNibble(T number, int nibbleIndex){
         return (number & (0xf << bitsInFrontOfTheNibble)) >> bitsInFrontOfTheNibble;
     }
     else {
-        throw std::invalid_argument("Nibble at specified index doesn't exist.");
+        throw std::out_of_range{"Nibble at specified index doesn't exist."};
     }
 }
 
@@ -61,7 +61,7 @@ uint8_t extractByte(T number, int byteIndex){
         return (number & (0xff << bitsInFrontOfTheByte)) >> bitsInFrontOfTheByte;
     }
     else {
-        throw std::invalid_argument("Byte at specified index doesn't exist.");
+        throw std::out_of_range{"Byte at specified index doesn't exist."};
     }
 }
 
@@ -78,6 +78,6 @@ void setBit(T& number, int bitIndex, bool value){
         }
     }
     else {
-        throw std::invalid_argument("Bit at specified index doesn't exist.");
+        throw std::out_of_range{"Bit at specified index doesn't exist."};
     }
 }

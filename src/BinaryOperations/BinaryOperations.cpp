@@ -1,4 +1,6 @@
-#include "BinaryArithmetic.hpp"
+#include <cstdint>
+#include <stdexcept>
+#include "BinaryOperations.hpp"
 
 bool isThereAnEvenCountOfOnes(int number){ 
     int countOfOnesInBinaryNumber{0};

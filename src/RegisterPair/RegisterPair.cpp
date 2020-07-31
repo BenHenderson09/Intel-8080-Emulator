@@ -1,6 +1,6 @@
 #include <cstdint>
 #include "RegisterPair.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../BinaryOperations/BinaryOperations.hpp"
 
 namespace Intel8080 {
     void RegisterPair::setPairValue(uint16_t value){

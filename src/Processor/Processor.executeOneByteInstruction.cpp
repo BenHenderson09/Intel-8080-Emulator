@@ -1,9 +1,8 @@
-#include <iomanip>
 #include <cstdint>
-#include <stdexcept>
+#include <iomanip>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../BinaryOperations/BinaryOperations.hpp"
 
 namespace Intel8080 {
     void Processor::executeOneByteInstruction(uint8_t opcode){
@@ -613,7 +612,7 @@ namespace Intel8080 {
     }
 
     void Processor::DCR(uint8_t& valueToDecrement){
-        uint8_t result{uint8_t(valueToDecrement - 1)};
+        uint8_t result{static_cast<uint8_t>(valueToDecrement - 1)};
         uint8_t lowOrderNibbleOfValueToDecrement{extractNibble<uint8_t>(valueToDecrement, 0)};
 
         flags.sign = extractBit<uint8_t>(result, 7);
@@ -660,7 +659,7 @@ namespace Intel8080 {
 
     void Processor::DAD(const RegisterPair& registerPair){
         // Use 32 bits to facilitate carry
-        uint32_t result{uint32_t(registers.hl.getPairValue() + registerPair.getPairValue())};
+        uint32_t result{static_cast<uint32_t>(registers.hl.getPairValue() + registerPair.getPairValue())};
 
         // The first 16 bits will be assigned to register pair HL. This ignores the carry bit.
         registers.hl.setPairValue(result);
@@ -729,7 +728,7 @@ namespace Intel8080 {
     }
 
     void Processor::INR(uint8_t& valueToIncrement){
-        uint8_t result{uint8_t(valueToIncrement + 1)};
+        uint8_t result{static_cast<uint8_t>(valueToIncrement + 1)};
         uint8_t lowOrderNibbleOfValueToIncrement{extractNibble<uint8_t>(valueToIncrement, 0)};
 
         flags.sign = extractBit<uint8_t>(result, 7);
@@ -753,7 +752,7 @@ namespace Intel8080 {
     }
 
     void Processor::ADD(uint8_t valueToAddToAccumulator){
-        uint16_t result{uint16_t(registers.a + valueToAddToAccumulator)};
+        uint16_t result{static_cast<uint16_t>(registers.a + valueToAddToAccumulator)};
         uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
 
         flags.carry = extractBit<uint16_t>(result, 8);
@@ -765,7 +764,7 @@ namespace Intel8080 {
         uint8_t lowOrderNibbleOfValueToAdd{extractNibble<uint8_t>(valueToAddToAccumulator, 0)};
 
         uint8_t sumOfLowOrderNibbles {
-            uint8_t(lowOrderNibbleOfAccumulator + lowOrderNibbleOfValueToAdd)
+            static_cast<uint8_t>(lowOrderNibbleOfAccumulator + lowOrderNibbleOfValueToAdd)
         };
 
         flags.auxiliaryCarry = extractBit<uint8_t>(sumOfLowOrderNibbles, 4);

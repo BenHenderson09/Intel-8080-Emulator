@@ -1,7 +1,8 @@
 #include <cstdint>
+#include <stdexcept>
 #include <sstream>
 #include "FindOpcodeDetail.hpp"
-#include "../../config/OpcodeConfig.hpp"
+#include "../../constants/OpcodeConstants.hpp"
 
 namespace {
     int findOpcodeFromMap(uint8_t opcode, const std::map<uint8_t, int>& map){
@@ -12,7 +13,7 @@ namespace {
         }
         else {
             std::stringstream stream;
-            stream << "Not a valid opcode: 0x" << std::hex << int(opcode);
+            stream << "Not a valid opcode: 0x" << std::hex << static_cast<int>(opcode);
 
             throw std::invalid_argument{stream.str()};
         }
@@ -21,10 +22,10 @@ namespace {
 
 namespace Intel8080 {
     int findNumberOfBytesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeConfig::bytesUsedByOpcodes);
+        return findOpcodeFromMap(opcode, OpcodeConstants::bytesUsedByOpcodes);
     }
 
     int findNumberOfCyclesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeConfig::cyclesUsedByOpcodes);
+        return findOpcodeFromMap(opcode, OpcodeConstants::cyclesUsedByOpcodes);
     }
 }

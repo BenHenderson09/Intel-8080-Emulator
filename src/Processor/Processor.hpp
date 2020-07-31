@@ -10,6 +10,7 @@
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
+#include "../../constants/ProcessorConstants.hpp"
 
 namespace Intel8080 {
     class Processor {
@@ -40,7 +41,7 @@ namespace Intel8080 {
 
             // Dynamically allocated buffer to represent the memory. Also store the size of the program
             // so we know when to stop iterating over memory addresses.
-            uint8_t* memory{new uint8_t[0xffff]};
+            uint8_t* memory{new uint8_t[ProcessorConstants::memorySizeInBytes]};
             uint16_t sizeOfProgramInBytes;
 
             // The processor has an "Interrupt Enable" setting on pin 16. Two instructions, EI and DI, set this pin,

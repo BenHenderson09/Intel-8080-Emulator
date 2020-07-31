@@ -6,11 +6,11 @@
 namespace Intel8080 {
     class RegisterPair {
         public:
-            void setPairValue(uint16_t value);
-            uint16_t getPairValue() const;
-            
             uint8_t& firstRegister;
             uint8_t& secondRegister;
+
+            void setPairValue(uint16_t value);
+            uint16_t getPairValue() const;
     };
 }
 

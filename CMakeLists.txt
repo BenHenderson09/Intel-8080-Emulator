@@ -31,7 +31,7 @@ set(SOURCE_FILES
     src/isValuePresentInVector/isValuePresentInVector.ipp
     src/timeToRunInNanoseconds/timeToRunInNanoseconds.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
-    src/BinaryArithmetic/BinaryArithmetic.cpp
+    src/BinaryOperations/BinaryOperations.cpp
     src/RegisterPair/RegisterPair.cpp)
 
 # Create the shared library

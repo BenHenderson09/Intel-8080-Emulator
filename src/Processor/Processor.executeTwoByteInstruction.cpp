@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
-#include "../BinaryArithmetic/BinaryArithmetic.hpp"
+#include "../BinaryOperations/BinaryOperations.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
 #include "../isValuePresentInVector/isValuePresentInVector.hpp"

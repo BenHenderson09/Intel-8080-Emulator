@@ -1,8 +1,9 @@
 #ifndef UNSUPPORTED_OPCODE_EXCEPTION_HPP
 #define UNSUPPORTED_OPCODE_EXCEPTION_HPP
 
-#include <stdexcept>
 #include <cstdint>
+#include <stdexcept>
+#include <string>
 
 class UnsupportedOpcodeException : public std::runtime_error {
     public:

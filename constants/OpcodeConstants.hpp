@@ -1,9 +1,10 @@
-#ifndef OPCODE_CONFIG_HPP
-#define OPCODE_CONFIG_HPP
+#ifndef OPCODE_CONSTANTS_HPP
+#define OPCODE_CONSTANTS_HPP
 
+#include <cstdint>
 #include <map>
 
-namespace OpcodeConfig {
+namespace OpcodeConstants {
     const std::map<uint8_t, int> bytesUsedByOpcodes {
         { 0x00, 1},
         { 0x02, 1},
