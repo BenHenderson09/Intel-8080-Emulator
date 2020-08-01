@@ -9,7 +9,8 @@ namespace Intel8080 {
             uint8_t secondByteFollowingOpcode){
 
         // The 8080 orders the operands with the least significant byte coming first (little endian).
-        // Here we convert those bytes to a 16 bit value to make it easier to work with for addresses.
+        // Here we convert those bytes to a 16 bit value to make it
+        // easier to work with for addresses.
         uint16_t address {
             concatenateTwoNumbers<uint8_t, uint16_t>(
                 secondByteFollowingOpcode, // High order byte (most significant)
@@ -19,16 +20,19 @@ namespace Intel8080 {
 
         switch (opcode){
             // LXI B - Occupy register pair BC with the operands
-            case 0x01: LXI(registers.bc, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x01:
+                LXI(registers.bc, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
 
             // LXI D - Occupy register pair DE with the operands
-            case 0x11: LXI(registers.de, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x11:
+                LXI(registers.de, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
 
             // LXI H - Occupy register pair HL  with the operands
-            case 0x21: LXI(registers.hl, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x21:
+                LXI(registers.hl, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
 
-            // SHLD - The specified memory location will be set to the value of the L register and the 
-            // memory location above this is set to the H register
+            // SHLD - The specified memory location will be set to the value
+            // of the L register and the memory location above this is set to the H register
             case 0x22: SHLD(address); break;
 
             // LHLD - The L register is set to the value at the specified memory address and

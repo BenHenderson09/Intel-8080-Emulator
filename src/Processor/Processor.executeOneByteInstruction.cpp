@@ -10,8 +10,8 @@ namespace Intel8080 {
             // NOP - Execution continues, no change to processor
             case 0x00: NOP(); break;
 
-            // STAX B - The contents of the accumulator are stored at the memory location specified in
-            // register pair BC
+            // STAX B - The contents of the accumulator are stored at the memory
+            // location specified in register pair BC
             case 0x02: STAX(registers.bc); break;
 
             // INX B - Increment register pair BC
@@ -26,11 +26,12 @@ namespace Intel8080 {
             // RLC - Rotate accumulator left
             case 0x07: RLC(); break;
 
-            // DAD B - The 16-bit number in register pair BC is added to the 16-bit number held in HL
+            // DAD B - The 16-bit number in register pair BC is
+            // added to the 16-bit number held in HL
             case 0x09: DAD(registers.bc); break;
             
-            // LDAX B - Set the contents of the accumulator to the value at a memory location.
-            // The address of this value is found in register pair BC.
+            // LDAX B - Set the contents of the accumulator to the value held at the memory
+            // location specified in register pair BC.
             case 0x0a: LDAX(registers.bc); break;
 
             // DCX B - Decrement register pair BC
@@ -64,8 +65,8 @@ namespace Intel8080 {
             // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
 
-            // LDAX D - Set the contents of the accumulator to the value at a memory location.
-            // The address of this value is found in register pair DE.
+            // LDAX D - Set the contents of the accumulator to the value held at the memory
+            // location specified in register pair DE.
             case 0x1a: LDAX(registers.de); break;
 
             // DCX D - Decrement register pair DE
@@ -92,8 +93,8 @@ namespace Intel8080 {
             // DAA - If the least significant four bits of the accumulator make a number greater
             // than 9, or if the auxiliary carry flag is set, then add six to the accumulator.
             // If the most significant four bits of the accumulator make a number greater than
-            // 9, or if the carry flag is set, the most significant four bits of the accumulator are
-            // incremented by six.
+            // 9, or if the carry flag is set, the most significant
+            // four bits of the accumulator are incremented by six.
             case 0x27: DAA(); break;
 
             // DAD H - The 16-bit number in register pair HL is added to itself (doubled)
@@ -433,8 +434,9 @@ namespace Intel8080 {
             case 0xa6: ANA(memory[registers.hl.getPairValue()]); break;
 
             // ANA A - Bitwise and (&) operates on the accumulator with register A
-            // (A is the same register as the accumulator), with the result stored in the accumulator.
-            // The accumulator remains the same in this case, with only the flags changing.
+            // (A is the same register as the accumulator), with the result
+            // stored in the accumulator. The accumulator remains the same in this case,
+            // with only the flags changing.
             case 0xa7: ANA(registers.a); break;
 
             // XRA B - Bitwise exclusive or (^) operates on the accumulator with register B.
@@ -692,7 +694,7 @@ namespace Intel8080 {
         // bit 7 of register A to the value of the carry.
         flags.carry = registers.a & 1;
         registers.a >>= 1;
-        registers.a |= (flags.carry << 7);
+        registers.a |= flags.carry << 7;
     }
 
     void Processor::RAR(){
@@ -785,7 +787,12 @@ namespace Intel8080 {
             extractNibble<uint8_t>(valueToSubtractFromAccumulator, 0)
         };
         
-        uint16_t result{twosComplementByteSubtraction(registers.a, valueToSubtractFromAccumulator)};
+        uint16_t result{
+            twosComplementByteSubtraction(
+                registers.a,
+                valueToSubtractFromAccumulator
+            )
+        };
         uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
 
         flags.carry = !extractBit<uint16_t>(result, 8);
@@ -847,8 +854,8 @@ namespace Intel8080 {
     void Processor::POP(RegisterPair& registerPair){
         // The top of the stack descends through memory. I.e a POP operation will
         // result with the stack pointer being at a higher address, and vice versa for PUSH.
-        // Note that we aren'registers.a actually erasing the previous stack data after we copy it to
-        // the register pair, we just move the stack pointer.
+        // Note that we aren'registers.a actually erasing the previous stack data
+        // after we copy it to the register pair, we just move the stack pointer.
         // Later on, PUSH operations will just overwrite the previous data, so we're essentially
         // removing it from the stack without deleting it.
 

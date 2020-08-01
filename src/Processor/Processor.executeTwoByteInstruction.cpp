@@ -51,7 +51,8 @@ namespace Intel8080 {
             // IN - An input device writes a byte to the accumulator.
             case 0xdb: IN(firstByteFollowingOpcode); break;
 
-            // SBI - The byte of immediate data and the carry bit are subtracted from the accumulator.
+            // SBI - The byte of immediate data and the carry bit are
+            // subtracted from the accumulator.
             case 0xde: SBI(firstByteFollowingOpcode); break;
 
             // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
@@ -60,12 +61,13 @@ namespace Intel8080 {
         
             // CPI - Compare the immediate data with the contents of the accumulator.
             // This is done internally by subtracting the data from the accumulator contents and
-            // setting the flags as appropriate without actually changing the value held in the accumulator
-            // after the operation has finished. I.e Only the flags change. For example, you could use the zero
-            // flag to test for equality.
+            // setting the flags as appropriate without actually changing the value held
+            // in the accumulator after the operation has finished. I.e Only the flags change.
+            // For example, you could use the zero flag to test for equality.
             case 0xfe: CPI(firstByteFollowingOpcode); break;
 
-            // ORI - A bitwise or is carried out with the byte of immediate data and the accumulator
+            // ORI - A bitwise or is carried out with the byte of
+            // immediate data and the accumulator
             case 0xf6: ORI(firstByteFollowingOpcode); break;
 
             default: throw UnsupportedOpcodeException(opcode);

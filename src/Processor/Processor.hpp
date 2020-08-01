@@ -10,7 +10,6 @@
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
-#include "../../constants/ProcessorConstants.hpp"
 
 namespace Intel8080 {
     class Processor {
@@ -24,29 +23,23 @@ namespace Intel8080 {
             void attachInputDevice(InputDevice& device);
             void attachOutputDevice(OutputDevice& device);
             void interrupt(uint16_t address);
-            bool areInterruptsEnabled();
-            uint8_t readByteFromMemory(uint16_t address);
+            bool areInterruptsEnabled() const;
+            uint8_t readByteFromMemory(uint16_t address) const;
 
         private:
             Registers registers;
             ArithmeticAndLogicFlags flags;
-
-            // Observers are notified when an instruction is executed,
-            // and will conduct some action as a result.
-            std::vector<ProcessorObserver*> observers;
-
-            // External IO devices
             std::vector<InputDevice*> inputDevices;
             std::vector<OutputDevice*> outputDevices;
-
-            // Dynamically allocated buffer to represent the memory. Also store the size of the program
-            // so we know when to stop iterating over memory addresses.
-            uint8_t* memory{new uint8_t[ProcessorConstants::memorySizeInBytes]};
+            uint8_t* memory;
             uint16_t sizeOfProgramInBytes;
 
-            // The processor has an "Interrupt Enable" setting on pin 16. Two instructions, EI and DI, set this pin,
-            // and this pin turns off or turns on the interrupt system, so if it is disabled,
-            // interrupts will do nothing.
+            // Observers are notified when an instruction is executed,
+            // and will conduct some action as a result (observer pattern).
+            std::vector<ProcessorObserver*> observers;
+
+            // The processor has an "Interrupt Enable" setting which turns on or off the interrupt
+            // system. If it is disabled, interrupts will do nothing. It is false by default.
             bool interruptEnable{false};
 
             void loadProgramIntoMemory(const std::string& programFileLocation);
@@ -57,7 +50,6 @@ namespace Intel8080 {
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
 
-            // Instructions take a maximum of 3 bytes
             void executeOneByteInstruction(uint8_t opcode);
             void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
             void executeThreeByteInstruction(

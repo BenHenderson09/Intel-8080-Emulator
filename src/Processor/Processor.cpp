@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <chrono>
+#include <cstring>
 #include <thread>
 #include <string>
 #include <functional>
@@ -24,7 +25,6 @@ namespace Intel8080 {
     }
 
     Processor::~Processor(){
-        // Free up memory
         delete[] memory;
     }
 
@@ -113,11 +113,11 @@ namespace Intel8080 {
         interruptEnable = false;
     }
 
-    bool Processor::areInterruptsEnabled(){
+    bool Processor::areInterruptsEnabled() const {
         return interruptEnable;
     }
 
-    uint8_t Processor::readByteFromMemory(uint16_t address){
+    uint8_t Processor::readByteFromMemory(uint16_t address) const {
         return memory[address];
     }
 
@@ -134,6 +134,7 @@ namespace Intel8080 {
     }
 
     void Processor::loadProgramIntoMemory(const std::string& programFileLocation){
+        memory = new uint8_t[ProcessorConstants::memorySizeInBytes];
         FileBuffer program{programFileLocation};
 
         // Store the size of the program
@@ -153,21 +154,13 @@ namespace Intel8080 {
         uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
 
         switch(findNumberOfBytesUsedByOpcode(opcode)){
-            case 1:
-                executeOneByteInstruction(opcode);
-                break;
-
-            case 2:
-                executeTwoByteInstruction(opcode, firstByteFollowingOpcode);
-                break;
-
-            case 3:
-                executeThreeByteInstruction(
+            case 1: executeOneByteInstruction(opcode); break;
+            case 2: executeTwoByteInstruction(opcode, firstByteFollowingOpcode); break;
+            case 3: executeThreeByteInstruction(
                     opcode,
                     firstByteFollowingOpcode,
                     secondByteFollowingOpcode
-                );
-                break;
+                ); break;
         }
 
         notifyObserversOfInstructionExecution();
@@ -180,7 +173,7 @@ namespace Intel8080 {
     }
 
     void Processor::alterFlagsAfterLogicalOperation(){
-        flags.zero = (registers.a == 0);
+        flags.zero = registers.a == 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
         flags.parity = isThereAnEvenCountOfOnes(registers.a);
         flags.carry = 0;
