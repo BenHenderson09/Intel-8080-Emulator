@@ -9,12 +9,44 @@ Space Invaders arcade game.
  - Installed as a shared library to be used by other projects
  - Timed to be cycle accurate so programs will run at the same speed as they did on the original 8080.
  - No thrid party libraries
+ - Input and output devices can be emulated via the `InputDevice` and `OutputDevice` classes. They can be "attached"
+ to the processor, and the processor will handle reading and writing data via the Strategy pattern.
+ - Objects can listen for instruction execution. This is done via the `ProcessorObserver` class (Observer pattern).
  
  ## Installation
- Installation is fairly simple, following the standard method of installing a library with CMake. Run as root.
+ Installation is fairly simple, following the usual method of installing a library with CMake. Run as root.
  1. `git clone https://github.com/BenHenderson09/Intel-8080-Emulator`
  2. `mkdir -p Intel-8080-Emulator/build && cd Intel-8080-Emulator/build`
  3. `cmake .. && make install`
  
  ## Dependencies
- - `FileBuffer`, a class I made that reads files into a memory buffer. It can be found [here.](https://github.com/BenHenderson09/FileBuffer)
+ - `FileBuffer`, a class I made that reads files into a dynamic memory buffer. It can be found [here.](https://github.com/BenHenderson09/FileBuffer)
+ 
+ ## Docs
+ 
+ ### Class: `Intel8080::Processor`
+ ```C++
+Processor(const std::string& programFilePath);
+Processor(const char* programFilePath);
+~Processor();
+
+void beginEmulation();
+void attachObserver(ProcessorObserver& observer);
+void attachInputDevice(InputDevice& device);
+void attachOutputDevice(OutputDevice& device);
+void interrupt(int interruptHandlerNumber);
+bool areInterruptsEnabled() const;
+uint8_t readByteFromMemory(uint16_t address) const;
+ ```
+ - **Constructors**: Simply specify the path to a program file to run.
+ - `void beginEmulation()`: This will start the fetch-execute cycle from the first memory address.
+ - `void attachObserver(ProcessorObserver& observer)`: An instance of the `ProcessorObserver` class is attached to the processor object. The observer will
+ be notified every time the processor executes an instruction. Multiple observers can be attached.
+ - `void attachInputDevice(InputDevice& device)`: An instance of the `InputDevice` class is attached to the processor object. The processor will 
+ read a byte from the device every time an `IN` instruction is executed.
+  - `void attachOutputDevice(OutputDevice& device)`: An instance of the `OutputDevice` class is attached to the processor object. The processor will 
+ write a byte to the device every time an `OUT` instruction is executed.
+ - `void interrupt(int interruptHandlerNumber)`: This will request the processor object to run an interrupt handler. There are eight interrupt handlers
+ and each is referenced by a number in the range 0-7. The handler will only be ran if `bool areInterruptsEnabled() const` returns true. While the handler
+ is running, `bool areInterruptsEnabled() const` will return false.
+ - `uint8_t readByteFromMemory(uint16_t address) const`: Returns the byte held at the specified memory address.

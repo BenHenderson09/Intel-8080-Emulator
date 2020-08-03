@@ -16,12 +16,12 @@
 #include "../timeToRunInNanoseconds/timeToRunInNanoseconds.hpp"
 
 namespace Intel8080 {
-    Processor::Processor(const std::string& programFileLocation){
-        loadProgramIntoMemory(programFileLocation);
+    Processor::Processor(const std::string& programFilePath){
+        loadProgramIntoMemory(programFilePath);
     }
 
-    Processor::Processor(const char* programFileLocation){
-        loadProgramIntoMemory(std::string{programFileLocation});
+    Processor::Processor(const char* programFilePath){
+        loadProgramIntoMemory(std::string{programFilePath});
     }
 
     Processor::~Processor(){
@@ -100,17 +100,23 @@ namespace Intel8080 {
         return 0;
     }
 
-    void Processor::interrupt(uint16_t address){
-        // Push the program counter onto the stack
-        memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
-        memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
-        registers.stackPointer -= 2;
+    void Processor::interrupt(int interruptHandlerNumber){
+        if (interruptHandlerNumber >= 0 && interruptHandlerNumber <= 7){
+            // Push the program counter onto the stack
+            memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
+            memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
+            registers.stackPointer -= 2;
 
-        // Set the program counter to specified address to execute the interrupt
-        registers.programCounter = address;
+            // Set the program counter to the address of the specified interrupt handler.
+            // Each interrupt handler occupies eight bytes of memory.
+            registers.programCounter = interruptHandlerNumber * 8;
 
-        //  Prevent other interrupts from interfering
-        interruptEnable = false;
+            // Prevent other interrupts from interfering
+            interruptEnable = false;
+        }
+        else {
+            throw std::out_of_range("Interrupt handlers are numbered in the range 0-7.");
+        }
     }
 
     bool Processor::areInterruptsEnabled() const {
@@ -133,9 +139,9 @@ namespace Intel8080 {
         outputDevices.push_back(&device);
     }
 
-    void Processor::loadProgramIntoMemory(const std::string& programFileLocation){
+    void Processor::loadProgramIntoMemory(const std::string& programFilePath){
         memory = new uint8_t[ProcessorConstants::memorySizeInBytes];
-        FileBuffer program{programFileLocation};
+        FileBuffer program{programFilePath};
 
         // Store the size of the program
         sizeOfProgramInBytes = program.getFileSizeInBytes();

@@ -14,15 +14,15 @@
 namespace Intel8080 {
     class Processor {
         public:
-            Processor(const std::string& programFileLocation);
-            Processor(const char* programFileLocation);
+            Processor(const std::string& programFilePath);
+            Processor(const char* programFilePath);
             ~Processor();
 
             void beginEmulation();
             void attachObserver(ProcessorObserver& observer);
             void attachInputDevice(InputDevice& device);
             void attachOutputDevice(OutputDevice& device);
-            void interrupt(uint16_t address);
+            void interrupt(int interruptHandlerNumber);
             bool areInterruptsEnabled() const;
             uint8_t readByteFromMemory(uint16_t address) const;
 
@@ -42,7 +42,7 @@ namespace Intel8080 {
             // system. If it is disabled, interrupts will do nothing. It is false by default.
             bool interruptEnable{false};
 
-            void loadProgramIntoMemory(const std::string& programFileLocation);
+            void loadProgramIntoMemory(const std::string& programFilePath);
             void executeNextInstruction();
             void handleSleepAfterInstructionExecution(int execTimeInNanoseconds);
             double determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted);
