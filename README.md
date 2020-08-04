@@ -64,6 +64,29 @@ virtual ~ProcessorObserver(){}
 
 virtual void notifyInstructionHasBeenExecuted() = 0;
 ```
+
 - `virtual void notifyInstructionHasBeenExecuted() = 0`: The purpose of this pure virtual
 function is to allow a `Processor` object to notify any object extending the `ProcessorObserver`
 object that an instruction has just finished executing.
+
+### Class: `InputDevice`
+```C++
+InputDevice(const std::initializer_list<int>& inputPortNumbers);
+virtual ~InputDevice(){}
+
+const std::vector<int> inputPortNumbers;
+
+virtual uint8_t readByte(int portNumber, uint8_t accumulatorState) = 0;
+```
+
+- **Constructor**: An `std::initializer_list` of the port numbers which the device is linked
+to must be provided.
+
+- `const std::vector<int> inputPortNumbers`: The port numbers which the device is linked to
+are stored in this vector. This means when a `Processor` object meets an `IN` instruction,
+which includes a port number, it can search this vector to find out if the device is linked to
+the specified port number or not.
+
+- `virtual uint8_t readByte(int portNumber, uint8_t accumulatorState) = 0`: A pure virtual
+function which is called by a `Processor` object when it meets an `IN` instruction.
+This allows the `Processor` object to read data from input devices.

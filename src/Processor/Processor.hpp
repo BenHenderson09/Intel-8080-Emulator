@@ -103,9 +103,9 @@ namespace Intel8080 {
             // Two byte instructions
             void MVI(uint8_t& destination, uint8_t data);
             void ADI(uint8_t addend);
-            void OUT(uint8_t portNumber);
+            void OUT(int portNumber);
             void SUI(uint8_t valueToSubtractFromAccumulator);
-            void IN(uint8_t portNumber);
+            void IN(int portNumber);
             void SBI(uint8_t valueToSubtractFromAccumulator);
             void ANI(uint8_t valueForBitwiseAnd);
             void CPI(uint8_t dataToCompare);

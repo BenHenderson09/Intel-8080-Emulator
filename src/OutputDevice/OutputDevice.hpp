@@ -8,12 +8,12 @@
 namespace Intel8080 {
     class OutputDevice {
         public:
-            OutputDevice(const std::initializer_list<uint8_t>& outputPortNumbers);
+            OutputDevice(const std::initializer_list<int>& outputPortNumbers);
             virtual ~OutputDevice(){}
 
-            const std::vector<uint8_t> outputPortNumbers;
+            const std::vector<int> outputPortNumbers;
 
-            virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0;
+            virtual void writeByte(int portNumber, uint8_t byte) = 0;
     };
 }
 

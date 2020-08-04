@@ -84,7 +84,7 @@ namespace Intel8080 {
         ADD(addend);
     }
     
-    void Processor::OUT(uint8_t portNumber){
+    void Processor::OUT(int portNumber){
         for (OutputDevice* device : outputDevices){
             if (isValuePresentInVector(device->outputPortNumbers, portNumber)){
                 device->writeByte(portNumber, registers.a);
@@ -96,7 +96,7 @@ namespace Intel8080 {
         SUB(valueToSubtractFromAccumulator);
     }
 
-    void Processor::IN(uint8_t portNumber){
+    void Processor::IN(int portNumber){
         for (InputDevice* device : inputDevices){
             if (isValuePresentInVector(device->inputPortNumbers, portNumber)){
                 registers.a = device->readByte(portNumber, registers.a);
