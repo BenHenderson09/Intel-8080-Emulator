@@ -21,6 +21,23 @@ Installation is fairly simple, following the usual method of installing a librar
  
 ## Dependencies
 - `FileBuffer`, a class I made that reads files into a dynamic memory buffer. It can be found [here.](https://github.com/BenHenderson09/FileBuffer)
+## Example
+Here's an example of what a program for playing audio may look like.
+
+```C++
+#include <Intel8080Emulator/Intel8080.hpp>
+#include "SoundCircuitry/SoundCircuitry.hpp"
+
+int main(){
+    Intel8080::Processor processor{"path to program file"};
+    SoundCircuitry soundCircuitry;
+    
+    processor.attachOutputDevice(soundCircuitry);
+    processor.beginEmulation();
+    
+    return 0;
+}
+```
  
 ## Documentation
 Note that all classes are within the `Intel8080` namespace.
