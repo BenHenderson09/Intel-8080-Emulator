@@ -10,6 +10,7 @@
 #include "../ProcessorObserver/ProcessorObserver.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
+#include "../TimeKeeper/TimeKeeper.hpp"
 
 namespace Intel8080 {
     class Processor {
@@ -29,6 +30,7 @@ namespace Intel8080 {
         private:
             Registers registers;
             ArithmeticAndLogicFlags flags;
+            TimeKeeper timeKeeper;
             std::vector<InputDevice*> inputDevices;
             std::vector<OutputDevice*> outputDevices;
             uint8_t* memory;
@@ -43,6 +45,7 @@ namespace Intel8080 {
             bool interruptEnable{false};
 
             void loadProgramIntoMemory(const std::string& programFilePath);
+            void executeNextInstructionWithSleepHandling();
             void executeNextInstruction();
             void handleSleepAfterInstructionExecution(int execTimeInNanoseconds);
             double determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted);
@@ -50,6 +53,8 @@ namespace Intel8080 {
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
 
+            // Each execution function has its own source file for
+            // readability (there are almost 256 different instructions)
             void executeOneByteInstruction(uint8_t opcode);
             void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
             void executeThreeByteInstruction(
@@ -58,8 +63,9 @@ namespace Intel8080 {
                 uint8_t secondByteFollowingOpcode
             );
 
-            // One byte instructions. Defined in "Processor.executeOneByteInstruction" as they only
-            // act as helpers to that function. The same goes for two and three byte instructions.
+            // One byte instructions. Defined in "Processor.executeOneByteInstruction.cpp" as
+            // they are only used by that function.
+            // The same goes for two and three byte instructions.
             void NOP();
             void STAX(const RegisterPair& registerPair);
             void DCR(uint8_t& valueToDecrement);

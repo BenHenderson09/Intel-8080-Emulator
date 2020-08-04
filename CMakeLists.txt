@@ -17,7 +17,8 @@ set(INCLUDE_DIRS
     src/Processor
     src/ProcessorObserver
     src/InputDevice
-    src/OutputDevice)
+    src/OutputDevice
+    src/TimeKeeper)
 
 # Setup source files
 set(SOURCE_FILES
@@ -31,7 +32,8 @@ set(SOURCE_FILES
     src/timeToRunInNanoseconds/timeToRunInNanoseconds.cpp
     src/UnsupportedOpcodeException/UnsupportedOpcodeException.cpp
     src/BinaryOperations/BinaryOperations.cpp
-    src/RegisterPair/RegisterPair.cpp)
+    src/RegisterPair/RegisterPair.cpp
+    src/TimeKeeper/TimeKeeper.cpp)
 
 # Create the shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
