@@ -13,12 +13,16 @@ namespace Intel8080 {
             std::chrono::steady_clock::time_point
                 timeWhenSleepFactorAdjusted{std::chrono::steady_clock::now()};
 
-            double sleepFactor{1};
             int cyclesRanSinceSleepFactorAdjusted{0};
             int totalExecTimeInNanoseconds{0};
             int totalIdealExecTimeInNanoseconds{0};
-
-            double determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted);
+            double sleepFactor{1};
+            
+            void updateCountsAfterInstructionExec(int execTimeInNanoseconds, uint8_t opcode);
+            void sleepIfThresholdHasBeenMet();
+            void adjustSleepFactorIfDelayHasElapsed();
+            double determineSleepFactorAdjustment();
+            bool hasTheSleepFactorAdjustmentDelayElapsed();
     };
 }
 
