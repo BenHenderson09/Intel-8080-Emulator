@@ -5,7 +5,7 @@
 #include "../../constants/OpcodeConstants.hpp"
 
 namespace {
-    int findOpcodeFromMap(uint8_t opcode, const std::map<uint8_t, int>& map){
+    int findIntegerMappedToOpcode(uint8_t opcode, const std::map<uint8_t, int>& map){
         auto iteratorAtOpcode{map.find(opcode)};
 
         if (iteratorAtOpcode != map.end()){
@@ -22,10 +22,10 @@ namespace {
 
 namespace Intel8080 {
     int findNumberOfBytesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeConstants::bytesUsedByOpcodes);
+        return findIntegerMappedToOpcode(opcode, OpcodeConstants::bytesUsedByOpcodes);
     }
 
     int findNumberOfCyclesUsedByOpcode(uint8_t opcode){
-        return findOpcodeFromMap(opcode, OpcodeConstants::cyclesUsedByOpcodes);
+        return findIntegerMappedToOpcode(opcode, OpcodeConstants::cyclesUsedByOpcodes);
     }
 }

@@ -181,7 +181,7 @@ namespace Intel8080 {
     void Processor::alterFlagsAfterLogicalOperation(){
         flags.zero = registers.a == 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.parity = isThereAnEvenCountOfOnes(registers.a);
+        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
         flags.carry = 0;
         flags.auxiliaryCarry = 0;
     }

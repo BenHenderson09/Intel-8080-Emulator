@@ -6,7 +6,7 @@
 #include "../BinaryOperations/BinaryOperations.hpp"
 #include "../InputDevice/InputDevice.hpp"
 #include "../OutputDevice/OutputDevice.hpp"
-#include "../isValuePresentInVector/isValuePresentInVector.hpp"
+#include "../isValuePresentInVector/isValuePresentInVector.ipp"
 
 namespace Intel8080 {
     void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
@@ -62,7 +62,7 @@ namespace Intel8080 {
             // CPI - Compare the immediate data with the contents of the accumulator.
             // This is done internally by subtracting the data from the accumulator contents and
             // setting the flags as appropriate without actually changing the value held
-            // in the accumulator after the operation has finished. I.e Only the flags change.
+            // in the accumulator after the operation has finished. i.e Only the flags change.
             // For example, you could use the zero flag to test for equality.
             case 0xfe: CPI(firstByteFollowingOpcode); break;
 
@@ -123,6 +123,6 @@ namespace Intel8080 {
         flags.carry = 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
         flags.zero = registers.a == 0;
-        flags.parity = isThereAnEvenCountOfOnes(registers.a);
+        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
     }
 }

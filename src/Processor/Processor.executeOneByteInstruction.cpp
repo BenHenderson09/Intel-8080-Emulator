@@ -619,7 +619,7 @@ namespace Intel8080 {
 
         flags.sign = extractBit<uint8_t>(result, 7);
         flags.zero = result == 0;
-        flags.parity = isThereAnEvenCountOfOnes(result);
+        flags.parity = isThereAnEvenNumberOfBitsSet(result);
         flags.auxiliaryCarry = extractBit<uint8_t> (
             twosComplementNibbleSubtraction(lowOrderNibbleOfValueToDecrement, 1), 4
         );
@@ -644,7 +644,7 @@ namespace Intel8080 {
 
         flags.zero = registers.a == 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.parity = isThereAnEvenCountOfOnes(registers.a);
+        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
     }
 
     void Processor::CMA(){
@@ -656,7 +656,7 @@ namespace Intel8080 {
         // left and then bit 0 of the accumulator is set to the same value as the carry bit.
         flags.carry = extractBit<uint8_t>(registers.a, 7);
         registers.a <<= 1;
-        setBit<uint8_t>(registers.a, 0, flags.carry);
+        setBitValue<uint8_t>(registers.a, 0, flags.carry);
     }
 
     void Processor::DAD(const RegisterPair& registerPair){
@@ -704,7 +704,7 @@ namespace Intel8080 {
         // original state.
         bool firstBitOfAccumulator{extractBit<uint16_t>(registers.a, 0)};
         registers.a >>= 1;
-        setBit<uint8_t>(registers.a, 7, flags.carry);
+        setBitValue<uint8_t>(registers.a, 7, flags.carry);
         flags.carry = firstBitOfAccumulator;
     }
 
@@ -715,7 +715,7 @@ namespace Intel8080 {
         // original state.
         bool lastBitOfAccumulator{extractBit<uint16_t>(registers.a, 7)};
         registers.a <<= 1;
-        setBit<uint8_t>(registers.a, 0, flags.carry);
+        setBitValue<uint8_t>(registers.a, 0, flags.carry);
         flags.carry = lastBitOfAccumulator;
     }
 
@@ -735,7 +735,7 @@ namespace Intel8080 {
 
         flags.sign = extractBit<uint8_t>(result, 7);
         flags.zero = result == 0;
-        flags.parity = isThereAnEvenCountOfOnes(result);
+        flags.parity = isThereAnEvenNumberOfBitsSet(result);
         flags.auxiliaryCarry = (lowOrderNibbleOfValueToIncrement + 1) > 0xf;
 
         valueToIncrement = result;
@@ -760,7 +760,7 @@ namespace Intel8080 {
         flags.carry = extractBit<uint16_t>(result, 8);
         flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
         flags.zero = lowOrderByteOfResult == 0;
-        flags.parity = isThereAnEvenCountOfOnes(lowOrderByteOfResult);
+        flags.parity = isThereAnEvenNumberOfBitsSet(lowOrderByteOfResult);
 
         uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
         uint8_t lowOrderNibbleOfValueToAdd{extractNibble<uint8_t>(valueToAddToAccumulator, 0)};
@@ -798,7 +798,7 @@ namespace Intel8080 {
         flags.carry = !extractBit<uint16_t>(result, 8);
         flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
         flags.zero = lowOrderByteOfResult == 0;
-        flags.parity = isThereAnEvenCountOfOnes(lowOrderByteOfResult);
+        flags.parity = isThereAnEvenNumberOfBitsSet(lowOrderByteOfResult);
         flags.auxiliaryCarry = extractBit<uint8_t>(
             twosComplementNibbleSubtraction(
                 lowOrderNibbleOfAccumulator,
@@ -834,7 +834,7 @@ namespace Intel8080 {
         flags.carry = !extractBit<uint16_t>(result, 8);
         flags.sign = extractBit<uint8_t>(firstByteOfResult, 7);
         flags.zero = firstByteOfResult == 0;
-        flags.parity = isThereAnEvenCountOfOnes(firstByteOfResult);
+        flags.parity = isThereAnEvenNumberOfBitsSet(firstByteOfResult);
         flags.auxiliaryCarry = extractBit<uint8_t>(
             twosComplementNibbleSubtraction(
                 lowOrderNibbleOfAccumulator,
@@ -852,7 +852,7 @@ namespace Intel8080 {
     }
 
     void Processor::POP(RegisterPair& registerPair){
-        // The top of the stack descends through memory. I.e a POP operation will
+        // The top of the stack descends through memory. i.e a POP operation will
         // result with the stack pointer being at a higher address, and vice versa for PUSH.
         // Note that we aren'registers.a actually erasing the previous stack data
         // after we copy it to the register pair, we just move the stack pointer.
@@ -887,14 +887,14 @@ namespace Intel8080 {
 
     void Processor::PUSH_PSW(){
         uint8_t flagByte{0};
-        setBit<uint8_t>(flagByte, 7, flags.sign);
-        setBit<uint8_t>(flagByte, 6, flags.zero);
-        setBit<uint8_t>(flagByte, 5, 0);
-        setBit<uint8_t>(flagByte, 4, flags.auxiliaryCarry);
-        setBit<uint8_t>(flagByte, 3, 0);
-        setBit<uint8_t>(flagByte, 2, flags.parity);
-        setBit<uint8_t>(flagByte, 1, 1);
-        setBit<uint8_t>(flagByte, 0, flags.carry);
+        setBitValue<uint8_t>(flagByte, 7, flags.sign);
+        setBitValue<uint8_t>(flagByte, 6, flags.zero);
+        setBitValue<uint8_t>(flagByte, 5, 0);
+        setBitValue<uint8_t>(flagByte, 4, flags.auxiliaryCarry);
+        setBitValue<uint8_t>(flagByte, 3, 0);
+        setBitValue<uint8_t>(flagByte, 2, flags.parity);
+        setBitValue<uint8_t>(flagByte, 1, 1);
+        setBitValue<uint8_t>(flagByte, 0, flags.carry);
 
         memory[registers.stackPointer - 1] = registers.a;
         memory[registers.stackPointer - 2] = flagByte;

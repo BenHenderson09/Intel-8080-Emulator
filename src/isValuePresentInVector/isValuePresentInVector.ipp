@@ -1,3 +1,6 @@
+#ifndef IS_VALUE_PRESENT_IN_VECTOR_IPP
+#define IS_VALUE_PRESENT_IN_VECTOR_IPP
+
 #include <algorithm>
 #include <vector>
 
@@ -15,3 +18,5 @@ namespace Intel8080 {
         return iteratorToValue != vector.end();
     }
 }
+
+#endif
