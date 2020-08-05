@@ -123,14 +123,14 @@ namespace Intel8080 {
     void Processor::alterFlagsAfterLogicalOperation(){
         flags.zero = registers.a == 0;
         flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
+        flags.parity = isThereAnEvenNumberOfBitsSetInByte(registers.a);
         flags.carry = 0;
     }
 
     void Processor::alterFlagsAfterMathematicalOperation(uint8_t result){
         flags.sign = extractBit<uint8_t>(result, 7);
         flags.zero = result == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(result);
+        flags.parity = isThereAnEvenNumberOfBitsSetInByte(result);
     }
 
     uint16_t Processor::getNextOpcode(){

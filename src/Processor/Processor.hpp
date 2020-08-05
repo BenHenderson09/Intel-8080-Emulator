@@ -91,7 +91,7 @@ namespace Intel8080 {
             void ORA(uint8_t valueForBitwiseOr);
             void CMP(uint8_t valueToCompare);
             void RNZ();
-            void RST(int subroutineNumber);
+            void RST(int interruptHandlerNumber);
             void POP(RegisterPair& registerPair);
             void POP_PSW();
             void PUSH(const RegisterPair& registerPair);
@@ -108,9 +108,9 @@ namespace Intel8080 {
             // Two byte instructions
             void MVI(uint8_t& destination, uint8_t data);
             void ADI(uint8_t addend);
-            void OUT(int portNumber);
+            void OUT(uint8_t portNumber);
             void SUI(uint8_t valueToSubtractFromAccumulator);
-            void IN(int portNumber);
+            void IN(uint8_t portNumber);
             void SBI(uint8_t valueToSubtractFromAccumulator);
             void ANI(uint8_t valueForBitwiseAnd);
             void CPI(uint8_t dataToCompare);

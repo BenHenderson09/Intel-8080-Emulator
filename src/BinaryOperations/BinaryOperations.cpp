@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "BinaryOperations.hpp"
 
-bool isThereAnEvenNumberOfBitsSet(int number){ 
+bool isThereAnEvenNumberOfBitsSetInByte(uint8_t number){ 
     int numberOfBitsSet{0};
 
     while (number > 0){

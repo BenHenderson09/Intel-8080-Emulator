@@ -93,7 +93,7 @@ virtual ~InputDevice(){}
 
 const std::vector<int> inputPortNumbers;
 
-virtual uint8_t readByte(int portNumber, uint8_t accumulatorState) = 0;
+virtual uint8_t readByte(uint8_t portNumber, uint8_t accumulatorState) = 0;
 ```
 
 - **Constructor**: An `std::initializer_list` of the port numbers which the device is linked
@@ -104,7 +104,7 @@ are stored in this vector. This means when a `Processor` object meets an `IN` in
 which includes a port number, it can search this vector to find out if the device is linked to
 the specified port number or not.
 
-- `virtual uint8_t readByte(int portNumber, uint8_t accumulatorState) = 0`: A pure virtual
+- `virtual uint8_t readByte(uint8_t portNumber, uint8_t accumulatorState) = 0`: A pure virtual
 function which allows objects extending the `InputDevice` class
 to have data read from them by a `Processor` object when it meets an `IN` instruction.
 
@@ -115,7 +115,7 @@ virtual ~OutputDevice(){}
 
 const std::vector<int> outputPortNumbers;
 
-virtual void writeByte(int portNumber, uint8_t byte) = 0;
+virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0;
 ```
 
 - **Constructor**: An `std::initializer_list` of the port numbers which the device is linked
@@ -126,6 +126,6 @@ are stored in this vector. This means when a `Processor` object meets an `OUT` i
 which includes a port number, it can search this vector to find out if the device is linked to
 the specified port number or not.
 
-- `virtual void writeByte(int portNumber, uint8_t byte) = 0`: A pure virtual
+- `virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0`: A pure virtual
 function which allows objects extending the `OutputDevice` class
 to have data written to them by a `Processor` object when it meets an `OUT` instruction.

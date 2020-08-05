@@ -830,8 +830,8 @@ namespace Intel8080 {
         if (!flags.zero) RET();
     }
 
-    void Processor::RST(int subroutineNumber){
-        CALL(subroutineNumber * 8);
+    void Processor::RST(int interruptHandlerNumber){
+        CALL(interruptHandlerNumber * 8);
     }
 
     void Processor::POP(RegisterPair& registerPair){
