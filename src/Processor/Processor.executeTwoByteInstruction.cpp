@@ -9,68 +9,68 @@
 #include "../isValuePresentInVector/isValuePresentInVector.ipp"
 
 namespace Intel8080 {
-    void Processor::executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode){
-        switch (opcode){
+    void Processor::executeTwoByteInstruction(uint8_t firstOperand){
+        switch (getNextOpcode()){
             // MVI B - Move immediate data to register B
-            case 0x06: MVI(registers.b, firstByteFollowingOpcode); break;
+            case 0x06: MVI(registers.b, firstOperand); break;
             
             // MVI C - Move immediate data to register C
-            case 0x0e: MVI(registers.c, firstByteFollowingOpcode); break;
+            case 0x0e: MVI(registers.c, firstOperand); break;
 
             // MVI D - Move immediate data to register D
-            case 0x16: MVI(registers.d, firstByteFollowingOpcode); break;
+            case 0x16: MVI(registers.d, firstOperand); break;
 
             // MVI E - Move immediate data to register E
-            case 0x1e: MVI(registers.e, firstByteFollowingOpcode); break;
+            case 0x1e: MVI(registers.e, firstOperand); break;
 
             // MVI H - Move immediate data to register H
-            case 0x26: MVI(registers.h, firstByteFollowingOpcode); break;
+            case 0x26: MVI(registers.h, firstOperand); break;
 
             // MVI L - Move immediate data to register L
-            case 0x2e: MVI(registers.l, firstByteFollowingOpcode); break;
+            case 0x2e: MVI(registers.l, firstOperand); break;
 
             // MVI M - Move immediate data to the memory location specified by
             // register pair HL
             case 0x36: MVI(
                     memory[concatenateTwoNumbers<uint8_t, uint16_t>(registers.h, registers.l)],
-                    firstByteFollowingOpcode
+                    firstOperand
                 ); break;
 
             // MVI A - Move immediate data to register A
-            case 0x3e: MVI(registers.a, firstByteFollowingOpcode); break;
+            case 0x3e: MVI(registers.a, firstOperand); break;
 
             // ADI - Add immediate data to the accumulator
-            case 0xc6: ADI(firstByteFollowingOpcode); break;
+            case 0xc6: ADI(firstOperand); break;
         
             // OUT - The contents of the accumulator are sent to an output device.
-            case 0xd3: OUT(firstByteFollowingOpcode); break;
+            case 0xd3: OUT(firstOperand); break;
 
             // SUI - The byte of immediate data is subtracted from the accumulator
-            case 0xd6: SUI(firstByteFollowingOpcode); break;
+            case 0xd6: SUI(firstOperand); break;
 
             // IN - An input device writes a byte to the accumulator.
-            case 0xdb: IN(firstByteFollowingOpcode); break;
+            case 0xdb: IN(firstOperand); break;
 
             // SBI - The byte of immediate data and the carry bit are
             // subtracted from the accumulator.
-            case 0xde: SBI(firstByteFollowingOpcode); break;
+            case 0xde: SBI(firstOperand); break;
 
             // ANI - Perform a bitwise and (&) with the immediate data and the accumulator,
             // storing the result in the accumulator
-            case 0xe6: ANI(firstByteFollowingOpcode); break;
+            case 0xe6: ANI(firstOperand); break;
         
             // CPI - Compare the immediate data with the contents of the accumulator.
             // This is done internally by subtracting the data from the accumulator contents and
             // setting the flags as appropriate without actually changing the value held
             // in the accumulator after the operation has finished. i.e Only the flags change.
             // For example, you could use the zero flag to test for equality.
-            case 0xfe: CPI(firstByteFollowingOpcode); break;
+            case 0xfe: CPI(firstOperand); break;
 
-            // ORI - A bitwise or is carried out with the byte of
+            // ORI - A bitwise or (|) is carried out with the byte of
             // immediate data and the accumulator
-            case 0xf6: ORI(firstByteFollowingOpcode); break;
+            case 0xf6: ORI(firstOperand); break;
 
-            default: throw UnsupportedOpcodeException(opcode);
+            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
         }
 
         registers.programCounter += 2;
@@ -119,10 +119,6 @@ namespace Intel8080 {
 
     void Processor::ORI(uint8_t valueForBitwiseOr){
         registers.a |= valueForBitwiseOr;
-
-        flags.carry = 0;
-        flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.zero = registers.a == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
+        alterFlagsAfterLogicalOperation();
     }
 }

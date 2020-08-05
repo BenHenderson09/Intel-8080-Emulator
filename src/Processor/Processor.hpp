@@ -47,20 +47,19 @@ namespace Intel8080 {
             void loadProgramIntoMemory(const std::string& programFilePath);
             void executeNextInstructionWithSleepHandling();
             void executeNextInstruction();
-            void handleSleepAfterInstructionExecution(int execTimeInNanoseconds);
-            double determineSleepFactorAdjustment(int cyclesRanSinceSleepFactorAdjusted);
             void notifyObserversOfInstructionExecution();
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
+            void alterFlagsAfterMathematicalOperation(uint8_t result);
+            uint16_t getNextOpcode();
 
             // Each execution function has its own source file for
             // readability (there are almost 256 different instructions)
-            void executeOneByteInstruction(uint8_t opcode);
-            void executeTwoByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode);
+            void executeOneByteInstruction();
+            void executeTwoByteInstruction(uint8_t firstOperand);
             void executeThreeByteInstruction(
-                uint8_t opcode,
-                uint8_t firstByteFollowingOpcode,
-                uint8_t secondByteFollowingOpcode
+                uint8_t firstOperand,
+                uint8_t secondOperand
             );
 
             // One byte instructions. Defined in "Processor.executeOneByteInstruction.cpp" as

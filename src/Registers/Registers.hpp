@@ -6,9 +6,9 @@
 
 namespace Intel8080 {
     struct Registers {
-        // Main registers (8 bits each). Register A is an accumulator, and the other six registers
-        // can be used as individual 8-bit general purpose registers or as three 16 bit register pairs
-        // BC, DE, and HL.
+        // Main registers (8 bits each). Register A is an accumulator,
+        // and the other six registers can be used as individual 8-bit general purpose
+        // registers or as three 16 bit register pairs BC, DE, and HL.
         uint8_t a;
         uint8_t b;
         uint8_t c;
@@ -17,9 +17,9 @@ namespace Intel8080 {
         uint8_t h;
         uint8_t l;
 
-        // These are both 16 bit registers. The stack pointer holds a memory address pointing to the
-        // stack and the program counter holds a memory address pointing to the next instruction
-        // to be executed.
+        // These are both 16 bit registers. The stack pointer holds a memory
+        // address pointing to the stack and the program counter holds a memory
+        // address pointing to the next instruction to be executed.
         uint16_t stackPointer;
         uint16_t programCounter{0};
 

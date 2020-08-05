@@ -5,31 +5,26 @@
 #include "../BinaryOperations/BinaryOperations.hpp"
 
 namespace Intel8080 {
-    void Processor::executeThreeByteInstruction(uint8_t opcode, uint8_t firstByteFollowingOpcode,
-            uint8_t secondByteFollowingOpcode){
-
-        // The 8080 orders the operands with the least significant byte coming first (little endian).
-        // Here we convert those bytes to a 16 bit value to make it
-        // easier to work with for addresses.
+    void Processor::executeThreeByteInstruction(uint8_t firstOperand, uint8_t secondOperand){
+        // The 8080 orders the operands with the least significant
+        // byte coming first (little endian). Here we convert those bytes to a 16 bit
+        // value to make it easier to work with for addresses.
         uint16_t address {
             concatenateTwoNumbers<uint8_t, uint16_t>(
-                secondByteFollowingOpcode, // High order byte (most significant)
-                firstByteFollowingOpcode   // Low order byte (least significant)
+                secondOperand, // High order byte (most significant)
+                firstOperand   // Low order byte (least significant)
             )
         };
 
-        switch (opcode){
+        switch (getNextOpcode()){
             // LXI B - Occupy register pair BC with the operands
-            case 0x01:
-                LXI(registers.bc, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x01: LXI(registers.bc, firstOperand, secondOperand); break;
 
             // LXI D - Occupy register pair DE with the operands
-            case 0x11:
-                LXI(registers.de, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x11: LXI(registers.de, firstOperand, secondOperand); break;
 
             // LXI H - Occupy register pair HL  with the operands
-            case 0x21:
-                LXI(registers.hl, firstByteFollowingOpcode, secondByteFollowingOpcode); break;
+            case 0x21: LXI(registers.hl, firstOperand, secondOperand); break;
 
             // SHLD - The specified memory location will be set to the value
             // of the L register and the memory location above this is set to the H register
@@ -48,20 +43,20 @@ namespace Intel8080 {
             // LDA - Copy the value at the specified memory address to the accumulator 
             case 0x3a: LDA(address); break;
             
-            // JNZ - Jump to the specified memory address if the zero flag equals zero
+            // JNZ - Jump to the specified memory address if the zero flag is not set
             case 0xc2: JNZ(address); break;
 
             // JMP - Jump to the specified memory address
             case 0xc3: JMP(address); break;
 
-            // CNZ - If the zero flag equals one, a CALL operation is performed at the specified
+            // CNZ - If the zero flag is set, a CALL operation is performed at the specified
             // address 
             case 0xc4: CNZ(address); break;
 
-            // JZ - Carry out a jump operation if zero flag is equal to one
+            // JZ - Carry out a jump operation if the zero flag is set
             case 0xca: JZ(address); break;
 
-            // CZ - Carry out a call operation if the zero flag is equal to one
+            // CZ - Carry out a call operation if the zero flag is set
             case 0xcc: CZ(address); break;
 
             // CALL - A subroutine is called by jumping to the specified memory address.
@@ -72,19 +67,19 @@ namespace Intel8080 {
             // JNC - Jump if the carry flag is not set
             case 0xd2: JNC(address); break;
 
-            // CNC - If the carry flag is zero, perform a call operation
+            // CNC - If the carry flag is not set, perform a call operation
             case 0xd4: CNC(address); break;
 
-            // JC - Jump to the specified memory address if the carry flag is one.
+            // JC - Jump to the specified memory address if the carry flag is set.
             case 0xda: JC(address); break;
             
-            // JPO - If parity flag is zero, carry out a jump operation
+            // JPO - If parity flag is not set, carry out a jump operation
             case 0xe2: JPO(address); break;
 
-            // JM - Carry out a jump operation if the sign flag is one
+            // JM - Carry out a jump operation if the sign flag is set
             case 0xfa: JM(address); break;
 
-            default: throw UnsupportedOpcodeException(opcode);
+            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
         }
 
         registers.programCounter += 3;
@@ -124,8 +119,8 @@ namespace Intel8080 {
     void Processor::JMP(uint16_t address){
         registers.programCounter = address;
         
-        // Prevent from advancing to the next instruction automatically, as JMP is a way of
-        // choosing the next instruction manually.
+        // Prevent from advancing to the next instruction automatically,
+        // as JMP is a way of choosing the next instruction manually.
         registers.programCounter -= 3;
     }
 

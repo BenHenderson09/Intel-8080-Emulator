@@ -1,5 +1,5 @@
-#ifndef PROCESSOR_TIME_KEEPER_HPP
-#define PROCESSOR_TIME_KEEPER_HPP
+#ifndef TIME_KEEPER_HPP
+#define TIME_KEEPER_HPP
 
 #include <cstdint>
 #include <chrono>

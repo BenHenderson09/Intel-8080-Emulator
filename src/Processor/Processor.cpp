@@ -44,8 +44,7 @@ namespace Intel8080 {
         long execTimeInNanoseconds{timeToRunInNanoseconds(executeNextInstructionLambda)};
 
         // Allows the emulator to run at the 8080 clock speed
-        timeKeeper.handleSleepAfterInstructionExec
-            (execTimeInNanoseconds, memory[registers.programCounter]);
+        timeKeeper.handleSleepAfterInstructionExec(execTimeInNanoseconds, getNextOpcode());
     }
 
     void Processor::interrupt(int interruptHandlerNumber){
@@ -103,18 +102,13 @@ namespace Intel8080 {
     }
 
     void Processor::executeNextInstruction(){
-        uint8_t opcode{memory[registers.programCounter]};
-        uint8_t firstByteFollowingOpcode{memory[registers.programCounter + 1]};
-        uint8_t secondByteFollowingOpcode{memory[registers.programCounter + 2]};
+        uint8_t firstOperand{memory[registers.programCounter + 1]};
+        uint8_t secondOperand{memory[registers.programCounter + 2]};
 
-        switch(findNumberOfBytesUsedByOpcode(opcode)){
-            case 1: executeOneByteInstruction(opcode); break;
-            case 2: executeTwoByteInstruction(opcode, firstByteFollowingOpcode); break;
-            case 3: executeThreeByteInstruction(
-                    opcode,
-                    firstByteFollowingOpcode,
-                    secondByteFollowingOpcode
-                ); break;
+        switch(findNumberOfBytesUsedByOpcode(getNextOpcode())){
+            case 1: executeOneByteInstruction(); break;
+            case 2: executeTwoByteInstruction(firstOperand); break;
+            case 3: executeThreeByteInstruction(firstOperand, secondOperand); break;
         }
 
         notifyObserversOfInstructionExecution();
@@ -131,6 +125,15 @@ namespace Intel8080 {
         flags.sign = extractBit<uint8_t>(registers.a, 7);
         flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
         flags.carry = 0;
-        flags.auxiliaryCarry = 0;
+    }
+
+    void Processor::alterFlagsAfterMathematicalOperation(uint8_t result){
+        flags.sign = extractBit<uint8_t>(result, 7);
+        flags.zero = result == 0;
+        flags.parity = isThereAnEvenNumberOfBitsSet(result);
+    }
+
+    uint16_t Processor::getNextOpcode(){
+        return memory[registers.programCounter];
     }
 } 

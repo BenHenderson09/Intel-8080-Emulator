@@ -1,12 +1,11 @@
 #include <cstdint>
-#include <iomanip>
 #include "Processor.hpp"
 #include "../UnsupportedOpcodeException/UnsupportedOpcodeException.hpp"
 #include "../BinaryOperations/BinaryOperations.hpp"
 
 namespace Intel8080 {
-    void Processor::executeOneByteInstruction(uint8_t opcode){
-        switch(opcode){
+    void Processor::executeOneByteInstruction(){
+        switch(getNextOpcode()){
             // NOP - Execution continues, no change to processor
             case 0x00: NOP(); break;
 
@@ -46,8 +45,8 @@ namespace Intel8080 {
             // RRC - Rotate accumulator right
             case 0x0f: RRC(); break;
 
-            // STAX D - The contents of the accumulator are stored at the memory location specified in
-            // register pair DE
+            // STAX D - The contents of the accumulator are stored at
+            // the memory location specified in register pair DE
             case 0x12: STAX(registers.de); break;
 
             // INX D - Increment register pair DE
@@ -62,7 +61,8 @@ namespace Intel8080 {
             // RAL - Rotate accumulator left through carry
             case 0x17: RAL(); break;
 
-            // DAD D - The 16-bit number in register pair DE is added to the 16-bit number held in HL
+            // DAD D - The 16-bit number in register pair DE is added
+            // to the 16-bit number held in HL
             case 0x19: DAD(registers.de); break;
 
             // LDAX D - Set the contents of the accumulator to the value held at the memory
@@ -115,7 +115,7 @@ namespace Intel8080 {
             // INR M - Increment value held at the memory location specified by register pair HL
             case 0x34: INR(memory[registers.hl.getPairValue()]); break;
 
-            // DCR M - Decrement the value located at the specified memory address
+            // DCR M - Decrement value held at the memory location specified by register pair HL
             case 0x35: DCR(memory[registers.hl.getPairValue()]); break;
 
             // STC - Set the carry flag
@@ -133,7 +133,7 @@ namespace Intel8080 {
             // CMC - Toggle the carry bit
             case 0x3f: CMC(); break;
 
-            // MOV B,B - Copy register B to register B (null operation)
+            // MOV B,B - Copy register B to register B (state left unchanged)
             case 0x40: MOV(registers.b, registers.b); break;
 
             // MOV B,C - Copy register C to register B
@@ -161,7 +161,7 @@ namespace Intel8080 {
             // MOV C,B - Copy register B to register C
             case 0x48: MOV(registers.c, registers.b); break;
 
-            // MOV C,C - Copy register C to register C (null operation)
+            // MOV C,C - Copy register C to register C (state left unchanged)
             case 0x49: MOV(registers.c, registers.c); break;
 
             // MOV C,D - Copy register D to register C
@@ -189,7 +189,7 @@ namespace Intel8080 {
             // MOV D,C - Copy register C to register D
             case 0x51: MOV(registers.d, registers.c); break;
 
-            // MOV D,D - Copy register D to register D (null operation)
+            // MOV D,D - Copy register D to register D (state left unchanged)
             case 0x52: MOV(registers.d, registers.d); break;
 
             // MOV D,E - Copy register E to register D
@@ -217,7 +217,7 @@ namespace Intel8080 {
             // MOV E,D - Copy register D to register E 
             case 0x5a: MOV(registers.e, registers.d); break;
 
-            // MOV E,E - Copy register E to register E (null operation)
+            // MOV E,E - Copy register E to register E (state left unchanged)
             case 0x5b: MOV(registers.e, registers.e); break;
 
             // MOV E,H - Copy register H to register E
@@ -245,7 +245,7 @@ namespace Intel8080 {
             // MOV H,E - Copy register E to register H
             case 0x63: MOV(registers.h, registers.e); break;
 
-            // MOV H,H - Copy register H to register H (null operation)
+            // MOV H,H - Copy register H to register H (state left unchanged)
             case 0x64: MOV(registers.h, registers.h); break;
 
             // MOV H,L - Copy register L to register H
@@ -273,7 +273,7 @@ namespace Intel8080 {
             // MOV L,H - Copy register H to register L 
             case 0x6c: MOV(registers.l, registers.h); break;
 
-            // MOV L,L - Copy register L to register L (null operation)
+            // MOV L,L - Copy register L to register L (state left unchanged)
             case 0x6d: MOV(registers.l, registers.l); break;
 
             // MOV L,M - In this case, register pair HL stores a memory address,
@@ -333,7 +333,7 @@ namespace Intel8080 {
             // so copy the value at this address to the A register.
             case 0x7e: MOV(registers.a, memory[registers.hl.getPairValue()]); break;
 
-            // MOV A,A - Copy register A to register A (null operation)
+            // MOV A,A - Copy register A to register A (state left unchanged)
             case 0x7f: MOV(registers.a, registers.a); break;
 
             // ADD B - Add register B to the accumulator
@@ -465,29 +465,29 @@ namespace Intel8080 {
             // Only the flags change in this case.
             case 0xaf: XRA(registers.a); break;
 
-            // ORA B - Perform bitwise or on the accumulator with register B.
+            // ORA B - Perform bitwise or (|) on the accumulator with register B.
             case 0xb0: ORA(registers.b); break;
 
-            // ORA C - Perform bitwise or on the accumulator with register C.
+            // ORA C - Perform bitwise or (|) on the accumulator with register C.
             case 0xb1: ORA(registers.c); break;
 
-            // ORA D - Perform bitwise or on the accumulator with register D.
+            // ORA D - Perform bitwise or (|) on the accumulator with register D.
             case 0xb2: ORA(registers.d); break;
 
-            // ORA E - Perform bitwise or on the accumulator with register E.
+            // ORA E - Perform bitwise or (|) on the accumulator with register E.
             case 0xb3: ORA(registers.e); break;
 
-            // ORA H - Perform bitwise or on the accumulator with register H.
+            // ORA H - Perform bitwise or (|) on the accumulator with register H.
             case 0xb4: ORA(registers.h); break;
 
-            // ORA L - Perform bitwise or on the accumulator with register L.
+            // ORA L - Perform bitwise or (|) on the accumulator with register L.
             case 0xb5: ORA(registers.l); break;
 
-            // ORA M  - Perform bitwise or on the accumulator with the value held at
+            // ORA M  - Perform bitwise or (|) on the accumulator with the value held at
             // the memory location specified by register pair hl.
             case 0xb6: ORA(memory[registers.hl.getPairValue()]); break;
 
-            // ORA A - Perform bitwise or on the accumulator with the accumulator. Only changes
+            // ORA A - Perform bitwise or (|) on the accumulator with the accumulator. Only changes
             // flags.
             case 0xb7: ORA(registers.a); break;
 
@@ -516,7 +516,7 @@ namespace Intel8080 {
             // CMP A - The accumulator is compared with the accumulator, changing only the flags.
             case 0xbf: CMP(registers.a); break;
 
-            // RNZ - Return if not zero. If the Zero bit is zero, a return operation is performed.
+            // RNZ - Return if not zero. If the Zero bit is not set, a return operation is performed.
             case 0xc0: RNZ(); break;
 
             // POP B - Remove two bytes from the top of the stack and copy their values
@@ -526,7 +526,7 @@ namespace Intel8080 {
             // PUSH B - Write register pair BC to the top of the stack
             case 0xc5: PUSH(registers.bc); break;
 
-            // RST 0 - Call a subroutine at the first byte in memory.
+            // RST 0 - Call an interrupt handler subroutine at the first byte in memory.
             case 0xc7: RST(0); break;
 
             // RZ - If the zero bit is one, a RET instruction occurs
@@ -537,7 +537,7 @@ namespace Intel8080 {
             // transferring program control.
             case 0xc9: RET(); break;
 
-            // RST 1 - Call a subroutine at the second byte in memory.
+            // RST 1 - Call an interrupt handler subroutine at the second byte in memory.
             case 0xcf: RST(1); break;
 
             // RNC - If the carry bit is zero, perform a return operation
@@ -550,13 +550,13 @@ namespace Intel8080 {
             // PUSH D - Write register pair DE to the top of the stack
             case 0xd5: PUSH(registers.de); break;
 
-            // RST 2 - Call a subroutine at the third byte in memory.
+            // RST 2 - Call an interrupt handler subroutine at the third byte in memory.
             case 0xd7: RST(2); break;
 
             // RC - If the carry bit is one, a RET instruction occurs
             case 0xd8: RC(); break;
 
-            // RST 3 - Call a subroutine at the fourth byte in memory.
+            // RST 3 - Call an interrupt handler subroutine at the fourth byte in memory.
             case 0xdf: RST(3); break;
 
             // POP H - Remove two bytes from the top of the stack and copy their values
@@ -569,7 +569,7 @@ namespace Intel8080 {
             // PUSH H - Write register pair HL to the top of the stack
             case 0xe5: PUSH(registers.hl); break;
 
-            // RST 4 - Call a subroutine at the fifth byte in memory.
+            // RST 4 - Call an interrupt handler subroutine at the fifth byte in memory.
             case 0xe7: RST(4); break;
 
             // PCHL - Set the program counter to the address held by register pair HL
@@ -578,30 +578,29 @@ namespace Intel8080 {
             // XCHG - Swap the values of register pairs DE and HL
             case 0xeb: XCHG(); break;
         
-            // RST 5 - Call a subroutine at the sixth byte in memory.
+            // RST 5 - Call an interrupt handler subroutine at the sixth byte in memory.
             case 0xef: RST(5); break;
 
             // POP PSW - Take the top two bytes off the stack, loading the
             // accumulator with the byte preceding the stack pointer and setting
             // the flags based on the byte at the stack pointer. This "flag byte"
-            // at the stack pointer has its bits mapped to specific flags which are
-            // specified in the 8080 data book.
+            // at the stack pointer has its bits mapped to specific flags.
             case 0xf1: POP_PSW(); break;
 
             // PUSH PSW - Pushes the accumulator followed by the "flag byte"
             // mentioned previously onto the stack.
             case 0xf5: PUSH_PSW(); break;
 
-            // RST 6 - Call a subroutine at the seventh byte in memory.
+            // RST 6 - Call an interrupt handler subroutine at the seventh byte in memory.
             case 0xf7: RST(6); break;
 
             // EI - Enable interrupts
             case 0xfb: EI(); break;
 
-            // RST 7 - Call a subroutine at the eighth byte in memory.
+            // RST 7 - Call an interrupt handler subroutine at the eighth byte in memory.
             case 0xff: RST(7); break;
 
-            default: throw UnsupportedOpcodeException(opcode);
+            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
         }
 
         registers.programCounter++;
@@ -617,9 +616,8 @@ namespace Intel8080 {
         uint8_t result{static_cast<uint8_t>(valueToDecrement - 1)};
         uint8_t lowOrderNibbleOfValueToDecrement{extractNibble<uint8_t>(valueToDecrement, 0)};
 
-        flags.sign = extractBit<uint8_t>(result, 7);
-        flags.zero = result == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(result);
+        alterFlagsAfterMathematicalOperation(result);
+
         flags.auxiliaryCarry = extractBit<uint8_t> (
             twosComplementNibbleSubtraction(lowOrderNibbleOfValueToDecrement, 1), 4
         );
@@ -642,9 +640,7 @@ namespace Intel8080 {
             flags.carry = true; // Apply the carry
         }
 
-        flags.zero = registers.a == 0;
-        flags.sign = extractBit<uint8_t>(registers.a, 7);
-        flags.parity = isThereAnEvenNumberOfBitsSet(registers.a);
+        alterFlagsAfterMathematicalOperation(registers.a);
     }
 
     void Processor::CMA(){
@@ -652,8 +648,9 @@ namespace Intel8080 {
     }
 
     void Processor::RLC(){
-        // The carry bit is set to bit 7 of the accumulator, the accumulator is shifted one position
-        // left and then bit 0 of the accumulator is set to the same value as the carry bit.
+        // The carry bit is set to bit 7 of the accumulator, the
+        // accumulator is shifted one position left and then bit 0
+        // of the accumulator is set to the same value as the carry bit.
         flags.carry = extractBit<uint8_t>(registers.a, 7);
         registers.a <<= 1;
         setBitValue<uint8_t>(registers.a, 0, flags.carry);
@@ -661,7 +658,9 @@ namespace Intel8080 {
 
     void Processor::DAD(const RegisterPair& registerPair){
         // Use 32 bits to facilitate carry
-        uint32_t result{static_cast<uint32_t>(registers.hl.getPairValue() + registerPair.getPairValue())};
+        uint32_t result{static_cast<uint32_t>(
+            registers.hl.getPairValue() + registerPair.getPairValue()
+        )};
 
         // The first 16 bits will be assigned to register pair HL. This ignores the carry bit.
         registers.hl.setPairValue(result);
@@ -733,9 +732,7 @@ namespace Intel8080 {
         uint8_t result{static_cast<uint8_t>(valueToIncrement + 1)};
         uint8_t lowOrderNibbleOfValueToIncrement{extractNibble<uint8_t>(valueToIncrement, 0)};
 
-        flags.sign = extractBit<uint8_t>(result, 7);
-        flags.zero = result == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(result);
+        alterFlagsAfterMathematicalOperation(result);
         flags.auxiliaryCarry = (lowOrderNibbleOfValueToIncrement + 1) > 0xf;
 
         valueToIncrement = result;
@@ -756,19 +753,16 @@ namespace Intel8080 {
     void Processor::ADD(uint8_t valueToAddToAccumulator){
         uint16_t result{static_cast<uint16_t>(registers.a + valueToAddToAccumulator)};
         uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
-
-        flags.carry = extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
-        flags.zero = lowOrderByteOfResult == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(lowOrderByteOfResult);
-
         uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
         uint8_t lowOrderNibbleOfValueToAdd{extractNibble<uint8_t>(valueToAddToAccumulator, 0)};
-
+        
         uint8_t sumOfLowOrderNibbles {
             static_cast<uint8_t>(lowOrderNibbleOfAccumulator + lowOrderNibbleOfValueToAdd)
         };
 
+        alterFlagsAfterMathematicalOperation(result);
+        
+        flags.carry = extractBit<uint16_t>(result, 8);
         flags.auxiliaryCarry = extractBit<uint8_t>(sumOfLowOrderNibbles, 4);
 
         registers.a = lowOrderByteOfResult;
@@ -779,26 +773,16 @@ namespace Intel8080 {
     }
 
     void Processor::SUB(uint8_t valueToSubtractFromAccumulator){
-        uint8_t lowOrderNibbleOfAccumulator {
-            extractNibble<uint8_t>(registers.a, 0)
-        };
-
+        uint16_t result{twosComplementByteSubtraction(registers.a, valueToSubtractFromAccumulator)};
+        uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
+        uint8_t lowOrderNibbleOfAccumulator{extractNibble<uint8_t>(registers.a, 0)};
         uint8_t lowOrderNibbleOfValueToSubtract {
             extractNibble<uint8_t>(valueToSubtractFromAccumulator, 0)
         };
-        
-        uint16_t result{
-            twosComplementByteSubtraction(
-                registers.a,
-                valueToSubtractFromAccumulator
-            )
-        };
-        uint8_t lowOrderByteOfResult{extractByte<uint16_t>(result, 0)};
 
+        alterFlagsAfterMathematicalOperation(lowOrderByteOfResult);
+        
         flags.carry = !extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint8_t>(lowOrderByteOfResult, 7);
-        flags.zero = lowOrderByteOfResult == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(lowOrderByteOfResult);
         flags.auxiliaryCarry = extractBit<uint8_t>(
             twosComplementNibbleSubtraction(
                 lowOrderNibbleOfAccumulator,
@@ -831,10 +815,9 @@ namespace Intel8080 {
         uint16_t result{twosComplementByteSubtraction(registers.a, valueToCompare)};
         uint8_t firstByteOfResult{extractByte<uint16_t>(result, 0)};
 
+        alterFlagsAfterMathematicalOperation(firstByteOfResult);
+
         flags.carry = !extractBit<uint16_t>(result, 8);
-        flags.sign = extractBit<uint8_t>(firstByteOfResult, 7);
-        flags.zero = firstByteOfResult == 0;
-        flags.parity = isThereAnEvenNumberOfBitsSet(firstByteOfResult);
         flags.auxiliaryCarry = extractBit<uint8_t>(
             twosComplementNibbleSubtraction(
                 lowOrderNibbleOfAccumulator,
@@ -854,11 +837,10 @@ namespace Intel8080 {
     void Processor::POP(RegisterPair& registerPair){
         // The top of the stack descends through memory. i.e a POP operation will
         // result with the stack pointer being at a higher address, and vice versa for PUSH.
-        // Note that we aren'registers.a actually erasing the previous stack data
+        // Note that we aren't actually erasing the previous stack data
         // after we copy it to the register pair, we just move the stack pointer.
         // Later on, PUSH operations will just overwrite the previous data, so we're essentially
         // removing it from the stack without deleting it.
-
         registerPair.firstRegister = memory[registers.stackPointer + 1];
         registerPair.secondRegister = memory[registers.stackPointer];
         registers.stackPointer += 2;
