@@ -831,7 +831,12 @@ namespace Intel8080 {
     }
 
     void Processor::RST(int interruptHandlerNumber){
-        CALL(interruptHandlerNumber * 8);
+        if (interruptHandlerNumber >= 0 && interruptHandlerNumber <= 7){
+            CALL(interruptHandlerNumber * 8);
+        }
+        else {
+            throw std::out_of_range("Interrupt handlers are numbered in the range 0-7.");
+        }
     }
 
     void Processor::POP(RegisterPair& registerPair){

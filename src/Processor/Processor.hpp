@@ -16,7 +16,6 @@ namespace Intel8080 {
     class Processor {
         public:
             Processor(const std::string& programFilePath);
-            Processor(const char* programFilePath);
             ~Processor();
 
             void beginEmulation();

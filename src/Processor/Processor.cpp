@@ -20,10 +20,6 @@ namespace Intel8080 {
         loadProgramIntoMemory(programFilePath);
     }
 
-    Processor::Processor(const char* programFilePath){
-        loadProgramIntoMemory(std::string{programFilePath});
-    }
-
     Processor::~Processor(){
         delete[] memory;
     }

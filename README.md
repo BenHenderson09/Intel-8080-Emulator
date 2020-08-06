@@ -45,7 +45,6 @@ Note that all classes are within the `Intel8080` namespace.
 ### Class: `Processor`
 ```C++
 Processor(const std::string& programFilePath);
-Processor(const char* programFilePath);
 ~Processor();
 
 void beginEmulation();
@@ -57,7 +56,7 @@ bool areInterruptsEnabled() const;
 uint8_t readByteFromMemory(uint16_t address) const;
 ```
 
-- **Constructors**: Simply specify the path of a program file to run.
+- **Constructor**: Simply specify the path of a program file to run.
 - `void beginEmulation()`: This will start the fetch-execute cycle from the first memory address.
 - `void attachObserver(ProcessorObserver& observer)`: An instance of the `ProcessorObserver`
 class is attached to the processor object. The observer will be notified every time the processor
