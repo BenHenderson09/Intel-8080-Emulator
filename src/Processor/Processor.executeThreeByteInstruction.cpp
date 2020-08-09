@@ -16,7 +16,9 @@ namespace Intel8080 {
             )
         };
 
-        switch (getNextOpcode()){
+        uint8_t opcode{getNextOpcode()};
+
+        switch (opcode){
             // LXI B - Occupy register pair BC with the operands
             case 0x01: LXI(registers.bc, firstOperand, secondOperand); break;
 
@@ -79,7 +81,7 @@ namespace Intel8080 {
             // JM - Carry out a jump operation if the sign flag is set
             case 0xfa: JM(address); break;
 
-            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
+            default: throw UnsupportedOpcodeException(opcode); break;
         }
 
         registers.programCounter += 3;

@@ -10,7 +10,9 @@
 
 namespace Intel8080 {
     void Processor::executeTwoByteInstruction(uint8_t firstOperand){
-        switch (getNextOpcode()){
+        uint8_t opcode{getNextOpcode()};
+
+        switch (opcode){
             // MVI B - Move immediate data to register B
             case 0x06: MVI(registers.b, firstOperand); break;
             
@@ -70,7 +72,7 @@ namespace Intel8080 {
             // immediate data and the accumulator
             case 0xf6: ORI(firstOperand); break;
 
-            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
+            default: throw UnsupportedOpcodeException(opcode); break;
         }
 
         registers.programCounter += 2;

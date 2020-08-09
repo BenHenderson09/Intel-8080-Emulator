@@ -31,6 +31,8 @@ namespace Intel8080 {
     }
 
     void Processor::executeNextInstructionWithSleepHandling(){
+        uint8_t opcode{getNextOpcode()};
+        
         auto executeNextInstructionLambda {
             [this](){
                 return executeNextInstruction();
@@ -40,7 +42,7 @@ namespace Intel8080 {
         long execTimeInNanoseconds{timeToRunInNanoseconds(executeNextInstructionLambda)};
 
         // Allows the emulator to run at the 8080 clock speed
-        timeKeeper.handleSleepAfterInstructionExec(execTimeInNanoseconds, getNextOpcode());
+        timeKeeper.handleSleepAfterInstructionExec(execTimeInNanoseconds, opcode);
     }
 
     void Processor::interrupt(int interruptHandlerNumber){
@@ -129,7 +131,7 @@ namespace Intel8080 {
         flags.parity = isThereAnEvenNumberOfBitsSetInByte(result);
     }
 
-    uint16_t Processor::getNextOpcode(){
+    uint8_t Processor::getNextOpcode(){
         return memory[registers.programCounter];
     }
 } 

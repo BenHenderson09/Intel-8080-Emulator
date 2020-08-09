@@ -5,7 +5,9 @@
 
 namespace Intel8080 {
     void Processor::executeOneByteInstruction(){
-        switch(getNextOpcode()){
+        uint8_t opcode{getNextOpcode()};
+
+        switch(opcode){
             // NOP - Execution continues, no change to processor
             case 0x00: NOP(); break;
 
@@ -600,7 +602,7 @@ namespace Intel8080 {
             // RST 7 - Call an interrupt handler subroutine at the eighth byte in memory.
             case 0xff: RST(7); break;
 
-            default: throw UnsupportedOpcodeException(getNextOpcode()); break;
+            default: throw UnsupportedOpcodeException(opcode); break;
         }
 
         registers.programCounter++;

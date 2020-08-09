@@ -50,7 +50,7 @@ namespace Intel8080 {
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
             void alterFlagsAfterMathematicalOperation(uint8_t result);
-            uint16_t getNextOpcode();
+            uint8_t getNextOpcode();
 
             // Each execution function has its own source file for
             // readability (there are almost 256 different instructions)
