@@ -46,6 +46,7 @@ namespace Intel8080 {
     }
 
     void Processor::interrupt(int interruptHandlerNumber){
+        if (!interruptEnable) return; // Do nothing if interrupts aren't enabled
         if (interruptHandlerNumber >= 0 && interruptHandlerNumber <= 7){
             // Push the program counter onto the stack
             memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
