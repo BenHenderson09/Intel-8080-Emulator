@@ -34,6 +34,8 @@ namespace Intel8080 {
             std::vector<OutputDevice*> outputDevices;
             uint8_t* memory;
             uint16_t sizeOfProgramInBytes;
+            bool hasInterruptBeenRequested{false};
+            int requestedInterruptHandlerNumber;
 
             // Observers are notified when an instruction is executed,
             // and will conduct some action as a result (observer pattern).
@@ -47,6 +49,7 @@ namespace Intel8080 {
             void executeNextInstructionWithSleepHandling();
             void executeNextInstruction();
             void notifyObserversOfInstructionExecution();
+            void handleAnyRequestedInterrupts();
             bool areThereInstructionsLeftToExecute();
             void alterFlagsAfterLogicalOperation();
             void alterFlagsAfterMathematicalOperation(uint8_t result);

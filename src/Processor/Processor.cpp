@@ -48,14 +48,8 @@ namespace Intel8080 {
     void Processor::interrupt(int interruptHandlerNumber){
         if (!interruptEnable) return; // Do nothing if interrupts aren't enabled
         if (interruptHandlerNumber >= 0 && interruptHandlerNumber <= 7){
-            // Push the program counter onto the stack
-            memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
-            memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
-            registers.stackPointer -= 2;
-
-            // Set the program counter to the address of the specified interrupt handler.
-            // Each interrupt handler occupies eight bytes of memory.
-            registers.programCounter = interruptHandlerNumber * 8;
+            hasInterruptBeenRequested = true;
+            requestedInterruptHandlerNumber = interruptHandlerNumber;
 
             // Prevent other interrupts from interfering
             interruptEnable = false;
@@ -111,11 +105,27 @@ namespace Intel8080 {
         }
 
         notifyObserversOfInstructionExecution();
+        handleAnyRequestedInterrupts();
     }
 
     void Processor::notifyObserversOfInstructionExecution(){
         for (ProcessorObserver* observer : observers){
             observer->notifyInstructionHasBeenExecuted();
+        }
+    }
+
+    void Processor::handleAnyRequestedInterrupts(){
+        if (hasInterruptBeenRequested){
+            // Push the program counter onto the stack
+            memory[registers.stackPointer - 1] = extractByte<uint16_t>(registers.programCounter, 1);
+            memory[registers.stackPointer - 2] = extractByte<uint16_t>(registers.programCounter, 0);
+            registers.stackPointer -= 2;
+
+            // Set the program counter to the address of the specified interrupt handler.
+            // Each interrupt handler occupies eight bytes of memory.
+            registers.programCounter = requestedInterruptHandlerNumber * 8;
+
+            hasInterruptBeenRequested = false;
         }
     }
 
