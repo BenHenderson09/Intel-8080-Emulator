@@ -19,23 +19,23 @@ namespace Intel8080 {
         double nanosecondsPerCycle{1e9 / ProcessorConstants::clockSpeedInHertz};
 
         cyclesRanSinceSleepFactorAdjusted += cyclesUsedByOpcode;
-        totalExecTimeInNanoseconds += execTimeInNanoseconds;
-        totalIdealExecTimeInNanoseconds +=
+        execTimeSinceThresholdMetInNanoseconds += execTimeInNanoseconds;
+        idealExecTimeSinceThresholdMetInNanoseconds +=
             static_cast<int>(cyclesUsedByOpcode * nanosecondsPerCycle);
     }
 
     void TimeKeeper::sleepIfThresholdHasBeenMet(){
-        int differenceInExecTimes{totalIdealExecTimeInNanoseconds - totalExecTimeInNanoseconds};
-        bool thresholdHasBeenMet {
-            differenceInExecTimes >= TimeKeeperConstants::sleepThresholdInNanoseconds
+        int differenceInExecTimes {
+            idealExecTimeSinceThresholdMetInNanoseconds - execTimeSinceThresholdMetInNanoseconds
         };
 
-        if (thresholdHasBeenMet){
+        if (differenceInExecTimes >= TimeKeeperConstants::sleepThresholdInNanoseconds){
             std::this_thread::sleep_for(
                 std::chrono::nanoseconds(TimeKeeperConstants::sleepThresholdInNanoseconds)
             );
 
-            totalExecTimeInNanoseconds +=
+            idealExecTimeSinceThresholdMetInNanoseconds = 0;
+            execTimeSinceThresholdMetInNanoseconds =
                 TimeKeeperConstants::sleepThresholdInNanoseconds * sleepFactor;
         }
     }
