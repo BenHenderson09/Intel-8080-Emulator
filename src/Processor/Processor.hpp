@@ -101,6 +101,7 @@ namespace Intel8080 {
             void PUSH_PSW();
             void RZ();
             void RC();
+            void RPO();
             void XTHL();
             void PCHL();
             void RET();

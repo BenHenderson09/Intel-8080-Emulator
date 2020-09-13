@@ -593,6 +593,9 @@ namespace Intel8080 {
             // RST 3 - Call an interrupt handler subroutine at the fourth byte in memory.
             case 0xdf: RST(3); break;
 
+            // RPO - If parity bit is zero, a RET instruction occcurs
+            case 0xe0: RPO(); break;
+
             // POP H - Remove two bytes from the top of the stack and copy their values
             // into the register pair HL
             case 0xe1: POP(registers.hl); break;
@@ -942,6 +945,10 @@ namespace Intel8080 {
 
     void Processor::RC(){
         if (flags.carry) RET();
+    }
+
+    void Processor::RPO(){
+        if (!flags.parity) RET();
     }
 
     void Processor::XTHL(){
