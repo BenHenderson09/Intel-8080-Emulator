@@ -621,6 +621,9 @@ namespace Intel8080 {
             // RST 5 - Call an interrupt handler subroutine at the sixth byte in memory.
             case 0xef: RST(5); break;
 
+            // RP - If the sign bit is zero, a RET instrucion occurs
+            case 0xf0: RP(); break;
+
             // POP PSW - Take the top two bytes off the stack, loading the
             // accumulator with the byte preceding the stack pointer and setting
             // the flags based on the byte at the stack pointer. This "flag byte"
@@ -633,6 +636,9 @@ namespace Intel8080 {
 
             // RST 6 - Call an interrupt handler subroutine at the seventh byte in memory.
             case 0xf7: RST(6); break;
+
+            // RP - If the sign bit is one, a RET instrucion occurs
+            case 0xf8: RM(); break;
 
             // EI - Enable interrupts
             case 0xfb: EI(); break;
@@ -956,6 +962,14 @@ namespace Intel8080 {
 
     void Processor::RPE(){
         if (!flags.parity) RET();
+    }
+
+    void Processor::RP(){
+        if (!flags.sign) RET();
+    }
+
+    void Processor::RM(){
+        if (flags.sign) RET();
     }
 
     void Processor::XTHL(){
