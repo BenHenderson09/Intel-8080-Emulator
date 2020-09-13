@@ -87,6 +87,9 @@ namespace Intel8080 {
             // JPE - If parity flag is set, carry out a jump operation
             case 0xea: JPE(address); break;
 
+            // CPE - If parity flag is set, carry out a call operation
+            case 0xec: CPE(address); break;
+
             // JM - Carry out a jump operation if the sign flag is set
             case 0xfa: JM(address); break;
 
@@ -184,6 +187,10 @@ namespace Intel8080 {
 
     void Processor::CPO(uint16_t address){
         if (!flags.parity) CALL(address);
+    }
+
+    void Processor::CPE(uint16_t address){
+        if (flags.parity) CALL(address);
     }
 
     void Processor::JM(uint16_t address){
