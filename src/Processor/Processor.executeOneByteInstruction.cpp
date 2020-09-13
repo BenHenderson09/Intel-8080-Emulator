@@ -609,6 +609,9 @@ namespace Intel8080 {
             // RST 4 - Call an interrupt handler subroutine at the fifth byte in memory.
             case 0xe7: RST(4); break;
 
+            // RPE - If parity bit is one, a RET instruction occurs
+            case 0xe8: RPE(); break;
+
             // PCHL - Set the program counter to the address held by register pair HL
             case 0xe9: PCHL(); break;
 
@@ -948,6 +951,10 @@ namespace Intel8080 {
     }
 
     void Processor::RPO(){
+        if (!flags.parity) RET();
+    }
+
+    void Processor::RPE(){
         if (!flags.parity) RET();
     }
 

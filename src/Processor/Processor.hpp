@@ -102,6 +102,7 @@ namespace Intel8080 {
             void RZ();
             void RC();
             void RPO();
+            void RPE();
             void XTHL();
             void PCHL();
             void RET();
