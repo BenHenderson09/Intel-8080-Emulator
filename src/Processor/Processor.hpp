@@ -107,6 +107,7 @@ namespace Intel8080 {
             void RM();
             void XTHL();
             void PCHL();
+            void SPHL();
             void RET();
             void RNC();
             void XCHG();

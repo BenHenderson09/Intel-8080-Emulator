@@ -643,6 +643,9 @@ namespace Intel8080 {
             // RM - If the sign bit is one, a RET instrucion occurs
             case 0xf8: RM(); break;
 
+            // SPHL - Set the stack pointer to the address held by register pair HL
+            case 0xf9: SPHL(); break;
+
             // EI - Enable interrupts
             case 0xfb: EI(); break;
 
@@ -983,6 +986,10 @@ namespace Intel8080 {
     void Processor::PCHL(){
         registers.programCounter = registers.hl.getPairValue();
         registers.programCounter--; // Prevent automatic increment
+    }
+
+    void Processor::SPHL(){
+        registers.stackPointer = registers.hl.getPairValue();
     }
 
     void Processor::RZ(){
