@@ -90,11 +90,17 @@ namespace Intel8080 {
             // CPE - If parity flag is set, carry out a call operation
             case 0xec: CPE(address); break;
 
+            // JP - Carry out a jump operation if the sign flag is not set
+            case 0xf2: JP(address); break;
+
+            // CP - Carry out a call operation if the sign flag is not set
+            case 0xf4: CP(address); break;
+
             // JM - Carry out a jump operation if the sign flag is set
             case 0xfa: JM(address); break;
 
-            // JP - Carry out a jump operation if the sign flag is not set.
-            case 0xf2: JP(address); break;
+            // CM - Carry out a call operation if the sign flag is set
+            case 0xfc: CM(address); break;
 
             default: throw UnsupportedOpcodeException(opcode); break;
         }
@@ -202,5 +208,13 @@ namespace Intel8080 {
 
     void Processor::JP(uint16_t address){
         if (!flags.sign) JMP(address);
+    }
+
+    void Processor::CM(uint16_t address){
+        if (flags.sign) CALL(address);
+    }
+
+    void Processor::CP(uint16_t address){
+        if (!flags.sign) CALL(address);
     }
 }

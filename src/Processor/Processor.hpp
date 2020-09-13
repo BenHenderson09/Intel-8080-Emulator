@@ -150,6 +150,8 @@ namespace Intel8080 {
             void CPE(uint16_t address);
             void JM(uint16_t address);
             void JP(uint16_t address);
+            void CM(uint16_t address);
+            void CP(uint16_t address);
     };
 }
 
