@@ -93,6 +93,9 @@ namespace Intel8080 {
             // JM - Carry out a jump operation if the sign flag is set
             case 0xfa: JM(address); break;
 
+            // JP - Carry out a jump operation if the sign flag is not set.
+            case 0xf2: JP(address); break;
+
             default: throw UnsupportedOpcodeException(opcode); break;
         }
 
@@ -195,5 +198,9 @@ namespace Intel8080 {
 
     void Processor::JM(uint16_t address){
         if (flags.sign) JMP(address);
+    }
+
+    void Processor::JP(uint16_t address){
+        if (!flags.sign) JMP(address);
     }
 }
