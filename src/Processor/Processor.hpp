@@ -111,6 +111,7 @@ namespace Intel8080 {
             void RNC();
             void XCHG();
             void EI();
+            void DI();
 
             // Two byte instructions
             void MVI(uint8_t& destination, uint8_t data);

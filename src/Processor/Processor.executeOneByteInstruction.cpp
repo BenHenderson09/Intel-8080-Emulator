@@ -630,6 +630,9 @@ namespace Intel8080 {
             // at the stack pointer has its bits mapped to specific flags.
             case 0xf1: POP_PSW(); break;
 
+            // DI - Disable interrupts
+            case 0xf3: DI(); break;
+
             // PUSH PSW - Pushes the accumulator followed by the "flag byte"
             // mentioned previously onto the stack.
             case 0xf5: PUSH_PSW(); break;
@@ -637,7 +640,7 @@ namespace Intel8080 {
             // RST 6 - Call an interrupt handler subroutine at the seventh byte in memory.
             case 0xf7: RST(6); break;
 
-            // RP - If the sign bit is one, a RET instrucion occurs
+            // RM - If the sign bit is one, a RET instrucion occurs
             case 0xf8: RM(); break;
 
             // EI - Enable interrupts
@@ -993,5 +996,9 @@ namespace Intel8080 {
 
     void Processor::EI(){
         interruptEnable = true;
+    }
+
+    void Processor::DI(){
+        interruptEnable = false;
     }
 }
