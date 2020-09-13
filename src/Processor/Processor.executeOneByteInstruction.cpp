@@ -114,6 +114,9 @@ namespace Intel8080 {
             // CMA - Perform a bitwise not on the accumulator
             case 0x2f: CMA(); break;
 
+            // INX SP - Increment the stack pointer 
+            case 0x33: INX_SP(); break;
+
             // INR M - Increment value held at the memory location specified by register pair HL
             case 0x34: INR(memory[registers.hl.getPairValue()]); break;
 
@@ -778,6 +781,10 @@ namespace Intel8080 {
         else {
             registerPair.secondRegister++;
         }
+    }
+
+    void Processor::INX_SP(){
+        registers.stackPointer++;
     }
 
     void Processor::INR(uint8_t& valueToIncrement){

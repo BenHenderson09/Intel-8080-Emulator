@@ -69,16 +69,16 @@ namespace Intel8080 {
             // storing the result in the accumulator
             case 0xee: XRI(firstOperand); break;
 
+            // ORI - A bitwise or (|) is carried out with the byte of
+            // immediate data and the accumulator
+            case 0xf6: ORI(firstOperand); break;
+
             // CPI - Compare the immediate data with the contents of the accumulator.
             // This is done internally by subtracting the data from the accumulator contents and
             // setting the flags as appropriate without actually changing the value held
             // in the accumulator after the operation has finished. i.e Only the flags change.
             // For example, you could use the zero flag to test for equality.
             case 0xfe: CPI(firstOperand); break;
-
-            // ORI - A bitwise or (|) is carried out with the byte of
-            // immediate data and the accumulator
-            case 0xf6: ORI(firstOperand); break;
 
             default: throw UnsupportedOpcodeException(opcode); break;
         }

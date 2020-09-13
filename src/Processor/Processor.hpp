@@ -81,6 +81,7 @@ namespace Intel8080 {
             void RAR();
             void RAL();
             void INX(RegisterPair& registerPair);
+            void INX_SP();
             void INR(uint8_t& valueToIncrement);
             void STC();
             void LDAX(const RegisterPair& registerPair);
