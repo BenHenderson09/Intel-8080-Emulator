@@ -88,7 +88,7 @@ namespace Intel8080 {
             void ADD(uint8_t valueToAddToAccumulator);
             void ADC(uint8_t valueToAddToAccumulator);
             void SUB(uint8_t valueToSubtractFromAccumulator);
-            void SBB(uint8_t valueToSubtractFromAccumulatorWithCarry);
+            void SBB(uint8_t valueToSubtractFromAccumulator);
             void ANA(uint8_t registerForBitwiseAnd);
             void XRA(uint8_t registerForBitwiseXor);
             void ORA(uint8_t valueForBitwiseOr);
@@ -117,12 +117,14 @@ namespace Intel8080 {
             // Two byte instructions
             void MVI(uint8_t& destination, uint8_t data);
             void ADI(uint8_t addend);
+            void ACI(uint8_t addend);
             void OUT(uint8_t portNumber);
             void SUI(uint8_t valueToSubtractFromAccumulator);
             void IN(uint8_t portNumber);
             void SBI(uint8_t valueToSubtractFromAccumulator);
             void ANI(uint8_t valueForBitwiseAnd);
-            void CPI(uint8_t dataToCompare);
+            void XRI(uint8_t valueForBitwiseXor);
+            void CPI(uint8_t valueToCompare);
             void ORI(uint8_t valueForBitwiseOr);
 
             // Three byte instructions

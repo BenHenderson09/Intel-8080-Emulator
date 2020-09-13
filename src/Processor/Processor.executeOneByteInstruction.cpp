@@ -845,8 +845,8 @@ namespace Intel8080 {
         registers.a = lowOrderByteOfResult;
     }
 
-    void Processor::SBB(uint8_t valueToSubtractFromAccumulatorWithCarry){
-        SUB(valueToSubtractFromAccumulatorWithCarry + flags.carry);
+    void Processor::SBB(uint8_t valueToSubtractFromAccumulator){
+        SUB(valueToSubtractFromAccumulator + flags.carry);
     }
 
     void Processor::ANA(uint8_t registerForBitwiseAnd){

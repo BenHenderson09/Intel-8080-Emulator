@@ -43,6 +43,10 @@ namespace Intel8080 {
 
             // ADI - Add immediate data to the accumulator
             case 0xc6: ADI(firstOperand); break;
+
+            // ACI - Add carry bit to the byte of immediate data and then add this value
+            // to the accumulator.
+            case 0xce: ACI(firstOperand); break;
         
             // OUT - The contents of the accumulator are sent to an output device.
             case 0xd3: OUT(firstOperand); break;
@@ -61,6 +65,10 @@ namespace Intel8080 {
             // storing the result in the accumulator
             case 0xe6: ANI(firstOperand); break;
         
+            // XRI - Perform a bitwise xor (^) with the immediate data and the accumulator,
+            // storing the result in the accumulator
+            case 0xee: XRI(firstOperand); break;
+
             // CPI - Compare the immediate data with the contents of the accumulator.
             // This is done internally by subtracting the data from the accumulator contents and
             // setting the flags as appropriate without actually changing the value held
@@ -84,6 +92,10 @@ namespace Intel8080 {
 
     void Processor::ADI(uint8_t addend){
         ADD(addend);
+    }
+
+    void Processor::ACI(uint8_t addend){
+        ADD(addend + flags.carry);
     }
     
     void Processor::OUT(uint8_t portNumber){
@@ -115,8 +127,13 @@ namespace Intel8080 {
         alterFlagsAfterLogicalOperation();
     }
 
-    void Processor::CPI(uint8_t dataToCompare){
-        CMP(dataToCompare);
+    void Processor::XRI(uint8_t valueForBitwiseXor){
+        registers.a ^= valueForBitwiseXor;
+        alterFlagsAfterLogicalOperation();
+    }
+
+    void Processor::CPI(uint8_t valueToCompare){
+        CMP(valueToCompare);
     }
 
     void Processor::ORI(uint8_t valueForBitwiseOr){
