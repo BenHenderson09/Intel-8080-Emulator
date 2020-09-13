@@ -413,7 +413,39 @@ namespace Intel8080 {
             // SUB A - The accumulator is subtracted from the accumulator
             case 0x97: SUB(registers.a); break;
 
-            // ANA B - Bitwise and (&) operates on the accumulator with register B
+            // SBB B - The carry bit is added to register B. This value is then subtracted
+            // from the accumulator
+            case 0x98: SBB(registers.b); break;
+
+            // SBB C - The carry bit is added to register C. This value is then subtracted
+            // from the accumulator
+            case 0x99: SBB(registers.c); break;
+
+            // SBB D - The carry bit is added to register D. This value is then subtracted
+            // from the accumulator
+            case 0x9a: SBB(registers.d); break;
+
+            // SBB E - The carry bit is added to register E. This value is then subtracted
+            // from the accumulator
+            case 0x9b: SBB(registers.e); break;
+
+            // SBB H - The carry bit is added to register H. This value is then subtracted
+            // from the accumulator
+            case 0x9c: SBB(registers.h); break;
+
+            // SBB L - The carry bit is added to register L. This value is then subtracted
+            // from the accumulator
+            case 0x9d: SBB(registers.l); break;
+
+            // SBB M - The carry bit is added to the value held at the memory address
+            // specified by register pair HL. This value is then subtracted from the accumulator.
+            case 0x9e: SBB(memory[registers.hl.getPairValue()]); break;
+
+            // SBB A - The carry bit is added to register A. This value is then subtracted
+            // from the accumulator
+            case 0x9f: SBB(registers.a); break;
+
+            // ANA L - Bitwise and (&) operates on the accumulator with register B
             case 0xa0: ANA(registers.b); break;
 
             // ANA C - Bitwise and (&) operates on the accumulator with register C
@@ -793,6 +825,10 @@ namespace Intel8080 {
         );
 
         registers.a = lowOrderByteOfResult;
+    }
+
+    void Processor::SBB(uint8_t valueToSubtractFromAccumulatorWithCarry){
+        SUB(valueToSubtractFromAccumulatorWithCarry + flags.carry);
     }
 
     void Processor::ANA(uint8_t registerForBitwiseAnd){

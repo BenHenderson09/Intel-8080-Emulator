@@ -88,6 +88,7 @@ namespace Intel8080 {
             void ADD(uint8_t valueToAddToAccumulator);
             void ADC(uint8_t valueToAddToAccumulator);
             void SUB(uint8_t valueToSubtractFromAccumulator);
+            void SBB(uint8_t valueToSubtractFromAccumulatorWithCarry);
             void ANA(uint8_t registerForBitwiseAnd);
             void XRA(uint8_t registerForBitwiseXor);
             void ORA(uint8_t valueForBitwiseOr);
