@@ -87,10 +87,10 @@ class that an instruction has just finished executing.
 
 ### Class: `InputDevice`
 ```C++
-InputDevice(const std::initializer_list<int>& inputPortNumbers);
+InputDevice(const std::initializer_list<uint8_t>& inputPortNumbers);
 virtual ~InputDevice(){}
 
-const std::vector<int> inputPortNumbers;
+const std::vector<uint8_t> inputPortNumbers;
 
 virtual uint8_t readByte(uint8_t portNumber, uint8_t accumulatorState) = 0;
 ```
@@ -98,7 +98,7 @@ virtual uint8_t readByte(uint8_t portNumber, uint8_t accumulatorState) = 0;
 - **Constructor**: An `std::initializer_list` of the port numbers which the device is linked
 to.
 
-- `const std::vector<int> inputPortNumbers`: The port numbers which the device is linked to
+- `const std::vector<uint8_t> inputPortNumbers`: The port numbers which the device is linked to
 are stored in this vector. This means when a `Processor` object meets an `IN` instruction,
 which includes a port number, it can search this vector to find out if the device is linked to
 the specified port number or not.
@@ -109,10 +109,10 @@ to have data read from them by a `Processor` object when it meets an `IN` instru
 
 ### Class: `OutputDevice`
 ```C++
-OutputDevice(const std::initializer_list<int>& outputPortNumbers);
+OutputDevice(const std::initializer_list<uint8_t>& outputPortNumbers);
 virtual ~OutputDevice(){}
 
-const std::vector<int> outputPortNumbers;
+const std::vector<uint8_t> outputPortNumbers;
 
 virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0;
 ```
@@ -120,7 +120,7 @@ virtual void writeByte(uint8_t portNumber, uint8_t byte) = 0;
 - **Constructor**: An `std::initializer_list` of the port numbers which the device is linked
 to.
 
-- `const std::vector<int> outputPortNumbers`: The port numbers which the device is linked to
+- `const std::vector<uint8_t> outputPortNumbers`: The port numbers which the device is linked to
 are stored in this vector. This means when a `Processor` object meets an `OUT` instruction,
 which includes a port number, it can search this vector to find out if the device is linked to
 the specified port number or not.
