@@ -126,6 +126,10 @@ namespace Intel8080 {
             // STC - Set the carry flag
             case 0x37: STC(); break;
 
+            // DAD SP - The stack pointer is added to the 16-bit number held in register
+            // pair HL
+            case 0x39: DAD_SP(); break;
+
             // DCX SP - Decrement the stack pointer
             case 0x3b: DCX_SP(); break;
 
@@ -717,10 +721,25 @@ namespace Intel8080 {
             registers.hl.getPairValue() + registerPair.getPairValue()
         )};
 
-        // The first 16 bits will be assigned to register pair HL. This ignores the carry bit.
+        // Register pair HL is set to the first 16 bits. This ignores the carry bit.
         registers.hl.setPairValue(result);
         
-        // Bit 16 is set if a carry has occurred
+        // Bit 16 is set if a carry has occurred. We can use this to determine if the carry
+        // flag should be set or not.
+        flags.carry = extractBit<uint32_t>(result, 16);
+    }
+
+    void Processor::DAD_SP(){
+        // Use 32 bits to facilitate carry
+        uint32_t result{static_cast<uint32_t>(
+            registers.hl.getPairValue() + registers.stackPointer
+        )};
+
+        // Register pair HL is set to the first 16 bits. This ignores the carry bit.
+        registers.hl.setPairValue(result);
+        
+        // Bit 16 is set if a carry has occurred. We can use this to determine if the carry
+        // flag should be set or not.
         flags.carry = extractBit<uint32_t>(result, 16);
     }
 
